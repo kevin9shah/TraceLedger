@@ -1,0 +1,7 @@
+# TraceLedger — pinned loosely for a hackathon build; read-only deps only.
+requests>=2.32
+python-dotenv>=1.0
+pyTigerGraph>=2.0,<3   # verified against 2.0.5; Savanna needs gsqlSecret auth
+flask>=3.0
+pytest>=8.0
+jsonschema>=4.21

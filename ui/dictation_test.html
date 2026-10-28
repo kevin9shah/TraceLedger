@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dictation Check</title>
+<!--
+  CP1 smoke test for the Wispr Flow / OS-level dictation requirement.
+
+  TraceLedger does NOT integrate with Wispr Flow. There is no API call, no SDK and no
+  dependency on it (see RISKS.md S4). Wispr Flow is system-wide dictation: it inserts text
+  into whatever field has focus. This page exists only to prove our review fields accept
+  that insertion, and to catch the one way we could break it -- blocking or swallowing
+  input events.
+
+  Dictation injects text via `input`/`beforeinput` events WITHOUT a preceding `keydown`.
+  The counters below separate the two, so "dictation works" is an observation, not a guess.
+-->
+<style>
+  :root {
+    --bg: #faf9f7; --panel: #ffffff; --ink: #1b1b1f; --muted: #5d5f6b;
+    --line: #dedce0; --accent: #2f6f4f; --warn: #8a5a00; --focus: #2f6f4f;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #16171a; --panel: #1f2125; --ink: #ecebe8; --muted: #a2a4ae;
+      --line: #35373d; --accent: #7fc0a0; --warn: #d9a84a; --focus: #7fc0a0;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font: 16px/1.55 ui-sans-serif, -apple-system, "Segoe UI", system-ui, sans-serif;
+    padding: 32px 16px 64px;
+  }
+  main { max-width: 760px; margin: 0 auto; }
+  h1 { font-size: 1.5rem; margin: 0 0 4px; letter-spacing: -0.01em; }
+  .sub { color: var(--muted); margin: 0 0 28px; font-size: 0.95rem; }
+  section { background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
+            padding: 20px; margin-bottom: 20px; }
+  label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 0.95rem; }
+  .hint { color: var(--muted); font-size: 0.85rem; margin: 0 0 10px; }
+  /* Large targets, generous line height: dictated text arrives in long runs. */
+  textarea, input[type=text] {
+    width: 100%; font: inherit; line-height: 1.6; color: var(--ink);
+    background: var(--bg); border: 1px solid var(--line); border-radius: 8px;
+    padding: 12px 14px; resize: vertical;
+  }
+  textarea { min-height: 150px; }
+  /* Clear focus state: the user must be able to see which field dictation will fill. */
+  textarea:focus-visible, input:focus-visible, button:focus-visible {
+    outline: 3px solid var(--focus); outline-offset: 2px; border-color: var(--focus);
+  }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px;
+          margin-top: 16px; }
+  .stat { border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; background: var(--bg); }
+  .stat .n { font-variant-numeric: tabular-nums; font-size: 1.5rem; font-weight: 650; }
+  .stat .k { color: var(--muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.04em; }
+  .verdict { margin-top: 16px; padding: 12px 14px; border-radius: 8px; border: 1px solid var(--line);
+             background: var(--bg); font-size: 0.95rem; }
+  .verdict strong { color: var(--accent); }
+  .note { color: var(--warn); }
+  button { font: inherit; padding: 9px 16px; border-radius: 8px; border: 1px solid var(--line);
+           background: var(--bg); color: var(--ink); cursor: pointer; }
+  code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.9em; }
+  pre#log {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.78rem;
+    line-height: 1.5; background: var(--bg); border: 1px solid var(--line); border-radius: 8px;
+    padding: 12px 14px; max-height: 240px; overflow: auto; margin: 0; white-space: pre-wrap;
+    color: var(--muted);
+  }
+  .focusflag { font-size: 0.8rem; color: var(--muted); margin-top: 10px; }
+  .focusflag b { color: var(--accent); }
+</style>
+</head>
+<body>
+<main>
+  <h1>Dictation check</h1>
+  <p class="sub">CP1 smoke test. Confirms the review fields accept system-wide dictation.
+     TraceLedger has no Wispr Flow integration &mdash; this only verifies we don't break OS-level input.</p>
+
+  <section>
+    <label for="rationale">Reviewer rationale</label>
+    <p class="hint">Click here, then dictate a sentence or two. Typing must work equally well.</p>
+    <textarea id="rationale" placeholder="Dictate or type&hellip;"></textarea>
+
+    <label for="question" style="margin-top:18px">Investigation question</label>
+    <p class="hint">Single-line field, same check.</p>
+    <input type="text" id="question" placeholder="Dictate or type&hellip;">
+
+    <div class="grid">
+      <div class="stat"><div class="n" id="n-chars">0</div><div class="k">Characters</div></div>
+      <div class="stat"><div class="n" id="n-keydown">0</div><div class="k">keydown events</div></div>
+      <div class="stat"><div class="n" id="n-input">0</div><div class="k">input events</div></div>
+      <div class="stat"><div class="n" id="n-injected">0</div><div class="k">Injected (no keydown)</div></div>
+      <div class="stat"><div class="n" id="n-paste">0</div><div class="k">Clipboard inserts</div></div>
+    </div>
+    <p class="focusflag">Focused field: <b id="focused">none</b></p>
+
+    <div class="verdict" id="verdict">Waiting for input&hellip;</div>
+
+    <h2 style="font-size:1rem;margin:22px 0 6px">Raw event log</h2>
+    <p class="hint">Every event the fields receive, newest first. If dictation inserts text and this
+       stays empty, the text is not reaching the field at all &mdash; that points at Wispr Flow or
+       macOS permissions, not this page.</p>
+    <pre id="log" aria-live="polite">(no events yet)</pre>
+
+    <p style="margin:16px 0 0">
+      <button type="button" id="reset">Reset</button>
+      <button type="button" id="copy">Copy log</button>
+    </p>
+  </section>
+
+  <section>
+    <h2 style="font-size:1.05rem;margin:0 0 8px">What a pass looks like</h2>
+    <ul style="margin:0;padding-left:20px;color:var(--muted);font-size:0.93rem">
+      <li>Dictated text appears in full, with no dropped or reordered words.</li>
+      <li><code>Injected</code> &gt; 0 after dictating &mdash; the insertion path works; <em>or</em>
+          <code>Clipboard inserts</code> &gt; 0 <strong>without you pressing Cmd+V</strong>, which is
+          how Wispr Flow and similar tools insert on macOS. Either counts as a pass.</li>
+      <li>Typing still raises <code>keydown</code> and inserts normally.</li>
+      <li>The focus ring is clearly visible on the field being dictated into.</li>
+    </ul>
+  </section>
+</main>
+<script>
+// Passive listeners only. Nothing here calls preventDefault() or stopPropagation():
+// swallowing an input event is the one way this page could break dictation.
+(function () {
+  const fields = [document.getElementById('rationale'), document.getElementById('question')];
+  const out = {
+    chars: document.getElementById('n-chars'),
+    keydown: document.getElementById('n-keydown'),
+    input: document.getElementById('n-input'),
+    injected: document.getElementById('n-injected'),
+    paste: document.getElementById('n-paste'),
+  };
+  const verdict = document.getElementById('verdict');
+  const logEl = document.getElementById('log');
+  const focusedEl = document.getElementById('focused');
+  let keydowns = 0, inputs = 0, injected = 0, pastes = 0;
+  let sawKeydownSinceInput = false;
+  // Set by any input event; the poller uses it to avoid reporting a change that DID fire events.
+  let eventSinceLastPoll = false;
+  const lines = [];
+
+  function log(kind, detail) {
+    const t = new Date().toISOString().substr(11, 12);
+    lines.unshift(`${t}  ${kind.padEnd(12)} ${detail}`);
+    if (lines.length > 200) lines.pop();
+    logEl.textContent = lines.join('\n');
+  }
+
+  function render() {
+    out.chars.textContent = fields.reduce((n, f) => n + f.value.length, 0);
+    out.keydown.textContent = keydowns;
+    out.input.textContent = inputs;
+    out.injected.textContent = injected;
+    out.paste.textContent = pastes;
+    if (inputs === 0) {
+      verdict.textContent = 'Waiting for input\u2026';
+    } else if (injected > 0) {
+      verdict.innerHTML = '<strong>Dictation path works.</strong> Text arrived via input events '
+        + 'with no preceding keydown, which is how system-wide dictation inserts. '
+        + 'Record this result in CHECKPOINTS.md as the CP1 dictation evidence.';
+    } else if (pastes > 0) {
+      // Wispr Flow and several other macOS dictation tools insert text by putting it on the
+      // clipboard and synthesising Cmd+V. That is indistinguishable from a human paste at the
+      // DOM level, so this page states what it saw and lets the operator say which it was.
+      verdict.innerHTML = '<strong>Clipboard insert detected</strong> ('
+        + 'inputType=<code>insertFromPaste</code>).<br>'
+        + '&bull; If you did <b>not</b> press Cmd+V, this is your dictation tool inserting via the '
+        + 'clipboard &mdash; that is a <strong>pass</strong>: the field accepts injected text.<br>'
+        + '&bull; If you <b>did</b> press Cmd+V, this was just a paste. Dictate instead.';
+    } else {
+      verdict.innerHTML = 'Only keyboard input seen so far. Typing works. '
+        + '<span class="note">Dictate into a field to exercise the injection path.</span>';
+    }
+  }
+
+  for (const field of fields) {
+    const name = field.id;
+    field.addEventListener('focus', () => { focusedEl.textContent = name; log('focus', name); });
+    field.addEventListener('blur', () => {
+      focusedEl.textContent = 'none';
+      // Losing focus mid-dictation is a common cause of "nothing appeared".
+      log('blur', name + '  <-- field lost focus');
+    });
+    field.addEventListener('keydown', (e) => {
+      keydowns++; sawKeydownSinceInput = true;
+      log('keydown', `${name}  key=${JSON.stringify(e.key)}`);
+      render();
+    }, { passive: true });
+    field.addEventListener('beforeinput', (e) => {
+      log('beforeinput', `${name}  inputType=${e.inputType} data=${JSON.stringify(e.data)}`);
+    }, { passive: true });
+    field.addEventListener('input', (e) => {
+      inputs++;
+      const pasted = e.inputType === 'insertFromPaste';
+      if (pasted) pastes++;
+      if (!sawKeydownSinceInput && !pasted) injected++;
+      eventSinceLastPoll = true;
+      log('input', `${name}  inputType=${e.inputType} data=${JSON.stringify(e.data)} `
+        + `len=${field.value.length}${pasted ? '  (paste, not counted)' : ''}`
+        + `${(!sawKeydownSinceInput && !pasted) ? '  <-- INJECTED' : ''}`
+        + `${pasted ? '  <-- CLIPBOARD INSERT (could be a dictation tool)' : ''}`);
+      sawKeydownSinceInput = false;
+      render();
+    }, { passive: true });
+    // Some dictation tools set .value directly, which fires no event at all. Poll as a
+    // last-resort detector so "text appeared but nothing was logged" is distinguishable
+    // from "no text appeared".
+    let lastSeen = field.value;
+    setInterval(() => {
+      const changed = field.value !== lastSeen;
+      // Only a change that fired NO event is a silent write. Reporting one that did fire
+      // events was a bug: it made every ordinary paste look like a silent write.
+      if (changed && !eventSinceLastPoll) {
+        const grew = field.value.length - lastSeen.length;
+        log('poll-change', `${name}  value changed by ${grew} chars with NO event at all`
+          + '  <-- SILENT WRITE');
+        render();
+      }
+      if (changed) lastSeen = field.value;
+      eventSinceLastPoll = false;
+    }, 500);
+  }
+
+  document.getElementById('reset').addEventListener('click', () => {
+    keydowns = inputs = injected = pastes = 0;
+    sawKeydownSinceInput = false; eventSinceLastPoll = false;
+    for (const f of fields) f.value = '';
+    lines.length = 0; logEl.textContent = '(no events yet)';
+    render();
+  });
+
+  document.getElementById('copy').addEventListener('click', async () => {
+    const report = [
+      `chars=${out.chars.textContent} keydown=${keydowns} input=${inputs} `
+        + `injected=${injected} pastes=${pastes}`,
+      `userAgent=${navigator.userAgent}`, '', ...lines,
+    ].join('\n');
+    try {
+      await navigator.clipboard.writeText(report);
+      document.getElementById('copy').textContent = 'Copied';
+      setTimeout(() => { document.getElementById('copy').textContent = 'Copy log'; }, 1500);
+    } catch (err) {
+      // Clipboard can be blocked on file:// origins; fall back to selecting the text.
+      logEl.textContent = report;
+      const r = document.createRange(); r.selectNodeContents(logEl);
+      const sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r);
+    }
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>

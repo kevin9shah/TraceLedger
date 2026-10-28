@@ -1,0 +1,34 @@
+{
+  "chain_id": 137,
+  "chain_name": "polygon-pos",
+  "rpc_url": "https://polygon-bor-rpc.publicnode.com",
+  "verified_at_block": 96350969,
+  "tokens": {
+    "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359": {
+      "address": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+      "decimals": 6,
+      "symbol": "USDC",
+      "name": "USD Coin",
+      "provenance": {
+        "rpc_url": "https://polygon-bor-rpc.publicnode.com",
+        "chain_id": 137,
+        "method": "eth_call",
+        "read_at": 1793231834.0867252
+      },
+      "env_label": "USDC"
+    },
+    "0xc2132d05d31c914a87c6611c10748aeb04b58e8f": {
+      "address": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+      "decimals": 6,
+      "symbol": "USDT0",
+      "name": "USDT0",
+      "provenance": {
+        "rpc_url": "https://polygon-bor-rpc.publicnode.com",
+        "chain_id": 137,
+        "method": "eth_call",
+        "read_at": 1793231835.891952
+      },
+      "env_label": "USDT"
+    }
+  }
+}
