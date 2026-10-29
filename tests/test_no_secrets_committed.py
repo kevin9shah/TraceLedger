@@ -53,13 +53,13 @@ def test_env_is_not_tracked_by_git():
     """The real .env must never be in the index."""
     result = subprocess.run(
         ["git", "ls-files", "--error-unmatch", ".env"],
-        cwd=REPO_ROOT, capture_output=True, text=True,
+        cwd=REPO_ROOT, capture_output=True, text=True, stdin=subprocess.DEVNULL,
     )
     assert result.returncode != 0, ".env is tracked by git. It must be gitignored (G2)."
 
 
 def test_gitignore_covers_env():
     result = subprocess.run(
-        ["git", "check-ignore", "-q", ".env"], cwd=REPO_ROOT, capture_output=True,
+        ["git", "check-ignore", "-q", ".env"], cwd=REPO_ROOT, capture_output=True, stdin=subprocess.DEVNULL,
     )
     assert result.returncode == 0, ".gitignore does not cover .env (G2)."
