@@ -96,6 +96,23 @@ def _assert_no_key_material() -> None:
                 )
 
 
+_PROVIDER_KEY_VARS = {
+    "gemini": ("GOOGLE_API_KEY", "GEMINI_API_KEY"),
+    "openai": ("OPENAI_API_KEY",),
+    "anthropic": ("ANTHROPIC_API_KEY",),
+    "fake": (),
+}
+
+
+def _api_key_for(provider: str) -> str | None:
+    """The API key for one provider, chosen by name rather than by whichever is set."""
+    for name in _PROVIDER_KEY_VARS.get((provider or "").strip().lower(), ()):
+        value = os.getenv(name, "").strip()
+        if value:
+            return value
+    return None
+
+
 def load_config(env_file: str | os.PathLike[str] | None = None) -> Config:
     load_dotenv(env_file or REPO_ROOT / ".env")
     _assert_no_key_material()
@@ -129,6 +146,8 @@ def load_config(env_file: str | os.PathLike[str] | None = None) -> Config:
         tg_secret=os.getenv("TG_SECRET") or None,
         llm_provider=os.getenv("LLM_PROVIDER", "gemini"),
         llm_model=os.getenv("LLM_MODEL", "gemini-2.5-flash"),
-        llm_api_key=os.getenv("GOOGLE_API_KEY") or os.getenv("ANTHROPIC_API_KEY") or None,
+        # Only the SELECTED provider's key is read, so a leftover key for a different provider
+        # cannot be picked up silently and produce a confusing auth failure.
+        llm_api_key=_api_key_for(os.getenv("LLM_PROVIDER", "gemini")),
         db_path=REPO_ROOT / os.getenv("TRACELEDGER_DB", "data/traceledger.sqlite"),
     )

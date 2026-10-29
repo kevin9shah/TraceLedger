@@ -1,0 +1,41 @@
+// Q1 — every piece of evidence linked to a case, in one traversal.
+//
+// Why a graph: a case touches invoices, their payment requests, ledger entries, the transactions
+// that may settle them, the wallets involved and the approvals covering those wallets. In SQL
+// that is six joins whose shape changes with the case; here it is one traversal from the Case
+// vertex outward.
+//
+// Returns each evidence type separately so a report can cite specific record IDs (G4).
+USE GRAPH TraceLedger
+
+CREATE OR REPLACE QUERY case_evidence(VERTEX<InvestigationCase> input_case) FOR GRAPH TraceLedger {
+  SetAccum<VERTEX<Invoice>> @@invoices;
+  SetAccum<VERTEX<Transaction>> @@transactions;
+
+  start = {input_case};
+
+  invoices = SELECT inv FROM start:c -(CASE_COVERS_INVOICE:e)- Invoice:inv
+             ACCUM @@invoices += inv;
+
+  txs_direct = SELECT t FROM start:c -(CASE_COVERS_TX:e)- Transaction:t
+               ACCUM @@transactions += t;
+
+  // Transactions reached through the invoices the case covers, not only those linked directly.
+  txs_via_invoice = SELECT t FROM invoices:inv -(SETTLED_BY_TX:e)- Transaction:t
+                    ACCUM @@transactions += t;
+
+  requests = SELECT pr FROM invoices:inv -(INVOICE_HAS_REQUEST:e)- PaymentRequest:pr;
+  ledger   = SELECT le FROM invoices:inv -(INVOICE_HAS_LEDGER:e)- LedgerEntry:le;
+
+  // Wallets from both sides: expected by a request, and actually paid by a transaction.
+  expected_wallets = SELECT w FROM requests:pr -(REQUEST_EXPECTS:e)- Wallet:w;
+  paid_wallets     = SELECT w FROM txs_via_invoice:t -(TX_TRANSFERRED_TO:e)- Wallet:w;
+
+  approvals = SELECT a FROM expected_wallets:w -(WALLET_APPROVED_BY:e)- ApprovedAddress:a;
+
+  PRINT invoices, requests, ledger;
+  PRINT txs_direct, txs_via_invoice;
+  PRINT expected_wallets, paid_wallets, approvals;
+}
+
+INSTALL QUERY case_evidence

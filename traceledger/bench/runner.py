@@ -15,6 +15,10 @@ ROOT = Path(__file__).resolve().parent.parent.parent
 BENCH = ROOT / "benchmark"
 
 OUTCOMES = ("conflict", "no_conflict", "unresolved")
+# "error" is not an outcome. It means our infrastructure failed (API quota, outage), and such a
+# case is EXCLUDED from scoring rather than counted as an abstention. Counting API failures as
+# correct abstentions is how the first CP8 run produced a meaningless plain-LLM score (S22).
+ERROR_OUTCOME = "error"
 
 
 def load_chain_facts() -> dict[str, TransactionFacts]:
@@ -112,6 +116,9 @@ class Scores:
     # Did the system name the right issue, not merely the right outcome?
     issue_identified: int = 0
     issue_opportunities: int = 0
+    # Cases excluded because the call never completed. Reported, never hidden.
+    errored: int = 0
+    errored_cases: list[str] = None  # type: ignore[assignment]
     # Flagging a clean case.
     false_positives: int = 0
     clean_opportunities: int = 0
@@ -120,13 +127,17 @@ class Scores:
     def __post_init__(self) -> None:
         if self.per_case is None:
             self.per_case = []
+        if self.errored_cases is None:
+            self.errored_cases = []
 
     def pct(self, num: int, den: int) -> str:
         return "n/a" if den == 0 else f"{100.0 * num / den:.0f}% ({num}/{den})"
 
     def as_dict(self) -> dict[str, Any]:
         return {
-            "system": self.system, "cases": self.n,
+            "system": self.system, "cases_scored": self.n,
+            "cases_excluded_due_to_errors": self.errored,
+            "errored_cases": list(self.errored_cases),
             "outcome_accuracy": self.pct(self.outcome_correct, self.n),
             "issue_identification": self.pct(self.issue_identified, self.issue_opportunities),
             "false_resolution_rate": self.pct(self.false_resolutions, self.n),
@@ -145,6 +156,17 @@ def score(system: str, predictions: dict[str, dict], truth: dict[str, dict]) -> 
         prediction = predictions[case_id]
         want = expected["expected_outcome"]
         got = prediction["outcome"]
+        if got == ERROR_OUTCOME:
+            # Excluded, and named, so a run with many failures cannot masquerade as a result.
+            s.errored += 1
+            s.errored_cases.append(case_id)
+            s.per_case.append({
+                "case_id": case_id, "expected": want, "got": ERROR_OUTCOME,
+                "outcome_correct": None, "excluded": True,
+                "expected_issues": expected.get("issue_types", []),
+                "reported_issues": [], "issue_identified": None,
+                "reasons": prediction.get("reasons", [])[:1]})
+            continue
         s.n += 1
         correct = got == want
         s.outcome_correct += int(correct)

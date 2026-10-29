@@ -1,0 +1,152 @@
+// TraceLedger graph schema — TigerGraph (verified against 4.2.5)
+//
+// Applied to an EXISTING empty graph named TraceLedger, so this is a schema-change job rather
+// than CREATE GRAPH. Re-runnable: run drop_schema.gsql first if the schema already exists.
+//
+// Design notes:
+//   * Token identity is the contract address (G7). No symbol appears in a key or a join.
+//   * Amounts are stored as STRING holding integer base units, never FLOAT (G8). Graph queries
+//     group and count; they never do currency arithmetic.
+//   * `simulated` is carried on every business vertex so synthetic data is visible (G3).
+//   * Link basis is explicit: edges carry `basis` = "known" or "candidate". An inferred link is
+//     never presented as established (evidence-linking rule, CP-architecture layer 2).
+//   * ImportEvent and ImportBatch exist to make shared root cause a one-hop grouping rather than a
+//     join over every record.
+
+USE GRAPH TraceLedger
+
+CREATE SCHEMA_CHANGE JOB traceledger_schema FOR GRAPH TraceLedger {
+
+  // ---------------------------------------------------------------- business records
+  ADD VERTEX Invoice (
+    PRIMARY_ID record_id STRING,
+    invoice_id STRING,
+    counterparty STRING,
+    amount_base_units STRING,
+    token_contract STRING,
+    status STRING,
+    simulated BOOL
+  ) WITH PRIMARY_ID_AS_ATTRIBUTE="true";
+
+  ADD VERTEX PaymentRequest (
+    PRIMARY_ID record_id STRING,
+    request_id STRING,
+    invoice_id STRING,
+    amount_base_units STRING,
+    token_contract STRING,
+    simulated BOOL
+  ) WITH PRIMARY_ID_AS_ATTRIBUTE="true";
+
+  ADD VERTEX LedgerEntry (
+    PRIMARY_ID record_id STRING,
+    entry_id STRING,
+    invoice_id STRING,
+    amount_base_units STRING,
+    direction STRING,
+    status STRING,
+    posted_at STRING,
+    simulated BOOL
+  ) WITH PRIMARY_ID_AS_ATTRIBUTE="true";
+
+  ADD VERTEX ApprovedAddress (
+    PRIMARY_ID record_id STRING,
+    address STRING,
+    approved_for STRING,
+    approved_by STRING,
+    simulated BOOL
+  ) WITH PRIMARY_ID_AS_ATTRIBUTE="true";
+
+  // ---------------------------------------------------------------- chain facts
+  ADD VERTEX Transaction (
+    PRIMARY_ID tx_hash STRING,
+    chain_id INT,
+    block_number INT,
+    tx_status INT,          // 1 succeeded, 0 reverted
+    confirmations INT,
+    origin STRING,          // cake_wallet_demo | public_mainnet
+    simulated BOOL          // always false for chain facts
+  ) WITH PRIMARY_ID_AS_ATTRIBUTE="true";
+
+  ADD VERTEX Wallet (
+    PRIMARY_ID address STRING,
+    owner_label STRING,
+    first_seen_block INT
+  ) WITH PRIMARY_ID_AS_ATTRIBUTE="true";
+
+  ADD VERTEX Token (
+    PRIMARY_ID contract STRING,
+    decimals INT,
+    symbol_display STRING,  // DISPLAY ONLY. Never used for identity or matching (G7, D6).
+    name_display STRING
+  ) WITH PRIMARY_ID_AS_ATTRIBUTE="true";
+
+  // ---------------------------------------------------------------- provenance & grouping
+  ADD VERTEX ImportEvent (
+    PRIMARY_ID import_event_id STRING,
+    source_file STRING,
+    row_count INT,
+    imported_at STRING
+  ) WITH PRIMARY_ID_AS_ATTRIBUTE="true";
+
+  ADD VERTEX ImportBatch (
+    PRIMARY_ID batch_id STRING,
+    created_at STRING,
+    note STRING
+  ) WITH PRIMARY_ID_AS_ATTRIBUTE="true";
+
+  ADD VERTEX InvestigationCase (
+    PRIMARY_ID case_id STRING,
+    title STRING,
+    state STRING,
+    opened_at STRING
+  ) WITH PRIMARY_ID_AS_ATTRIBUTE="true";
+
+  // ---------------------------------------------------------------- edges
+  // Record relationships
+  ADD DIRECTED EDGE INVOICE_HAS_REQUEST (FROM Invoice, TO PaymentRequest, basis STRING)
+    WITH REVERSE_EDGE="REQUEST_OF_INVOICE";
+  ADD DIRECTED EDGE LEDGER_FOR_INVOICE (FROM LedgerEntry, TO Invoice, basis STRING)
+    WITH REVERSE_EDGE="INVOICE_HAS_LEDGER";
+  ADD DIRECTED EDGE REQUEST_EXPECTS (FROM PaymentRequest, TO Wallet, basis STRING)
+    WITH REVERSE_EDGE="EXPECTED_BY_REQUEST";
+  ADD DIRECTED EDGE APPROVES_WALLET (FROM ApprovedAddress, TO Wallet, basis STRING)
+    WITH REVERSE_EDGE="WALLET_APPROVED_BY";
+  ADD DIRECTED EDGE INVOICE_IN_TOKEN (FROM Invoice, TO Token, basis STRING)
+    WITH REVERSE_EDGE="TOKEN_OF_INVOICE";
+
+  // Chain relationships. log_index is the discriminator, so a transaction with several
+  // transfers to the same wallet produces several distinct edges rather than one (D18).
+  ADD DIRECTED EDGE TX_TRANSFERRED_TO (
+    FROM Transaction, TO Wallet,
+    DISCRIMINATOR(log_index INT),
+    token_contract STRING,
+    amount_base_units STRING
+  ) WITH REVERSE_EDGE="RECEIVED_IN_TX";
+  ADD DIRECTED EDGE TX_SENT_BY (FROM Transaction, TO Wallet, basis STRING)
+    WITH REVERSE_EDGE="SENT_TX";
+  ADD DIRECTED EDGE TX_MOVED_TOKEN (FROM Transaction, TO Token, basis STRING)
+    WITH REVERSE_EDGE="TOKEN_MOVED_IN_TX";
+
+  // The link under investigation: does this transaction settle this invoice?
+  // basis="candidate" until the deterministic layer confirms it.
+  ADD DIRECTED EDGE TX_SETTLES (FROM Transaction, TO Invoice, basis STRING, verdict STRING)
+    WITH REVERSE_EDGE="SETTLED_BY_TX";
+
+  // Provenance and grouping — the shared-root-cause anchors.
+  ADD DIRECTED EDGE INVOICE_FROM_IMPORT (FROM Invoice, TO ImportEvent, basis STRING)
+    WITH REVERSE_EDGE="IMPORT_PRODUCED_INVOICE";
+  ADD DIRECTED EDGE REQUEST_FROM_IMPORT (FROM PaymentRequest, TO ImportEvent, basis STRING)
+    WITH REVERSE_EDGE="IMPORT_PRODUCED_REQUEST";
+  ADD DIRECTED EDGE LEDGER_FROM_IMPORT (FROM LedgerEntry, TO ImportEvent, basis STRING)
+    WITH REVERSE_EDGE="IMPORT_PRODUCED_LEDGER";
+  ADD DIRECTED EDGE INVOICE_IN_BATCH (FROM Invoice, TO ImportBatch, basis STRING)
+    WITH REVERSE_EDGE="BATCH_HAS_INVOICE";
+
+  // Cases
+  ADD DIRECTED EDGE CASE_COVERS_INVOICE (FROM InvestigationCase, TO Invoice, basis STRING)
+    WITH REVERSE_EDGE="INVOICE_IN_CASE";
+  ADD DIRECTED EDGE CASE_COVERS_TX (FROM InvestigationCase, TO Transaction, basis STRING)
+    WITH REVERSE_EDGE="TX_IN_CASE";
+}
+
+RUN SCHEMA_CHANGE JOB traceledger_schema

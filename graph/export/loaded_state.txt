@@ -1,0 +1,46 @@
+TraceLedger graph — loaded state, captured 2026-10-29
+TigerGraph version: 4.2.5
+
+vertex counts:
+  ApprovedAddress      9
+  ImportBatch          0
+  ImportEvent          17
+  InvestigationCase    25
+  Invoice              27
+  LedgerEntry          13
+  PaymentRequest       25
+  Token                6
+  Transaction          11
+  Wallet               39
+
+edge counts:
+  APPROVES_WALLET            9
+  CASE_COVERS_INVOICE        27
+  CASE_COVERS_TX             25
+  EXPECTED_BY_REQUEST        25
+  IMPORT_PRODUCED_INVOICE    27
+  IMPORT_PRODUCED_LEDGER     13
+  IMPORT_PRODUCED_REQUEST    25
+  INVOICE_FROM_IMPORT        27
+  INVOICE_HAS_LEDGER         13
+  INVOICE_HAS_REQUEST        26
+  INVOICE_IN_CASE            27
+  INVOICE_IN_TOKEN           27
+  LEDGER_FOR_INVOICE         13
+  LEDGER_FROM_IMPORT         13
+  RECEIVED_IN_TX             40
+  REQUEST_EXPECTS            25
+  REQUEST_FROM_IMPORT        25
+  REQUEST_OF_INVOICE         26
+  SENT_TX                    11
+  SETTLED_BY_TX              27
+  TOKEN_MOVED_IN_TX          13
+  TOKEN_OF_INVOICE           27
+  TX_IN_CASE                 25
+  TX_MOVED_TOKEN             13
+  TX_SENT_BY                 11
+  TX_SETTLES                 27
+  TX_TRANSFERRED_TO          40
+  WALLET_APPROVED_BY         9
+
+installed queries: case_evidence, shared_root_cause, destination_exposure, wrong_asset_sweep

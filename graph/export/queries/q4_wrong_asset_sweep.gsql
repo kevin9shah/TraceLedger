@@ -1,0 +1,39 @@
+// Q4 — portfolio-wide wrong-asset sweep, by contract address.
+//
+// For every invoice with a candidate settling transaction, collect the token the invoice is
+// denominated in and the tokens its settling transaction actually moved. Comparison is on the
+// contract address; `symbol_display` is carried for reading only and is never compared (G7, D6).
+//
+// The mismatch judgement is left to the deterministic layer (G8): this query returns what is
+// linked, it does not decide verdicts. The graph reports structure, code decides facts.
+//
+// Written as three single-hop steps rather than one chained pattern: chaining hops in a single
+// FROM clause is v2 (MATCH) syntax and GSQL rejects mixing it with v1 accumulators.
+USE GRAPH TraceLedger
+
+CREATE OR REPLACE QUERY wrong_asset_sweep() FOR GRAPH TraceLedger {
+  SetAccum<STRING> @invoiced_token;
+  SetAccum<STRING> @moved_tokens;
+  SetAccum<STRING> @settling_txs;
+
+  all_invoices = {Invoice.*};
+  all_tx = {Transaction.*};
+
+  // Step 1: what each invoice is denominated in.
+  with_token = SELECT inv FROM all_invoices:inv -(INVOICE_IN_TOKEN:e)- Token:tok
+               ACCUM inv.@invoiced_token += tok.contract;
+
+  // Step 2: what each transaction actually moved, accumulated onto the transaction.
+  tx_tokens = SELECT t FROM all_tx:t -(TX_MOVED_TOKEN:e)- Token:tok
+              ACCUM t.@moved_tokens += tok.contract;
+
+  // Step 3: pull the transaction's tokens back onto the invoice it may settle.
+  swept = SELECT inv FROM with_token:inv -(SETTLED_BY_TX:e)- Transaction:t
+          ACCUM inv.@moved_tokens += t.@moved_tokens,
+                inv.@settling_txs += t.tx_hash;
+
+  PRINT swept.size() AS invoices_with_a_settling_tx;
+  PRINT swept;
+}
+
+INSTALL QUERY wrong_asset_sweep

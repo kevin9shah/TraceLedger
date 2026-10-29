@@ -1,0 +1,30 @@
+// Q3 — everything known about a destination wallet.
+//
+// Question an investigator actually asks: "we paid this address — have we ever approved it, which
+// requests pointed at it, and what else has gone there?"
+//
+// Why a graph: the wallet is the hub. Approvals, payment requests and transactions all point at
+// it from different directions, and the useful answer is the neighbourhood, not a row.
+USE GRAPH TraceLedger
+
+CREATE OR REPLACE QUERY destination_exposure(VERTEX<Wallet> wallet_in) FOR GRAPH TraceLedger {
+  start = {wallet_in};
+
+  approvals = SELECT a FROM start:w -(WALLET_APPROVED_BY:e)- ApprovedAddress:a;
+
+  // Requests that named this wallet as the expected destination.
+  requests = SELECT pr FROM start:w -(EXPECTED_BY_REQUEST:e)- PaymentRequest:pr;
+
+  // The invoices behind those requests.
+  invoices_expecting = SELECT inv FROM requests:pr -(REQUEST_OF_INVOICE:e)- Invoice:inv;
+
+  // Transactions that actually paid this wallet. Token and amount sit on the edge.
+  paid_by = SELECT t FROM start:w -(RECEIVED_IN_TX:e)- Transaction:t;
+
+  PRINT approvals;
+  PRINT requests;
+  PRINT invoices_expecting;
+  PRINT paid_by;
+}
+
+INSTALL QUERY destination_exposure

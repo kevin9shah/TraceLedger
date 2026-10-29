@@ -277,3 +277,68 @@ class TestLogDecoding:
         }]
         events = parse_transfer_logs(logs)
         assert len(events) == 1 and events[0].value == 0
+
+
+# --------------------------------------------------------------------------- CP2: our own transfers
+
+class TestCakeWalletTransfers:
+    """Parser verified against the project's OWN Cake Wallet transfers (CP2).
+
+    These three transfers were sent by a human from Cake Wallet on Polygon to a second wallet they
+    control. Unlike the public fixtures, the expected values were known in advance -- 0.10, 0.25
+    and 1.00 USDT -- so this checks the parser against an independently known ground truth rather
+    than against whatever the chain happened to contain.
+    """
+
+    SENDER = "0x3004cee4065774e4bce4ec3ac5c56f3fe61d45b3"
+    DESTINATION = "0xdad4d0ee4260c1a9a25bb61099c9e518b5033e8e"
+    EXPECTED = [
+        ("tx_3e1b6243", "0x3e1b6243f0f74ef16ab02a6f62a92b30763ee8556d684cf908459d33cb63fd4a",
+         100_000, 96_374_114),
+        ("tx_094801fd", "0x094801fdaee4acfbd2a150db0185074f7e76135595de7cbb749333c931420672",
+         250_000, 96_374_125),
+        ("tx_5db5918a", "0x5db5918a22234617ca5892e90ad3ec401c2f03bd0555ad23f47d5ce6ef9dd911",
+         1_000_000, 96_374_131),
+    ]
+
+    @pytest.mark.parametrize("name,tx_hash,base_units,block", EXPECTED)
+    def test_amount_matches_what_the_human_intended_to_send(self, name, tx_hash, base_units, block):
+        facts = fetch_transaction_facts(FakeRpc(fixture(name)), tx_hash)
+        assert facts.succeeded
+        assert len(facts.transfers) == 1
+        transfer = facts.transfers[0]
+        assert transfer.value == base_units
+        assert transfer.token == USDT
+        assert transfer.sender == self.SENDER
+        assert transfer.recipient == self.DESTINATION
+        assert facts.block_number == block
+
+    @pytest.mark.parametrize("name,tx_hash,base_units,_block", EXPECTED)
+    def test_display_amount_round_trips(self, name, tx_hash, base_units, _block):
+        """0.10 / 0.25 / 1.00 USDT must come back out exactly, with no float drift."""
+        from traceledger.chain.rpc import Provenance
+        from traceledger.chain.tokens import TokenMetadata
+        meta = TokenMetadata(address=USDT, decimals=6, symbol="USDT0", name="USDT0",
+                             provenance=Provenance(rpc_url="http://test", chain_id=137,
+                                                   method="eth_call", read_at=0.0))
+        facts = fetch_transaction_facts(FakeRpc(fixture(name)), tx_hash)
+        value = facts.transfers[0].value
+        assert meta.base_units(meta.format_units(value)) == value == base_units
+
+    def test_the_token_sent_reports_symbol_usdt0_not_usdt(self):
+        """The whole demo rests on this: the contract the wallet calls 'USDT' reports 'USDT0'."""
+        registry = json.loads(
+            (Path(__file__).resolve().parent.parent / "data" / "token_registry.json").read_text())
+        assert registry["tokens"][USDT]["symbol"] == "USDT0"
+        assert registry["tokens"][USDT]["decimals"] == 6
+
+    def test_real_txs_file_records_origin(self):
+        """G3/D19: our own transfers must be distinguishable from observed public ones."""
+        blob = json.loads(
+            (Path(__file__).resolve().parent.parent / "data" / "real_txs.json").read_text())
+        assert blob["cake_wallet_demo_transfers_outstanding"] is False
+        ours = [t for t in blob["transfers"] if t["origin"] == "cake_wallet_demo"]
+        assert len(ours) == 3
+        assert {int(t["amount_base_units"]) for t in ours} == {100_000, 250_000, 1_000_000}
+        assert all(t["simulated"] is False for t in blob["transfers"])
+        assert {t["origin"] for t in blob["transfers"]} == {"cake_wallet_demo", "public_mainnet"}

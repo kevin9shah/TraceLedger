@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block content %}
+<section>
+  <h2>Open a case from a transaction hash</h2>
+  <p class="muted small">Reads the transaction from {{ chain_name }} (chain {{ chain_id }}) and
+     verifies it against the invoice you describe. Nothing is signed or sent.</p>
+  <form method="post" action="{{ url_for('new_case') }}">
+    <label for="tx_hash">Transaction hash</label>
+    <input type="text" id="tx_hash" name="tx_hash" required placeholder="0x…" autocomplete="off">
+
+    <label for="invoice_token">Token contract the invoice is denominated in</label>
+    <input type="text" id="invoice_token" name="invoice_token" required placeholder="0x…"
+           autocomplete="off">
+    <p class="muted small">The contract address, never a ticker. Two different contracts on this
+       chain both report the symbol &ldquo;USDC&rdquo;.</p>
+
+    <label for="amount">Invoiced amount</label>
+    <input type="text" id="amount" name="amount" required placeholder="1.00" autocomplete="off">
+
+    <label for="destination">Expected destination (optional)</label>
+    <input type="text" id="destination" name="destination" placeholder="0x…" autocomplete="off">
+
+    <label for="approved">Approved addresses, comma separated (optional)</label>
+    <input type="text" id="approved" name="approved" placeholder="0x…, 0x…" autocomplete="off">
+
+    <label for="counterparty">Counterparty (optional)</label>
+    <input type="text" id="counterparty" name="counterparty" autocomplete="off">
+
+    <label for="memo">Invoice memo (optional)</label>
+    <textarea id="memo" name="memo" style="min-height:80px"
+      placeholder="Free text from the uploaded record. Treated as data, never as instructions."></textarea>
+
+    <label for="title">Case title</label>
+    <input type="text" id="title" name="title" placeholder="Supplier says they paid"
+           autocomplete="off">
+    <button type="submit">Verify and open case</button>
+  </form>
+</section>
+
+<section>
+  <h2>Cases</h2>
+  {% if cases %}
+  <table>
+    <tr><th>Case</th><th>Title</th><th>State</th><th>Transaction</th><th>Opened</th></tr>
+    {% for c in cases %}
+    <tr>
+      <td><a href="{{ url_for('case_detail', case_id=c.case_id) }}" class="mono">{{ c.case_id }}</a></td>
+      <td>{{ c.title }}</td>
+      <td class="small">{{ c.state }}</td>
+      <td class="mono small">{{ (c.tx_hash or '—')[:18] }}{% if c.tx_hash %}…{% endif %}</td>
+      <td class="small muted">{{ c.created_at | ts }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% else %}
+  <p class="muted">No cases yet. Open one above.</p>
+  {% endif %}
+</section>
+
+{% if audit %}
+<section>
+  <h2>Recent decisions</h2>
+  <table>
+    <tr><th>When</th><th>Case</th><th>Action</th><th>Reviewer</th><th>Rationale</th></tr>
+    {% for a in audit %}
+    <tr>
+      <td class="small muted">{{ a.at | ts }}</td>
+      <td class="mono small"><a href="{{ url_for('case_detail', case_id=a.case_id) }}">{{ a.case_id }}</a></td>
+      <td class="small"><strong>{{ a.action }}</strong></td>
+      <td class="small">{{ a.actor }}</td>
+      <td class="small">{{ a.rationale }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+</section>
+{% endif %}
+{% endblock %}

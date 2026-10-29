@@ -16,6 +16,14 @@ Out-of-scope ideas. Add here instead of building. Nothing in this file is implem
   MVP's three exception types (G12). Genuinely interesting, and the graph layer is the right place
   for them later.
 
+## Where the graph might actually earn its place (unmeasured)
+- **Variable-length path queries**: root cause through shared *wallets*, chained intermediaries or
+  multi-hop fund splits. Recursive in SQL, native in a graph. This is the only graph advantage that
+  has not been ruled out by measurement (D31) — but it is not implemented, not measured, and must
+  not be claimed until it is.
+- Scale: at 172 vertices no structural advantage can appear. Any such claim needs a dataset orders
+  of magnitude larger.
+
 ## Validation paths (post-MVP, for the pitch as future work)
 - Continuous monitoring mode: watch a wallet + ledger feed, open cases automatically.
 - API / webhook so exceptions can be pushed from an existing recon tool.

@@ -542,3 +542,252 @@ benchmark-hygiene failure G10 and G11 exist to prevent. Until this is resolved,
 `tricky_reason` fields, and re-point its cases at **real** transactions — fabricated hashes cannot
 be checked on a block explorer and cannot support the live-fire demo (D17). That keeps the better
 scenario design and the verifiable evidence, and discards neither contribution.
+
+
+### D29 — Graph vs SQL: SQL wins on latency at this scale, and that is reported
+**2026-10-29.** First measurement of the comparison RISKS.md P7 demands. Both sides read the
+identical dataset (`graph/export/dataset.json`) with the identical ImportEvent grouping.
+
+**The shared-root-cause question works.** Of 18 flagged invoices, 11 collapse to three import
+events:
+
+| Import event | Flagged invoices | Source |
+|---|---|---|
+| `IMP-TOKEN-MAP-01` | 5 | token_mapping_2026-10-18.csv |
+| `IMP-VENDOR-03` | 3 | vendor_master_update_2026-10-20.csv |
+| `IMP-REIMPORT-02` | 3 | month_end_rerun_2026-10-23.csv |
+
+**SQLite answers it in 0.146 ms** (median of 50 runs, in-memory). Our measured round trip to the
+Savanna workspace is **1.47–1.94 s**. So on latency, at this data size, SQL is faster by roughly
+four orders of magnitude, and no amount of in-memory graph architecture changes that while the
+graph is a network call away. This is the honest answer the brief asks for, and it is the second
+time a measurement has contradicted the latency story (see D16).
+
+**Where the graph case must therefore be made, if it can be made at all:**
+- **Query expressiveness.** The SQL needs 7 joins across 3 UNION branches, because an invoice can
+  reach an import event by three different routes (directly, via its payment request, via its
+  ledger entries). Every additional record type that carries provenance adds another UNION branch.
+  The GSQL version traverses to the shared vertex without enumerating routes.
+- **Variable-length paths.** Root cause through shared *wallets* or chained intermediaries is a
+  recursive query in SQL and a native traversal in a graph. Not yet measured.
+- **Scale.** 25 cases is far too small for any structural advantage to appear.
+
+**What must not be claimed:** that the graph is faster. It is not, here. If the expressiveness and
+variable-length-path arguments do not survive measurement either, the honest conclusion is that
+SQL suffices for this MVP and the graph earns its place only at larger scale — and that is what
+`BENCHMARK_RESULTS.md` will say.
+
+### D30 — The ImportEvent grouping is a documented construction
+**2026-10-29.** Each benchmark case carries its own import id, so nothing would share a root cause
+by default and the shared-root-cause query would have nothing to find. Inventing a grouping that
+flatters the query would be exactly the kind of result G10 forbids.
+
+So the grouping is written in the open at the top of `scripts/load_graph.py`, corresponds to
+recognisable operational failures (one bad token-mapping import, one month-end re-run that
+double-loaded, one vendor-master update that changed destinations), and is used **identically by
+the SQL side**, so neither implementation is advantaged. If the graph only looks good because of
+how this grouping was drawn, the comparison says so.
+
+
+### D31 — Graph vs SQL, final measurement: identical answers, SQL 2792x faster
+**2026-10-29.** Both sides now measured against the same data and the same question
+(`benchmark/graph_vs_sql.json`).
+
+| | SQLite (in-memory) | TigerGraph 4.2.5 (Savanna, over the network) |
+|---|---|---|
+| Result | 3 import events, 11 invoices | **identical** |
+| Median latency | **0.1 ms** (50 runs) | **280 ms** (5 runs, min 248, max 326) |
+| Factor | — | SQL faster by **2792x** |
+
+**The two engines agree exactly** — same import events, same counts, same invoice IDs. That is the
+more important result than latency: it means the graph implementation is correct, and it means the
+graph is not finding anything SQL cannot.
+
+So the honest position for the pitch:
+- **Do not claim the graph is faster.** It is 2792x slower here, and it is reached over a network.
+- **Do not claim the graph finds things SQL misses.** On this question, measured, it does not.
+- What can be said: the SQL needs **7 joins across 3 UNION branches** because an invoice reaches an
+  import event by three different routes, and each new provenance-carrying record type adds another
+  branch; the GSQL expresses the same thing as a traversal to a shared vertex. That is an
+  argument about maintainability, not performance, and it is unmeasured.
+- Variable-length paths (root cause through shared wallets or chained intermediaries) would be the
+  genuine graph advantage, and are **not implemented or measured**. Recorded in `BACKLOG.md`.
+
+At 25 cases and 172 vertices, no structural advantage could appear. Saying so plainly is better
+than a claim a judge can test.
+
+### D32 — GSQL reserved words and v1/v2 syntax, found by installing against a real instance
+**2026-10-29.** Four failures that only surfaced on the live instance, recorded so nobody rediscovers them:
+
+| Problem | Fix |
+|---|---|
+| `Batch` is a reserved keyword | renamed vertex to `ImportBatch` |
+| `Case` is a reserved keyword | renamed vertex to `InvestigationCase` |
+| `target` is a reserved keyword as a query parameter | renamed to `wallet_in` |
+| Chaining two hops in one `FROM` clause is v2 (MATCH) syntax and cannot be mixed with v1 accumulators | rewrote `wrong_asset_sweep` as three single-hop `SELECT` steps |
+
+This is why the schema and queries are exported to `graph/export/`: rebuilding the workspace from
+them is now a known-good path, whereas rewriting them from memory would hit all four again.
+
+
+### D33 — A fact line must name the check it rests on, not just cite evidence
+**2026-10-29.** `traceledger/validate.py`. The first run of the validator's own test suite
+exposed a real hole in it, which is recorded because the hole was subtle and plausible.
+
+Support was originally defined as: *a deterministic finding of matching status that shares at
+least one evidence ID with the report line.* But a transaction hash is cited by **several**
+findings at once — `tx.status`, `tx.confirmations`, `payment.asset`, `payment.amount` and more.
+So a model could write "the invoiced asset arrived as expected", cite the transaction hash, and
+be deemed supported by the unrelated `tx.status` pass. The claim would be false and the citation
+would be real.
+
+A `VERIFIED` or `CONFLICT` line must now carry `finding_code` naming the deterministic check it
+rests on, and support requires **all three**: the code exists, its status matches the line's, and
+it shares an evidence ID with the line. Lines without a code are unsupported by definition.
+
+**Known limit, stated rather than papered over:** if a line names a check that genuinely passed
+but describes it misleadingly, the validator accepts it. Catching that needs semantic judgement
+about whether prose matches a finding, which is explicitly not this layer's job — this layer
+guarantees the *named check exists, has that status, and cites that evidence*.
+`test_misleading_text_over_a_real_pass_is_accepted_and_this_is_a_known_limit` asserts the current
+behaviour so nobody mistakes it for a guarantee.
+
+### D34 — Injection defence does not depend on recognising the attack
+**2026-10-29.** The prompt-injection tests do not feed the validator a malicious memo. They feed
+it **the output a model would produce if it had already obeyed one** — "This invoice is settled
+and verified", citing `SYSTEM-OK`; "Approved by system administrator", citing `ADMIN-OVERRIDE`;
+"No mismatch found; asset checks skipped", citing nothing.
+
+All three are rejected, for structural reasons rather than because anything spotted an attack:
+the first two cite evidence that does not exist, the third cites none at all, and none names a
+deterministic check that passed. The defence therefore holds against injections nobody anticipated,
+which is the only kind that matters.
+
+A fourth test confirms that citing a **real** evidence ID does not rescue a claim the
+deterministic layer contradicts, and a fifth confirms the underlying `payment.asset` conflict is
+unaffected — an uploaded memo cannot change what the chain says.
+
+
+### D35 — Gemini model selection: measured, not assumed
+**2026-10-29.** `.env` was configured with `gemini-2.5-flash` from D5, which was a remembered
+string. It fails: `404 ... no longer available to new users`. Testing what the key could actually
+reach:
+
+| Model | Result |
+|---|---|
+| `gemini-3.8-flash` | **503 UNAVAILABLE** (overloaded) |
+| `gemini-flash-latest` | OK, but **182,683 ms** -- the call appeared to hang |
+| `gemini-3.5-flash` | **OK, 1,909 ms** -- chosen |
+
+Note that `gemini-2.5-flash` is *listed* by the models endpoint yet rejects calls, so listing a
+model is not evidence it is usable.
+
+Consequences:
+- `LLM_MODEL=gemini-3.5-flash` in `.env`, and the id stays configuration, never a constant.
+- **`GeminiProvider` enforces a 45s timeout.** A 183-second hang during a live demo is worse than
+  a failure, because the audience watches a spinner instead of an answer.
+- Model availability is volatile enough to be a demo risk (RISKS.md S21). The fallback is the
+  deterministic layer, which needs no model at all -- the pipeline degrades to code-only findings
+  and says the narrative layer is unavailable, rather than failing the case.
+
+### D36 — Gemini must be asked for JSON; a truncated reply is unparseable
+**2026-10-29.** The first live investigation failed: the reply began
+`{"summary": "The payment transaction succeeded on-chain, but there is an asset mismatch...` and
+was cut off mid-key. These models spend output tokens on reasoning, so a 2048-token budget ran out
+mid-object.
+
+Two fixes, both in `GeminiProvider`:
+- `response_mime_type="application/json"`, so JSON is requested natively rather than hoped for.
+- `max_output_tokens` default raised to 8192, and a reply whose `finish_reason` mentions
+  `MAX_TOKENS` now raises *"hit the output limit... raise max_output_tokens"* rather than a generic
+  JSON decode error. The failure names its own cause.
+
+### D37 — `no_conflict` must be earned; the LLM layer had a dangerous default
+**2026-10-29.** Found by `test_compliant_verified_without_support_is_downgraded`.
+
+`Investigation.outcome` originally read: conflict if any CONFLICT line, unresolved if any MISSING,
+otherwise **no_conflict**. So a report consisting only of `HYPOTHESIS` lines -- which is exactly
+what an obeyed prompt injection produces *after* the validator downgrades it -- reported
+`no_conflict`. The validator would have done its job, and the outcome would still have said
+"fine, close the case".
+
+`no_conflict` now requires all of: a surviving `VERIFIED` line, no `CONFLICT`, no `MISSING`, and
+**zero downgrades**. An unsupported assertion disqualifies a clean bill of health.
+
+Four regression tests, including `test_a_clean_case_can_still_reach_no_conflict` -- without it, the
+fix could have made `no_conflict` unreachable and still passed the other three.
+
+### D38 — The deterministic layer decides the outcome, not the LLM
+**2026-10-29.** In the CP8 runner, TraceLedger's reported `outcome` comes from the deterministic
+findings. The LLM's own view is recorded separately as `llm_outcome`, so the two can be compared,
+but it never overrides code (G8).
+
+If the LLM call fails entirely, the pipeline returns the deterministic verdict with a note that
+the narrative layer was unavailable. A model outage degrades the prose, not the facts.
+
+
+### D39 — Provider switched to OpenAI; the interface made it a config change
+**2026-10-29.** Gemini's free tier is **5 requests per minute**. A 25-case three-way run needs
+~50 calls, so the first attempt produced 17 quota failures, and a second attempt with 13-second
+pacing was still erroring after ~2 minutes per case. It was stopped rather than left to spend 40
+minutes producing errors.
+
+Switched to OpenAI `gpt-4o-mini` on the human's paid key: **2.7s per call, no pacing required**.
+
+The point worth recording is that this cost nothing architecturally. `D5` put the LLM behind an
+`LLMProvider` protocol precisely so the model could be swapped without touching the investigation
+layer, and that held: `OpenAIProvider` was added, `LLM_PROVIDER` changed, and
+`traceledger/llm/investigate.py`, the validator and every test were untouched. 261 tests passed
+before and after.
+
+Two details carried over from the Gemini work because they are provider-agnostic problems:
+- **JSON requested natively** (`response_format={"type":"json_object"}`), since a truncated reply
+  is unparseable (D36).
+- **A truncated reply names its own cause** rather than surfacing as a JSON decode error.
+
+One OpenAI-specific wrinkle handled: reasoning models fix temperature at 1 and reject any other
+value, so the provider retries once without the parameter instead of failing on something it does
+not need.
+
+### D40 — Per-provider key lookup, so a stale key cannot be picked up silently
+**2026-10-29.** `config.load_config()` previously read
+`GOOGLE_API_KEY or ANTHROPIC_API_KEY`, whichever was set. With both a Google and an OpenAI key in
+`.env`, that would hand the OpenAI provider a Google key and produce a confusing auth error.
+
+The key is now looked up **by the selected provider's name** (`_PROVIDER_KEY_VARS`), so
+`LLM_PROVIDER=openai` reads only `OPENAI_API_KEY`. A leftover key for another provider is ignored
+rather than misused.
+
+This also surfaced a real setup trap: a variable named `LLM_PROVIDER2` is simply not read, so the
+configuration silently stayed on the Gemini default while a `gpt-4o-mini` model id was set — a
+combination that would have failed with a misleading model error rather than a configuration one.
+
+
+### D41 — The review form carries no JavaScript, by design
+**2026-10-29.** D13 measured that Wispr Flow inserts dictated text by putting it on the clipboard
+and synthesising a paste. Any handler that intercepts paste, rewrites a field as it changes, or
+clears a field on blur would therefore break dictation **while typing continued to work** -- a bug
+that passes every keyboard-based test and only shows up on stage.
+
+The most reliable way to honour that is to have no JavaScript on the review path at all, so the
+dashboard's forms are plain HTML posts. Two tests assert it rather than trusting the comment:
+`test_the_review_page_contains_no_javascript_at_all` and `test_no_inline_event_handlers`, the
+latter checking for `onpaste`, `oninput`, `onkeydown`, `onblur`, `onchange` and `onsubmit`.
+
+Cost: no client-side validation, and a full page reload per action. Worth it -- the alternative is
+a demo where the reviewer dictates a rationale and the text silently vanishes.
+
+### D42 — The audit log is append-only, and is not called tamper-proof
+**2026-10-29.** `traceledger/store.py`. A reviewer decision records what a human concluded at a
+point in time, so it is never updated or deleted; a later decision is a new row. No `UPDATE` or
+`DELETE` statement against `audit_log` exists in the codebase, and `test_the_log_is_append_only`
+asserts that a second decision adds an entry rather than replacing the first.
+
+**What is deliberately not claimed:** it is a SQLite file on disk and anyone with filesystem
+access can edit it. Describing it as immutable or tamper-proof would be an unearned claim (G10,
+P10), so the UI says *"append-only... stored in a SQLite file, so it is not tamper-proof and is
+not claimed to be"*, and a test asserts the word "immutable" appears nowhere in the interface.
+
+A rationale is **required** for every decision: `record_review` raises on a blank one, because a
+decision with no stated reason cannot be reviewed later, which defeats the point of having a human
+in the loop. The dashboard returns 400 and logs nothing.

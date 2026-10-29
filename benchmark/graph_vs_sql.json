@@ -1,0 +1,72 @@
+{
+  "_comment": "Graph-vs-SQL comparison on the shared-root-cause question. Both sides read graph/export/dataset.json. SQL side measured here; the TigerGraph side is filled in by the same script once a workspace is reachable.",
+  "question": "which import events account for 2+ flagged invoices",
+  "min_affected": 2,
+  "sql": {
+    "engine": "sqlite in-memory",
+    "median_ms": 0.1,
+    "min_ms": 0.099,
+    "max_ms": 0.3,
+    "runs": 50,
+    "query_lines": 31,
+    "joins": 8,
+    "union_branches": 3,
+    "results": [
+      {
+        "import_event_id": "IMP-TOKEN-MAP-01",
+        "source_file": "token_mapping_2026-10-18.csv",
+        "affected_invoices": 5,
+        "invoice_ids": "C04-1,C05-1,C06-1,C07-1,C25-1"
+      },
+      {
+        "import_event_id": "IMP-VENDOR-03",
+        "source_file": "vendor_master_update_2026-10-20.csv",
+        "affected_invoices": 3,
+        "invoice_ids": "C12-1,C13-1,C14-1"
+      },
+      {
+        "import_event_id": "IMP-REIMPORT-02",
+        "source_file": "month_end_rerun_2026-10-23.csv",
+        "affected_invoices": 3,
+        "invoice_ids": "C16-DUP,C17-1,C18-1"
+      }
+    ]
+  },
+  "tigergraph": {
+    "engine": "TigerGraph 4.2.5 (Savanna, over the network)",
+    "median_ms": 280.0,
+    "min_ms": 247.6,
+    "max_ms": 325.6,
+    "runs": 5,
+    "query_lines": 0,
+    "joins": 0,
+    "union_branches": 3,
+    "results": [
+      {
+        "import_event_id": "IMP-TOKEN-MAP-01",
+        "affected_invoices": 5,
+        "invoice_ids": "C04-1,C05-1,C06-1,C07-1,C25-1"
+      },
+      {
+        "import_event_id": "IMP-VENDOR-03",
+        "affected_invoices": 3,
+        "invoice_ids": "C12-1,C13-1,C14-1"
+      },
+      {
+        "import_event_id": "IMP-REIMPORT-02",
+        "affected_invoices": 3,
+        "invoice_ids": "C16-DUP,C17-1,C18-1"
+      }
+    ]
+  },
+  "agreement": {
+    "identical_results": true,
+    "sql_only": [],
+    "graph_only": [],
+    "sql_median_ms": 0.1,
+    "graph_median_ms": 280.0,
+    "sql_faster_by": 2792.0
+  },
+  "flagged_invoice_total": 18,
+  "honest_reading": "Both engines return identical results for this question. SQL is dramatically faster at this data size, and the graph is reached over a network, so no in-memory architecture changes that. The graph's case must therefore rest on query expressiveness (the SQL needs 7 joins across 3 UNION branches because an invoice reaches an import event by three routes; each new provenance-carrying record type adds a branch) and on variable-length paths, which are not measured here. On latency alone, SQL wins and that is reported as such (RISKS.md P7)."
+}

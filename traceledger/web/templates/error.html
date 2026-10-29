@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}{{ title }} — TraceLedger{% endblock %}
+{% block content %}
+<section>
+  <h2>{{ title }}</h2>
+  <p>{{ message }}</p>
+  <p class="small muted">Nothing was recorded. Nothing was sent or signed.</p>
+  <p><a href="{{ back or url_for('index') }}">Go back</a></p>
+</section>
+{% endblock %}

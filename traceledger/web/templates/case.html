@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% block title %}{{ case.case_id }} — TraceLedger{% endblock %}
+{% block content %}
+<section>
+  <h2>{{ case.title }}</h2>
+  <p class="muted small mono">{{ case.case_id }} &middot; state: {{ case.state }}</p>
+  <div class="grid">
+    <div class="stat"><div class="n CONFLICT">{{ conflict_count }}</div><div class="k">Conflicts</div></div>
+    <div class="stat"><div class="n MISSING">{{ missing_count }}</div><div class="k">Missing evidence</div></div>
+    <div class="stat"><div class="n">{{ findings | length }}</div><div class="k">Findings</div></div>
+    <div class="stat"><div class="n">{{ audit | length }}</div><div class="k">Decisions</div></div>
+  </div>
+  {% if case.tx_hash %}
+  <p class="small muted" style="margin-top:14px">Transaction
+     <code>{{ case.tx_hash }}</code>
+     &middot; block {{ case.payload.facts.block_number }}
+     &middot; {{ case.payload.facts.confirmations }} confirmations
+     &middot; chain {{ case.payload.facts.chain_id }}</p>
+  <p class="small muted">Invoiced token <code>{{ case.payload.token.address }}</code>
+     &mdash; reports symbol <strong>{{ case.payload.token.symbol }}</strong>,
+     {{ case.payload.token.decimals }} decimals, read from the contract.</p>
+  {% endif %}
+</section>
+
+<section>
+  <h2>Findings</h2>
+  <p class="muted small">Established by code, with no language model involved. Conflicts first.
+     Every VERIFIED and CONFLICT line cites the evidence it rests on.</p>
+  <table>
+    <tr><th>Status</th><th>Check</th><th>Statement</th><th>Evidence</th></tr>
+    {% for f in findings %}
+    <tr>
+      <td><span class="tag {{ f.status }}">{{ f.status }}</span></td>
+      <td class="mono small">{{ f.code }}</td>
+      <td>{{ f.summary }}</td>
+      <td class="mono small">
+        {% if f.evidence_ids %}{% for e in f.evidence_ids %}{{ e[:22] }}{% if e|length > 22 %}…{% endif %}<br>{% endfor %}
+        {% else %}<span class="muted">nothing to cite</span>{% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+</section>
+
+{% if report %}
+<section>
+  <h2>Investigation</h2>
+  <p class="muted small">Drafted by a language model, then checked against the findings above.
+     Anything it could not support was downgraded or rejected.</p>
+  <p>{{ report.summary }}</p>
+  {% if report.validation and report.validation.lines %}
+  <table>
+    <tr><th>Status</th><th>Rests on</th><th>Statement</th></tr>
+    {% for l in report.validation.lines %}
+    <tr><td><span class="tag {{ l.status }}">{{ l.status }}</span></td>
+        <td class="mono small">{{ l.finding_code or '—' }}</td>
+        <td>{{ l.text }}</td></tr>
+    {% endfor %}
+  </table>
+  {% endif %}
+  {% if report.hypotheses %}
+  <h2 style="margin-top:18px">Competing explanations</h2>
+  <ul>{% for h in report.hypotheses %}
+    <li>{{ h.explanation }}
+      <div class="small muted">Confirmed by: {{ h.would_be_confirmed_by }}</div>
+      <div class="small muted">Ruled out by: {{ h.would_be_ruled_out_by }}</div></li>
+  {% endfor %}</ul>
+  {% endif %}
+  {% if report.next_steps %}
+  <h2 style="margin-top:18px">Next steps</h2>
+  <ul>{% for s in report.next_steps %}<li>{{ s }}</li>{% endfor %}</ul>
+  {% endif %}
+  {% if report.validation and report.validation.violations %}
+  <h2 style="margin-top:18px">Rejected by the validator</h2>
+  <ul class="small">{% for v in report.validation.violations %}
+    <li><strong>{{ v.severity }}</strong> <code>{{ v.code }}</code> &mdash; {{ v.message }}</li>
+  {% endfor %}</ul>
+  {% endif %}
+</section>
+{% endif %}
+
+<!-- No JavaScript on this form, deliberately. Dictation tools insert text by synthesising a
+     paste, so any handler that intercepts paste or rewrites field values would break them
+     silently while typing still worked (RISKS.md S15). -->
+<section>
+  <h2>Record a decision</h2>
+  <p class="muted small">A rationale is required. You can dictate it &mdash; this form has no
+     keystroke handlers and never rewrites or clears what you enter.</p>
+  <form method="post" action="{{ url_for('review', case_id=case.case_id) }}">
+    <label for="actor">Reviewer</label>
+    <input type="text" id="actor" name="actor" placeholder="your name" autocomplete="off">
+
+    <label for="action">Decision</label>
+    <select id="action" name="action" required>
+      {% for a in actions %}<option value="{{ a }}">{{ a.replace('_', ' ') }}</option>{% endfor %}
+    </select>
+
+    <label for="rationale">Rationale</label>
+    <textarea id="rationale" name="rationale" required
+      placeholder="Why are you deciding this? Dictate or type."></textarea>
+    <button type="submit">Record decision</button>
+  </form>
+</section>
+
+{% if audit %}
+<section>
+  <h2>Decision history</h2>
+  <p class="muted small">Append-only: a later decision is a new entry, never an edit. Stored in a
+     SQLite file &mdash; not tamper-proof, and not described as such.</p>
+  <table>
+    <tr><th>When</th><th>Action</th><th>Reviewer</th><th>Rationale</th><th>Entry</th></tr>
+    {% for a in audit %}
+    <tr><td class="small muted">{{ a.at | ts }}</td>
+        <td class="small"><strong>{{ a.action }}</strong></td>
+        <td class="small">{{ a.actor }}</td>
+        <td class="small">{{ a.rationale }}</td>
+        <td class="mono small muted">{{ a.entry_id }}</td></tr>
+    {% endfor %}
+  </table>
+</section>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,68 @@
+// Q2 — shared root cause. THE query the graph layer exists for.
+//
+// Question: of the invoices currently flagged, do many of them trace back to one import event or
+// one batch? If eleven exceptions all came from a single bad CSV import, that is one problem to
+// fix, not eleven investigations.
+//
+// Why a graph: the answer is a grouping over a shared ancestor reached by variable-length paths
+// from different record types (invoices, their requests, their ledger entries). Each record type
+// has its own edge to ImportEvent, so in SQL this is a union of joins per type, repeated per
+// record type added later. Here it is one traversal to the shared vertex and a count.
+//
+// `min_affected` is the threshold for "shared": below it, a common import is unremarkable.
+USE GRAPH TraceLedger
+
+CREATE OR REPLACE QUERY shared_root_cause(INT min_affected = 2) FOR GRAPH TraceLedger {
+  // Per-import tally of the distinct flagged invoices reaching it by any route.
+  SumAccum<INT> @affected_count;
+  SetAccum<STRING> @affected_invoices;
+  SetAccum<STRING> @routes;
+
+  all_invoices = {Invoice.*};
+
+  // Only invoices with a conflicting settlement are of interest. The verdict is written onto
+  // TX_SETTLES by the deterministic layer; the graph never decides it.
+  flagged = SELECT inv FROM all_invoices:inv -(SETTLED_BY_TX:e)- Transaction:t
+            WHERE e.verdict == "CONFLICT";
+
+  // Route 1: the invoice itself came from an import.
+  via_invoice = SELECT imp FROM flagged:inv -(INVOICE_FROM_IMPORT:e)- ImportEvent:imp
+                ACCUM imp.@affected_invoices += inv.invoice_id,
+                      imp.@routes += "invoice";
+
+  // Route 2: the invoice's payment request came from an import.
+  reqs = SELECT pr FROM flagged:inv -(INVOICE_HAS_REQUEST:e)- PaymentRequest:pr
+         ACCUM pr.@affected_invoices += inv.invoice_id;
+  via_request = SELECT imp FROM reqs:pr -(REQUEST_FROM_IMPORT:e)- ImportEvent:imp
+                ACCUM imp.@affected_invoices += pr.@affected_invoices,
+                      imp.@routes += "payment_request";
+
+  // Route 3: the invoice's ledger entries came from an import.
+  entries = SELECT le FROM flagged:inv -(INVOICE_HAS_LEDGER:e)- LedgerEntry:le
+            ACCUM le.@affected_invoices += inv.invoice_id;
+  via_ledger = SELECT imp FROM entries:le -(LEDGER_FROM_IMPORT:e)- ImportEvent:imp
+               ACCUM imp.@affected_invoices += le.@affected_invoices,
+                     imp.@routes += "ledger_entry";
+
+  imports = via_invoice UNION via_request UNION via_ledger;
+
+  shared = SELECT imp FROM imports:imp
+           ACCUM imp.@affected_count += imp.@affected_invoices.size()
+           HAVING imp.@affected_count >= min_affected
+           ORDER BY imp.@affected_count DESC;
+
+  // Batches, same question by a different grouping.
+  SumAccum<INT> @batch_count;
+  SetAccum<STRING> @batch_invoices;
+  batches = SELECT b FROM flagged:inv -(INVOICE_IN_BATCH:e)- ImportBatch:b
+            ACCUM b.@batch_invoices += inv.invoice_id
+            POST-ACCUM b.@batch_count += b.@batch_invoices.size()
+            HAVING b.@batch_count >= min_affected
+            ORDER BY b.@batch_count DESC;
+
+  PRINT flagged.size() AS flagged_invoice_count;
+  PRINT shared AS shared_import_events;
+  PRINT batches AS shared_batches;
+}
+
+INSTALL QUERY shared_root_cause

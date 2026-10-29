@@ -1,0 +1,3087 @@
+{
+  "vertices": {
+    "Invoice": [
+      {
+        "record_id": "C01-INV",
+        "invoice_id": "C01-1",
+        "counterparty": "Meridian Freight",
+        "amount_base_units": "94.951335",
+        "token_contract": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "status": "open",
+        "simulated": true
+      },
+      {
+        "record_id": "C02-INV",
+        "invoice_id": "C02-1",
+        "counterparty": "Brightwater Labs",
+        "amount_base_units": "2.000000",
+        "token_contract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "status": "open",
+        "simulated": true
+      },
+      {
+        "record_id": "C03-INV",
+        "invoice_id": "C03-SEP",
+        "counterparty": "Holloway Consulting",
+        "amount_base_units": "94.951335",
+        "token_contract": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "status": "open",
+        "simulated": true
+      },
+      {
+        "record_id": "C03-INV2",
+        "invoice_id": "C03-OCT",
+        "counterparty": "Holloway Consulting",
+        "amount_base_units": "94.951335",
+        "token_contract": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "status": "open",
+        "simulated": true
+      },
+      {
+        "record_id": "C04-INV",
+        "invoice_id": "C04-1",
+        "counterparty": "Castellan Metals",
+        "amount_base_units": "94.951335",
+        "token_contract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "status": "open",
+        "simulated": true
+      },
+      {
+        "record_id": "C05-INV",
+        "invoice_id": "C05-1",
+        "counterparty": "Alderbrook Trading",
+        "amount_base_units": "5067.462894",
+        "token_contract": "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
+        "status": "open",
+        "simulated": true
+      },
+      {
+        "record_id": "C06-INV",
+        "invoice_id": "C06-1",
+        "counterparty": "Pell & Soames",
+        "amount_base_units": "2.000000",
+        "token_contract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "status": "open",
+        "simulated": true
+      },
+      {
+        "record_id": "C07-INV",
+        "invoice_id": "C07-1",
+        "counterparty": "Ravensworth Mill",
+        "amount_base_units": "250.000000",
+        "token_contract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "status": "open",
+        "simulated": true
+      },
+      {
+        "record_id": "C08-INV",
+        "invoice_id": "C08-1",
+        "counterparty": "Thornefield Logistics",
+        "amount_base_units": "50.000000",
+        "token_contract": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "status": "paid",
+        "simulated": true
+      },
+      {
+        "record_id": "C09-INV",
+        "invoice_id": "C09-1",
+        "counterparty": "Kestrel Packaging",
+        "amount_base_units": "1200.000000",
+        "token_contract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "status": "paid",
+        "simulated": true
+      },
+      {
+        "record_id": "C10-INV",
+        "invoice_id": "C10-1",
+        "counterparty": "Varnham Supply",
+        "amount_base_units": "0.000000",
+        "token_contract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "status": "open",
+        "simulated": true
+      },
+      {
+        "record_id": "C11-INV",
+        "invoice_id": "C11-1",
+        "counterparty": "Oakhurst Timber",
+        "amount_base_units": "5072.557260",
+        "token_contract": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "status": "open",
+        "simulated": true
+      },
+      {
+        "record_id": "C12-INV",
+        "invoice_id": "C12-1",
+        "counterparty": "Lanmore Industrial",
+        "amount_base_units": "94.951335",
+        "token_contract": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "status": "open",
+        "simulated": true
+      },
+      {
+        "record_id": "C13-INV",
+        "invoice_id": "C13-1",
+        "counterparty": "Sandrine Chemicals",
+        "amount_base_units": "94.951335",
+        "token_contract": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "status": "open",
+        "simulated": true
+      },
+      {
+        "record_id": "C14-INV",
+        "invoice_id": "C14-1",
+        "counterparty": "Crowmarsh Steel",
+        "amount_base_units": "74.300000",
+        "token_contract": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "status": "open",
+        "simulated": true
+      },
+      {
+        "record_id": "C15-INV",
+        "invoice_id": "C15-1",
+        "counterparty": "Dunmore Aggregates",
+        "amount_base_units": "100.000000",
+        "token_contract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "status": "open",
+        "simulated": true
+      },
+      {
+        "record_id": "C16-INV",
+        "invoice_id": "C16-DUP",
+        "counterparty": "Fenwick Glass",
+        "amount_base_units": "94.951335",
+        "token_contract": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "status": "open",
+        "simulated": true
+      },
+      {
+        "record_id": "C16-INV2",
+        "invoice_id": "C16-DUP",
+        "counterparty": "Fenwick Glass",
+        "amount_base_units": "94.951335",
+        "token_contract": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "status": "open",
+        "simulated": true
+      },
+      {
+        "record_id": "C17-INV",
+        "invoice_id": "C17-1",
+        "counterparty": "Tarnbrook Foods",
+        "amount_base_units": "2.000000",
+        "token_contract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "status": "open",
+        "simulated": true
+      },
+      {
+        "record_id": "C18-INV",
+        "invoice_id": "C18-1",
+        "counterparty": "Welbeck Instruments",
+        "amount_base_units": "94.951335",
+        "token_contract": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "status": "open",
+        "simulated": true
+      },
+      {
+        "record_id": "C19-INV",
+        "invoice_id": "C19-1",
+        "counterparty": "Harrowgate Paper",
+        "amount_base_units": "94.951336",
+        "token_contract": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "status": "open",
+        "simulated": true
+      },
+      {
+        "record_id": "C20-INV",
+        "invoice_id": "C20-1",
+        "counterparty": "Bexley Tooling",
+        "amount_base_units": "89.951335",
+        "token_contract": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "status": "open",
+        "simulated": true
+      },
+      {
+        "record_id": "C21-INV",
+        "invoice_id": "C21-1",
+        "counterparty": "Nettlebed Ceramics",
+        "amount_base_units": "500.000000",
+        "token_contract": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "status": "open",
+        "simulated": true
+      },
+      {
+        "record_id": "C22-INV",
+        "invoice_id": "C22-1",
+        "counterparty": "Ingleby Textiles",
+        "amount_base_units": "100.000000",
+        "token_contract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "status": "open",
+        "simulated": true
+      },
+      {
+        "record_id": "C23-INV",
+        "invoice_id": "C23-1",
+        "counterparty": "Marlowe Freight",
+        "amount_base_units": "22.450000",
+        "token_contract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "status": "open",
+        "simulated": true
+      },
+      {
+        "record_id": "C24-INV",
+        "invoice_id": "C24-1",
+        "counterparty": "Quenby Hardware",
+        "amount_base_units": "94.951335",
+        "token_contract": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "status": "open",
+        "simulated": true
+      },
+      {
+        "record_id": "C25-INV",
+        "invoice_id": "C25-1",
+        "counterparty": "Saltmarsh Holdings",
+        "amount_base_units": "94.951335",
+        "token_contract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "status": "open",
+        "simulated": true
+      }
+    ],
+    "PaymentRequest": [
+      {
+        "record_id": "C01-PR",
+        "request_id": "C01-R",
+        "invoice_id": "C01-1",
+        "amount_base_units": "94.951335",
+        "token_contract": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "simulated": true
+      },
+      {
+        "record_id": "C02-PR",
+        "request_id": "C02-R",
+        "invoice_id": "C02-1",
+        "amount_base_units": "2.000000",
+        "token_contract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "simulated": true
+      },
+      {
+        "record_id": "C03-PR",
+        "request_id": "C03-R",
+        "invoice_id": "C03-OCT",
+        "amount_base_units": "94.951335",
+        "token_contract": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "simulated": true
+      },
+      {
+        "record_id": "C04-PR",
+        "request_id": "C04-R",
+        "invoice_id": "C04-1",
+        "amount_base_units": "94.951335",
+        "token_contract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "simulated": true
+      },
+      {
+        "record_id": "C05-PR",
+        "request_id": "C05-R",
+        "invoice_id": "C05-1",
+        "amount_base_units": "5067.462894",
+        "token_contract": "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
+        "simulated": true
+      },
+      {
+        "record_id": "C06-PR",
+        "request_id": "C06-R",
+        "invoice_id": "C06-1",
+        "amount_base_units": "2.000000",
+        "token_contract": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "simulated": true
+      },
+      {
+        "record_id": "C07-PR",
+        "request_id": "C07-R",
+        "invoice_id": "C07-1",
+        "amount_base_units": "250.000000",
+        "token_contract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "simulated": true
+      },
+      {
+        "record_id": "C08-PR",
+        "request_id": "C08-R",
+        "invoice_id": "C08-1",
+        "amount_base_units": "50.000000",
+        "token_contract": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "simulated": true
+      },
+      {
+        "record_id": "C09-PR",
+        "request_id": "C09-R",
+        "invoice_id": "C09-1",
+        "amount_base_units": "1200.000000",
+        "token_contract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "simulated": true
+      },
+      {
+        "record_id": "C10-PR",
+        "request_id": "C10-R",
+        "invoice_id": "C10-1",
+        "amount_base_units": "0.000000",
+        "token_contract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "simulated": true
+      },
+      {
+        "record_id": "C11-PR",
+        "request_id": "C11-R",
+        "invoice_id": "C11-1",
+        "amount_base_units": "5072.557260",
+        "token_contract": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "simulated": true
+      },
+      {
+        "record_id": "C12-PR",
+        "request_id": "C12-R",
+        "invoice_id": "C12-1",
+        "amount_base_units": "94.951335",
+        "token_contract": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "simulated": true
+      },
+      {
+        "record_id": "C13-PR",
+        "request_id": "C13-R",
+        "invoice_id": "C13-1",
+        "amount_base_units": "94.951335",
+        "token_contract": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "simulated": true
+      },
+      {
+        "record_id": "C14-PR",
+        "request_id": "C14-R",
+        "invoice_id": "C14-1",
+        "amount_base_units": "74.300000",
+        "token_contract": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "simulated": true
+      },
+      {
+        "record_id": "C15-PR",
+        "request_id": "C15-R",
+        "invoice_id": "C15-1",
+        "amount_base_units": "100.000000",
+        "token_contract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "simulated": true
+      },
+      {
+        "record_id": "C16-PR",
+        "request_id": "C16-R",
+        "invoice_id": "C16-DUP",
+        "amount_base_units": "94.951335",
+        "token_contract": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "simulated": true
+      },
+      {
+        "record_id": "C17-PR",
+        "request_id": "C17-R",
+        "invoice_id": "C17-1",
+        "amount_base_units": "2.000000",
+        "token_contract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "simulated": true
+      },
+      {
+        "record_id": "C18-PR1",
+        "request_id": "C18-R",
+        "invoice_id": "C18-1",
+        "amount_base_units": "94.951335",
+        "token_contract": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "simulated": true
+      },
+      {
+        "record_id": "C18-PR2",
+        "request_id": "C18-R",
+        "invoice_id": "C18-1",
+        "amount_base_units": "94.951335",
+        "token_contract": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "simulated": true
+      },
+      {
+        "record_id": "C19-PR",
+        "request_id": "C19-R",
+        "invoice_id": "C19-1",
+        "amount_base_units": "94.951336",
+        "token_contract": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "simulated": true
+      },
+      {
+        "record_id": "C20-PR",
+        "request_id": "C20-R",
+        "invoice_id": "C20-1",
+        "amount_base_units": "89.951335",
+        "token_contract": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "simulated": true
+      },
+      {
+        "record_id": "C21-PR",
+        "request_id": "C21-R",
+        "invoice_id": "C21-1",
+        "amount_base_units": "500.000000",
+        "token_contract": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "simulated": true
+      },
+      {
+        "record_id": "C22-PR",
+        "request_id": "C22-R",
+        "invoice_id": "C22-1",
+        "amount_base_units": "100.000000",
+        "token_contract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "simulated": true
+      },
+      {
+        "record_id": "C23-PR",
+        "request_id": "C23-R",
+        "invoice_id": "C23-1",
+        "amount_base_units": "22.450000",
+        "token_contract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "simulated": true
+      },
+      {
+        "record_id": "C25-PR",
+        "request_id": "C25-R",
+        "invoice_id": "C25-1",
+        "amount_base_units": "94.951335",
+        "token_contract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "simulated": true
+      }
+    ],
+    "LedgerEntry": [
+      {
+        "record_id": "C01-LE",
+        "entry_id": "C01-LE",
+        "invoice_id": "C01-1",
+        "amount_base_units": "94.951335",
+        "direction": "credit",
+        "status": "posted",
+        "posted_at": "2026-10-21T09:14:00Z",
+        "simulated": true
+      },
+      {
+        "record_id": "C02-LE",
+        "entry_id": "C02-LE",
+        "invoice_id": "C02-1",
+        "amount_base_units": "2.000000",
+        "direction": "credit",
+        "status": "posted",
+        "posted_at": "2026-10-22T14:40:00Z",
+        "simulated": true
+      },
+      {
+        "record_id": "C04-LE",
+        "entry_id": "C04-LE",
+        "invoice_id": "C04-1",
+        "amount_base_units": "94.951335",
+        "direction": "credit",
+        "status": "pending",
+        "posted_at": "2026-10-21T09:14:00Z",
+        "simulated": true
+      },
+      {
+        "record_id": "C06-LE",
+        "entry_id": "C06-LE",
+        "invoice_id": "C06-1",
+        "amount_base_units": "2.000000",
+        "direction": "credit",
+        "status": "posted",
+        "posted_at": "2026-10-18T16:05:00Z",
+        "simulated": true
+      },
+      {
+        "record_id": "C07-LE",
+        "entry_id": "C07-LE",
+        "invoice_id": "C07-1",
+        "amount_base_units": "250.000000",
+        "direction": "credit",
+        "status": "posted",
+        "posted_at": "2026-10-21T09:14:00Z",
+        "simulated": true
+      },
+      {
+        "record_id": "C08-LE",
+        "entry_id": "C08-LE",
+        "invoice_id": "C08-1",
+        "amount_base_units": "50.000000",
+        "direction": "credit",
+        "status": "posted",
+        "posted_at": "2026-10-21T09:14:00Z",
+        "simulated": true
+      },
+      {
+        "record_id": "C09-LE",
+        "entry_id": "C09-LE",
+        "invoice_id": "C09-1",
+        "amount_base_units": "1200.000000",
+        "direction": "credit",
+        "status": "posted",
+        "posted_at": "2026-10-19T08:02:00Z",
+        "simulated": true
+      },
+      {
+        "record_id": "C11-LE",
+        "entry_id": "C11-LE",
+        "invoice_id": "C11-1",
+        "amount_base_units": "5072.557260",
+        "direction": "credit",
+        "status": "pending",
+        "posted_at": "2026-10-28T23:51:00Z",
+        "simulated": true
+      },
+      {
+        "record_id": "C14-LE",
+        "entry_id": "C14-LE",
+        "invoice_id": "C14-1",
+        "amount_base_units": "74.300000",
+        "direction": "debit",
+        "status": "posted",
+        "posted_at": "2026-10-24T07:33:00Z",
+        "simulated": true
+      },
+      {
+        "record_id": "C17-LE1",
+        "entry_id": "C17-LE1",
+        "invoice_id": "C17-1",
+        "amount_base_units": "2.000000",
+        "direction": "credit",
+        "status": "posted",
+        "posted_at": "2026-10-21T09:14:00Z",
+        "simulated": true
+      },
+      {
+        "record_id": "C17-LE2",
+        "entry_id": "C17-LE2",
+        "invoice_id": "C17-1",
+        "amount_base_units": "2.000000",
+        "direction": "credit",
+        "status": "posted",
+        "posted_at": "2026-10-23T02:11:00Z",
+        "simulated": true
+      },
+      {
+        "record_id": "C21-LE1",
+        "entry_id": "C21-LE1",
+        "invoice_id": "C21-1",
+        "amount_base_units": "150.000000",
+        "direction": "credit",
+        "status": "posted",
+        "posted_at": "2026-10-21T09:14:00Z",
+        "simulated": true
+      },
+      {
+        "record_id": "C24-LE",
+        "entry_id": "C24-LE",
+        "invoice_id": "C24-1",
+        "amount_base_units": "94.951335",
+        "direction": "credit",
+        "status": "posted",
+        "posted_at": "2026-10-21T09:14:00Z",
+        "simulated": true
+      }
+    ],
+    "ApprovedAddress": [
+      {
+        "record_id": "C01-APP",
+        "address": "0x5f6d2b112c2d0ebe87d0d95d08ce47e13e01866a",
+        "approved_for": "Meridian Freight",
+        "approved_by": "treasury-ops",
+        "simulated": true
+      },
+      {
+        "record_id": "C02-APP",
+        "address": "0x750831f6bc81eb3f08149155bedd084fc51d715e",
+        "approved_for": "Brightwater Labs",
+        "approved_by": "treasury-ops",
+        "simulated": true
+      },
+      {
+        "record_id": "C03-APP",
+        "address": "0x5f6d2b112c2d0ebe87d0d95d08ce47e13e01866a",
+        "approved_for": "Holloway Consulting",
+        "approved_by": "treasury-ops",
+        "simulated": true
+      },
+      {
+        "record_id": "C04-APP",
+        "address": "0x5f6d2b112c2d0ebe87d0d95d08ce47e13e01866a",
+        "approved_for": "Castellan Metals",
+        "approved_by": "treasury-ops",
+        "simulated": true
+      },
+      {
+        "record_id": "C11-APP",
+        "address": "0x8f10b468b06c6fd214b65f87778827f7d113f996",
+        "approved_for": "Oakhurst Timber",
+        "approved_by": "treasury-ops",
+        "simulated": true
+      },
+      {
+        "record_id": "C12-APP",
+        "address": "0xa1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+        "approved_for": "Lanmore Industrial",
+        "approved_by": "treasury-ops",
+        "simulated": true
+      },
+      {
+        "record_id": "C13-APP1",
+        "address": "0x5f6d2b112c2d0ebe87d0d95d08ce47e13e01866a",
+        "approved_for": "Sandrine Chemicals",
+        "approved_by": "treasury-ops",
+        "simulated": true
+      },
+      {
+        "record_id": "C13-APP2",
+        "address": "0xb2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2",
+        "approved_for": "Sandrine Chemicals",
+        "approved_by": "treasury-ops",
+        "simulated": true
+      },
+      {
+        "record_id": "C22-APP",
+        "address": "0x776023a4573bd972c4c3e2a76f611d3c2bef516e",
+        "approved_for": "Ingleby Textiles",
+        "approved_by": "treasury-ops",
+        "simulated": true
+      }
+    ],
+    "Transaction": [
+      {
+        "tx_hash": "0x5e857c89f092901403c91fc634d84ff531b795303d448b9e6c1b25af251f5a05",
+        "chain_id": 137,
+        "block_number": 96369410,
+        "tx_status": 1,
+        "confirmations": 2158,
+        "origin": "public_mainnet",
+        "simulated": false
+      },
+      {
+        "tx_hash": "0x5acd0280e455643784a9c05942fb950c989bfa6b0659d358002fd76a5e6f4ded",
+        "chain_id": 137,
+        "block_number": 96371405,
+        "tx_status": 1,
+        "confirmations": 167,
+        "origin": "public_mainnet",
+        "simulated": false
+      },
+      {
+        "tx_hash": "0x7858560afe25b850ce458695bdc001cb48fc52b1eeeadf1fe21d034510770963",
+        "chain_id": 137,
+        "block_number": 96369410,
+        "tx_status": 1,
+        "confirmations": 2159,
+        "origin": "public_mainnet",
+        "simulated": false
+      },
+      {
+        "tx_hash": "0x094b7da1b90a0b2201c362a6ac2b6e0ec686c74b78bf954f5d9c79d38f9bc1d7",
+        "chain_id": 137,
+        "block_number": 96369411,
+        "tx_status": 1,
+        "confirmations": 2158,
+        "origin": "public_mainnet",
+        "simulated": false
+      },
+      {
+        "tx_hash": "0xe00f524301058205699c9f226df02b22bd6c9bbb3a990a36c48d35d41bc0a16f",
+        "chain_id": 137,
+        "block_number": 96371332,
+        "tx_status": 0,
+        "confirmations": 238,
+        "origin": "public_mainnet",
+        "simulated": false
+      },
+      {
+        "tx_hash": "0x27052b0a9da878c077a0c5431d2069e6d557f60a77b5bb1de922ba73d2b093c6",
+        "chain_id": 137,
+        "block_number": 96371445,
+        "tx_status": 0,
+        "confirmations": 126,
+        "origin": "public_mainnet",
+        "simulated": false
+      },
+      {
+        "tx_hash": "0xe29bf3e0981391dd978629db1e99c4e66943251bf8739761d2508a5c54032c7c",
+        "chain_id": 137,
+        "block_number": 96371405,
+        "tx_status": 1,
+        "confirmations": 167,
+        "origin": "public_mainnet",
+        "simulated": false
+      },
+      {
+        "tx_hash": "0x7b6c311150276586b630dc3a1551315668177005cb31837ff95d9a4b7bf7db0c",
+        "chain_id": 137,
+        "block_number": 96371408,
+        "tx_status": 1,
+        "confirmations": 165,
+        "origin": "public_mainnet",
+        "simulated": false
+      },
+      {
+        "tx_hash": "0x3e1b6243f0f74ef16ab02a6f62a92b30763ee8556d684cf908459d33cb63fd4a",
+        "chain_id": 137,
+        "block_number": 96374114,
+        "tx_status": 1,
+        "confirmations": 63,
+        "origin": "cake_wallet_demo",
+        "simulated": false
+      },
+      {
+        "tx_hash": "0x094801fdaee4acfbd2a150db0185074f7e76135595de7cbb749333c931420672",
+        "chain_id": 137,
+        "block_number": 96374125,
+        "tx_status": 1,
+        "confirmations": 53,
+        "origin": "cake_wallet_demo",
+        "simulated": false
+      },
+      {
+        "tx_hash": "0x5db5918a22234617ca5892e90ad3ec401c2f03bd0555ad23f47d5ce6ef9dd911",
+        "chain_id": 137,
+        "block_number": 96374131,
+        "tx_status": 1,
+        "confirmations": 48,
+        "origin": "cake_wallet_demo",
+        "simulated": false
+      }
+    ],
+    "Wallet": [
+      {
+        "address": "0x00e7bc8c93d10e997593ca59747321e7ca2dd96a",
+        "owner_label": "",
+        "first_seen_block": 0
+      },
+      {
+        "address": "0x0375b023fad2643a0660ffaf8840769b736326c2",
+        "owner_label": "",
+        "first_seen_block": 0
+      },
+      {
+        "address": "0x07964f135f276412b3182a3b2407b8dd45000000",
+        "owner_label": "",
+        "first_seen_block": 0
+      },
+      {
+        "address": "0x08f62429141d5a496dfda0e5239bd523d08cd9be",
+        "owner_label": "",
+        "first_seen_block": 0
+      },
+      {
+        "address": "0x0d0707963952f2fba59dd06f2b425ace40b492fe",
+        "owner_label": "",
+        "first_seen_block": 0
+      },
+      {
+        "address": "0x16409e5515c8028f446b78d4691a29c3690c04ac",
+        "owner_label": "",
+        "first_seen_block": 0
+      },
+      {
+        "address": "0x17c683fd2f13fd0ee54a59b3bb874b957c8c7f2d",
+        "owner_label": "",
+        "first_seen_block": 0
+      },
+      {
+        "address": "0x280537d9641c3aa0f7ddeaa00602af1a60811c51",
+        "owner_label": "",
+        "first_seen_block": 0
+      },
+      {
+        "address": "0x300ffae771f589cf655a656083e1477a2d6c95b4",
+        "owner_label": "",
+        "first_seen_block": 0
+      },
+      {
+        "address": "0x3ac4b2cdd65a9786d10d121ba4d4ad403f505d6d",
+        "owner_label": "",
+        "first_seen_block": 0
+      },
+      {
+        "address": "0x446f8ed5903e06025ee650039007eef0512a6bb8",
+        "owner_label": "",
+        "first_seen_block": 0
+      },
+      {
+        "address": "0x4c74c361c4216676478ad1b3be25b23a4b552176",
+        "owner_label": "",
+        "first_seen_block": 0
+      },
+      {
+        "address": "0x4cce532d10703aeaa04d3adb77a603f42976f559",
+        "owner_label": "",
+        "first_seen_block": 0
+      },
+      {
+        "address": "0x51e3d44172868acc60d68ca99591ce4230bc75e0",
+        "owner_label": "",
+        "first_seen_block": 0
+      },
+      {
+        "address": "0x5f6d2b112c2d0ebe87d0d95d08ce47e13e01866a",
+        "owner_label": "",
+        "first_seen_block": 0
+      },
+      {
+        "address": "0x66dbff2ce099d19b4e8c5dc8b254ec7aeaf5e642",
+        "owner_label": "",
+        "first_seen_block": 0
+      },
+      {
+        "address": "0x67366782805870060151383f4bbff9dab53e5cd6",
+        "owner_label": "",
+        "first_seen_block": 0
+      },
+      {
+        "address": "0x722c5354a6aeb637702bd9be862b0da194e7755a",
+        "owner_label": "",
+        "first_seen_block": 0
+      },
+      {
+        "address": "0x750831f6bc81eb3f08149155bedd084fc51d715e",
+        "owner_label": "",
+        "first_seen_block": 0
+      },
+      {
+        "address": "0x75cf59a923a2649b84fa569bb97ea9694b6f26e4",
+        "owner_label": "",
+        "first_seen_block": 0
+      },
+      {
+        "address": "0x776023a4573bd972c4c3e2a76f611d3c2bef516e",
+        "owner_label": "",
+        "first_seen_block": 0
+      },
+      {
+        "address": "0x7769f7dd421deb9819f1b7089433d8d8b426419b",
+        "owner_label": "",
+        "first_seen_block": 0
+      },
+      {
+        "address": "0x882df4b0fb50a229c3b4124eb18c759911485bfb",
+        "owner_label": "",
+        "first_seen_block": 0
+      },
+      {
+        "address": "0x8ce3468f8f9eeb5493901336563e0e07cb862cc1",
+        "owner_label": "",
+        "first_seen_block": 0
+      },
+      {
+        "address": "0x8f10b468b06c6fd214b65f87778827f7d113f996",
+        "owner_label": "",
+        "first_seen_block": 0
+      },
+      {
+        "address": "0x91f1d2c2165b17a1ed2dc3b73ae77224e6e1410e",
+        "owner_label": "",
+        "first_seen_block": 0
+      },
+      {
+        "address": "0x9242966990b0b28caf896e9fbdf048044bc7555e",
+        "owner_label": "",
+        "first_seen_block": 0
+      },
+      {
+        "address": "0x95c93d3e0d387d0bf0bd3c1861092ca85b219826",
+        "owner_label": "",
+        "first_seen_block": 0
+      },
+      {
+        "address": "0x9caf74b0617d7b0cf42336b2fc5ce95e6d2d1ab7",
+        "owner_label": "",
+        "first_seen_block": 0
+      },
+      {
+        "address": "0xa0bbe31d3cd9eac8d07f2e0b0b011118c292a913",
+        "owner_label": "",
+        "first_seen_block": 0
+      },
+      {
+        "address": "0xa1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+        "owner_label": "",
+        "first_seen_block": 0
+      },
+      {
+        "address": "0xa304823c775d13fc851379c75e2b6f300e223234",
+        "owner_label": "",
+        "first_seen_block": 0
+      },
+      {
+        "address": "0xb2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2",
+        "owner_label": "",
+        "first_seen_block": 0
+      },
+      {
+        "address": "0xbd206faaafcb79486e6fec08d74dcbe4c8ff42cd",
+        "owner_label": "",
+        "first_seen_block": 0
+      },
+      {
+        "address": "0xc53fb63dd72b990bfe7816f5e9775921c565ccd5",
+        "owner_label": "",
+        "first_seen_block": 0
+      },
+      {
+        "address": "0xcac32193e1034967ccaa72b851700a48ac82749a",
+        "owner_label": "",
+        "first_seen_block": 0
+      },
+      {
+        "address": "0xd84d6af75fa5bd9cafb7284b346226e1c3585ccf",
+        "owner_label": "",
+        "first_seen_block": 0
+      },
+      {
+        "address": "0x3004cee4065774e4bce4ec3ac5c56f3fe61d45b3",
+        "owner_label": "",
+        "first_seen_block": 0
+      },
+      {
+        "address": "0xdad4d0ee4260c1a9a25bb61099c9e518b5033e8e",
+        "owner_label": "",
+        "first_seen_block": 0
+      }
+    ],
+    "Token": [
+      {
+        "contract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "decimals": 6,
+        "symbol_display": "USDC",
+        "name_display": "USD Coin"
+      },
+      {
+        "contract": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "decimals": 6,
+        "symbol_display": "USDT0",
+        "name_display": "USDT0"
+      },
+      {
+        "contract": "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
+        "decimals": 6,
+        "symbol_display": "USDC",
+        "name_display": "USD Coin (PoS)"
+      },
+      {
+        "contract": "0xeb51d9a39ad5eef215dc0bf39a8821ff804a0f01",
+        "decimals": -1,
+        "symbol_display": "",
+        "name_display": "(not verified)"
+      },
+      {
+        "contract": "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063",
+        "decimals": -1,
+        "symbol_display": "",
+        "name_display": "(not verified)"
+      },
+      {
+        "contract": "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270",
+        "decimals": -1,
+        "symbol_display": "",
+        "name_display": "(not verified)"
+      }
+    ],
+    "ImportEvent": [
+      {
+        "import_event_id": "IMP-TOKEN-MAP-01",
+        "source_file": "token_mapping_2026-10-18.csv",
+        "row_count": 5,
+        "imported_at": "2026-10-18T06:40:00Z"
+      },
+      {
+        "import_event_id": "IMP-REIMPORT-02",
+        "source_file": "month_end_rerun_2026-10-23.csv",
+        "row_count": 3,
+        "imported_at": "2026-10-23T02:05:00Z"
+      },
+      {
+        "import_event_id": "IMP-VENDOR-03",
+        "source_file": "vendor_master_update_2026-10-20.csv",
+        "row_count": 3,
+        "imported_at": "2026-10-20T11:12:00Z"
+      },
+      {
+        "import_event_id": "IMP-SINGLE-C01",
+        "source_file": "upload_C01.csv",
+        "row_count": 1,
+        "imported_at": "2026-10-29T00:00:00Z"
+      },
+      {
+        "import_event_id": "IMP-SINGLE-C02",
+        "source_file": "upload_C02.csv",
+        "row_count": 1,
+        "imported_at": "2026-10-29T00:00:00Z"
+      },
+      {
+        "import_event_id": "IMP-SINGLE-C03",
+        "source_file": "upload_C03.csv",
+        "row_count": 1,
+        "imported_at": "2026-10-29T00:00:00Z"
+      },
+      {
+        "import_event_id": "IMP-SINGLE-C08",
+        "source_file": "upload_C08.csv",
+        "row_count": 1,
+        "imported_at": "2026-10-29T00:00:00Z"
+      },
+      {
+        "import_event_id": "IMP-SINGLE-C09",
+        "source_file": "upload_C09.csv",
+        "row_count": 1,
+        "imported_at": "2026-10-29T00:00:00Z"
+      },
+      {
+        "import_event_id": "IMP-SINGLE-C10",
+        "source_file": "upload_C10.csv",
+        "row_count": 1,
+        "imported_at": "2026-10-29T00:00:00Z"
+      },
+      {
+        "import_event_id": "IMP-SINGLE-C11",
+        "source_file": "upload_C11.csv",
+        "row_count": 1,
+        "imported_at": "2026-10-29T00:00:00Z"
+      },
+      {
+        "import_event_id": "IMP-SINGLE-C15",
+        "source_file": "upload_C15.csv",
+        "row_count": 1,
+        "imported_at": "2026-10-29T00:00:00Z"
+      },
+      {
+        "import_event_id": "IMP-SINGLE-C19",
+        "source_file": "upload_C19.csv",
+        "row_count": 1,
+        "imported_at": "2026-10-29T00:00:00Z"
+      },
+      {
+        "import_event_id": "IMP-SINGLE-C20",
+        "source_file": "upload_C20.csv",
+        "row_count": 1,
+        "imported_at": "2026-10-29T00:00:00Z"
+      },
+      {
+        "import_event_id": "IMP-SINGLE-C21",
+        "source_file": "upload_C21.csv",
+        "row_count": 1,
+        "imported_at": "2026-10-29T00:00:00Z"
+      },
+      {
+        "import_event_id": "IMP-SINGLE-C22",
+        "source_file": "upload_C22.csv",
+        "row_count": 1,
+        "imported_at": "2026-10-29T00:00:00Z"
+      },
+      {
+        "import_event_id": "IMP-SINGLE-C23",
+        "source_file": "upload_C23.csv",
+        "row_count": 1,
+        "imported_at": "2026-10-29T00:00:00Z"
+      },
+      {
+        "import_event_id": "IMP-SINGLE-C24",
+        "source_file": "upload_C24.csv",
+        "row_count": 1,
+        "imported_at": "2026-10-29T00:00:00Z"
+      }
+    ],
+    "ImportBatch": [],
+    "InvestigationCase": [
+      {
+        "case_id": "C01",
+        "title": "Clean settlement, exact match",
+        "state": "open",
+        "opened_at": "2026-10-29T00:00:00Z"
+      },
+      {
+        "case_id": "C02",
+        "title": "Clean settlement, different token and counterparty",
+        "state": "open",
+        "opened_at": "2026-10-29T00:00:00Z"
+      },
+      {
+        "case_id": "C03",
+        "title": "Legitimately repeated amount",
+        "state": "open",
+        "opened_at": "2026-10-29T00:00:00Z"
+      },
+      {
+        "case_id": "C04",
+        "title": "Invoice names USDC, chain delivered USDT",
+        "state": "open",
+        "opened_at": "2026-10-29T00:00:00Z"
+      },
+      {
+        "case_id": "C05",
+        "title": "Bridged vs native USDC \u2014 both report symbol 'USDC'",
+        "state": "open",
+        "opened_at": "2026-10-29T00:00:00Z"
+      },
+      {
+        "case_id": "C06",
+        "title": "Invoice and payment request name different tokens",
+        "state": "open",
+        "opened_at": "2026-10-29T00:00:00Z"
+      },
+      {
+        "case_id": "C07",
+        "title": "Payment in a token nobody mentioned",
+        "state": "open",
+        "opened_at": "2026-10-29T00:00:00Z"
+      },
+      {
+        "case_id": "C08",
+        "title": "Ledger marked paid, transaction reverted",
+        "state": "open",
+        "opened_at": "2026-10-29T00:00:00Z"
+      },
+      {
+        "case_id": "C09",
+        "title": "Second reverted payment, retry not recorded",
+        "state": "open",
+        "opened_at": "2026-10-29T00:00:00Z"
+      },
+      {
+        "case_id": "C10",
+        "title": "Transfer succeeded but moved zero value",
+        "state": "open",
+        "opened_at": "2026-10-29T00:00:00Z"
+      },
+      {
+        "case_id": "C11",
+        "title": "Below the confirmation threshold",
+        "state": "open",
+        "opened_at": "2026-10-29T00:00:00Z"
+      },
+      {
+        "case_id": "C12",
+        "title": "Destination mismatch, recipient not on the approved list",
+        "state": "open",
+        "opened_at": "2026-10-29T00:00:00Z"
+      },
+      {
+        "case_id": "C13",
+        "title": "Paid to a different but approved address",
+        "state": "open",
+        "opened_at": "2026-10-29T00:00:00Z"
+      },
+      {
+        "case_id": "C14",
+        "title": "Direction reversed \u2014 the payer received",
+        "state": "open",
+        "opened_at": "2026-10-29T00:00:00Z"
+      },
+      {
+        "case_id": "C15",
+        "title": "No approved-address list supplied",
+        "state": "open",
+        "opened_at": "2026-10-29T00:00:00Z"
+      },
+      {
+        "case_id": "C16",
+        "title": "Same invoice raised twice",
+        "state": "open",
+        "opened_at": "2026-10-29T00:00:00Z"
+      },
+      {
+        "case_id": "C17",
+        "title": "One payment, two ledger entries",
+        "state": "open",
+        "opened_at": "2026-10-29T00:00:00Z"
+      },
+      {
+        "case_id": "C18",
+        "title": "Duplicate payment requests against one invoice",
+        "state": "open",
+        "opened_at": "2026-10-29T00:00:00Z"
+      },
+      {
+        "case_id": "C19",
+        "title": "Short by one base unit",
+        "state": "open",
+        "opened_at": "2026-10-29T00:00:00Z"
+      },
+      {
+        "case_id": "C20",
+        "title": "Overpayment",
+        "state": "open",
+        "opened_at": "2026-10-29T00:00:00Z"
+      },
+      {
+        "case_id": "C21",
+        "title": "Partial payment against an open invoice",
+        "state": "open",
+        "opened_at": "2026-10-29T00:00:00Z"
+      },
+      {
+        "case_id": "C22",
+        "title": "Split payment across three recipients",
+        "state": "open",
+        "opened_at": "2026-10-29T00:00:00Z"
+      },
+      {
+        "case_id": "C23",
+        "title": "Several transfers of the same token to the same address",
+        "state": "open",
+        "opened_at": "2026-10-29T00:00:00Z"
+      },
+      {
+        "case_id": "C24",
+        "title": "No payment request on file",
+        "state": "open",
+        "opened_at": "2026-10-29T00:00:00Z"
+      },
+      {
+        "case_id": "C25",
+        "title": "Invoice memo contains an instruction to the system",
+        "state": "open",
+        "opened_at": "2026-10-29T00:00:00Z"
+      }
+    ]
+  },
+  "edges": {
+    "INVOICE_HAS_REQUEST": [
+      [
+        "C01-INV",
+        "C01-PR",
+        "known"
+      ],
+      [
+        "C02-INV",
+        "C02-PR",
+        "known"
+      ],
+      [
+        "C03-INV2",
+        "C03-PR",
+        "known"
+      ],
+      [
+        "C04-INV",
+        "C04-PR",
+        "known"
+      ],
+      [
+        "C05-INV",
+        "C05-PR",
+        "known"
+      ],
+      [
+        "C06-INV",
+        "C06-PR",
+        "known"
+      ],
+      [
+        "C07-INV",
+        "C07-PR",
+        "known"
+      ],
+      [
+        "C08-INV",
+        "C08-PR",
+        "known"
+      ],
+      [
+        "C09-INV",
+        "C09-PR",
+        "known"
+      ],
+      [
+        "C10-INV",
+        "C10-PR",
+        "known"
+      ],
+      [
+        "C11-INV",
+        "C11-PR",
+        "known"
+      ],
+      [
+        "C12-INV",
+        "C12-PR",
+        "known"
+      ],
+      [
+        "C13-INV",
+        "C13-PR",
+        "known"
+      ],
+      [
+        "C14-INV",
+        "C14-PR",
+        "known"
+      ],
+      [
+        "C15-INV",
+        "C15-PR",
+        "known"
+      ],
+      [
+        "C16-INV",
+        "C16-PR",
+        "known"
+      ],
+      [
+        "C16-INV2",
+        "C16-PR",
+        "known"
+      ],
+      [
+        "C17-INV",
+        "C17-PR",
+        "known"
+      ],
+      [
+        "C18-INV",
+        "C18-PR1",
+        "known"
+      ],
+      [
+        "C18-INV",
+        "C18-PR2",
+        "known"
+      ],
+      [
+        "C19-INV",
+        "C19-PR",
+        "known"
+      ],
+      [
+        "C20-INV",
+        "C20-PR",
+        "known"
+      ],
+      [
+        "C21-INV",
+        "C21-PR",
+        "known"
+      ],
+      [
+        "C22-INV",
+        "C22-PR",
+        "known"
+      ],
+      [
+        "C23-INV",
+        "C23-PR",
+        "known"
+      ],
+      [
+        "C25-INV",
+        "C25-PR",
+        "known"
+      ]
+    ],
+    "LEDGER_FOR_INVOICE": [
+      [
+        "C01-LE",
+        "C01-INV",
+        "known"
+      ],
+      [
+        "C02-LE",
+        "C02-INV",
+        "known"
+      ],
+      [
+        "C04-LE",
+        "C04-INV",
+        "known"
+      ],
+      [
+        "C06-LE",
+        "C06-INV",
+        "known"
+      ],
+      [
+        "C07-LE",
+        "C07-INV",
+        "known"
+      ],
+      [
+        "C08-LE",
+        "C08-INV",
+        "known"
+      ],
+      [
+        "C09-LE",
+        "C09-INV",
+        "known"
+      ],
+      [
+        "C11-LE",
+        "C11-INV",
+        "known"
+      ],
+      [
+        "C14-LE",
+        "C14-INV",
+        "known"
+      ],
+      [
+        "C17-LE1",
+        "C17-INV",
+        "known"
+      ],
+      [
+        "C17-LE2",
+        "C17-INV",
+        "known"
+      ],
+      [
+        "C21-LE1",
+        "C21-INV",
+        "known"
+      ],
+      [
+        "C24-LE",
+        "C24-INV",
+        "known"
+      ]
+    ],
+    "REQUEST_EXPECTS": [
+      [
+        "C01-PR",
+        "0x5f6d2b112c2d0ebe87d0d95d08ce47e13e01866a",
+        "known"
+      ],
+      [
+        "C02-PR",
+        "0x750831f6bc81eb3f08149155bedd084fc51d715e",
+        "known"
+      ],
+      [
+        "C03-PR",
+        "0x5f6d2b112c2d0ebe87d0d95d08ce47e13e01866a",
+        "known"
+      ],
+      [
+        "C04-PR",
+        "0x5f6d2b112c2d0ebe87d0d95d08ce47e13e01866a",
+        "known"
+      ],
+      [
+        "C05-PR",
+        "0x8f10b468b06c6fd214b65f87778827f7d113f996",
+        "known"
+      ],
+      [
+        "C06-PR",
+        "0x750831f6bc81eb3f08149155bedd084fc51d715e",
+        "known"
+      ],
+      [
+        "C07-PR",
+        "0x07964f135f276412b3182a3b2407b8dd45000000",
+        "known"
+      ],
+      [
+        "C08-PR",
+        "0x5f6d2b112c2d0ebe87d0d95d08ce47e13e01866a",
+        "known"
+      ],
+      [
+        "C09-PR",
+        "0x750831f6bc81eb3f08149155bedd084fc51d715e",
+        "known"
+      ],
+      [
+        "C10-PR",
+        "0x8ce3468f8f9eeb5493901336563e0e07cb862cc1",
+        "known"
+      ],
+      [
+        "C11-PR",
+        "0x8f10b468b06c6fd214b65f87778827f7d113f996",
+        "known"
+      ],
+      [
+        "C12-PR",
+        "0xa1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+        "known"
+      ],
+      [
+        "C13-PR",
+        "0xb2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2",
+        "known"
+      ],
+      [
+        "C14-PR",
+        "0x0d0707963952f2fba59dd06f2b425ace40b492fe",
+        "known"
+      ],
+      [
+        "C15-PR",
+        "0x66dbff2ce099d19b4e8c5dc8b254ec7aeaf5e642",
+        "known"
+      ],
+      [
+        "C16-PR",
+        "0x5f6d2b112c2d0ebe87d0d95d08ce47e13e01866a",
+        "known"
+      ],
+      [
+        "C17-PR",
+        "0x750831f6bc81eb3f08149155bedd084fc51d715e",
+        "known"
+      ],
+      [
+        "C18-PR1",
+        "0x5f6d2b112c2d0ebe87d0d95d08ce47e13e01866a",
+        "known"
+      ],
+      [
+        "C18-PR2",
+        "0x5f6d2b112c2d0ebe87d0d95d08ce47e13e01866a",
+        "known"
+      ],
+      [
+        "C19-PR",
+        "0x5f6d2b112c2d0ebe87d0d95d08ce47e13e01866a",
+        "known"
+      ],
+      [
+        "C20-PR",
+        "0x5f6d2b112c2d0ebe87d0d95d08ce47e13e01866a",
+        "known"
+      ],
+      [
+        "C21-PR",
+        "0x5f6d2b112c2d0ebe87d0d95d08ce47e13e01866a",
+        "known"
+      ],
+      [
+        "C22-PR",
+        "0x776023a4573bd972c4c3e2a76f611d3c2bef516e",
+        "known"
+      ],
+      [
+        "C23-PR",
+        "0x00e7bc8c93d10e997593ca59747321e7ca2dd96a",
+        "known"
+      ],
+      [
+        "C25-PR",
+        "0x5f6d2b112c2d0ebe87d0d95d08ce47e13e01866a",
+        "known"
+      ]
+    ],
+    "APPROVES_WALLET": [
+      [
+        "C01-APP",
+        "0x5f6d2b112c2d0ebe87d0d95d08ce47e13e01866a",
+        "known"
+      ],
+      [
+        "C02-APP",
+        "0x750831f6bc81eb3f08149155bedd084fc51d715e",
+        "known"
+      ],
+      [
+        "C03-APP",
+        "0x5f6d2b112c2d0ebe87d0d95d08ce47e13e01866a",
+        "known"
+      ],
+      [
+        "C04-APP",
+        "0x5f6d2b112c2d0ebe87d0d95d08ce47e13e01866a",
+        "known"
+      ],
+      [
+        "C11-APP",
+        "0x8f10b468b06c6fd214b65f87778827f7d113f996",
+        "known"
+      ],
+      [
+        "C12-APP",
+        "0xa1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+        "known"
+      ],
+      [
+        "C13-APP1",
+        "0x5f6d2b112c2d0ebe87d0d95d08ce47e13e01866a",
+        "known"
+      ],
+      [
+        "C13-APP2",
+        "0xb2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2",
+        "known"
+      ],
+      [
+        "C22-APP",
+        "0x776023a4573bd972c4c3e2a76f611d3c2bef516e",
+        "known"
+      ]
+    ],
+    "INVOICE_IN_TOKEN": [
+      [
+        "C01-INV",
+        "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "known"
+      ],
+      [
+        "C02-INV",
+        "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "known"
+      ],
+      [
+        "C03-INV",
+        "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "known"
+      ],
+      [
+        "C03-INV2",
+        "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "known"
+      ],
+      [
+        "C04-INV",
+        "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "known"
+      ],
+      [
+        "C05-INV",
+        "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
+        "known"
+      ],
+      [
+        "C06-INV",
+        "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "known"
+      ],
+      [
+        "C07-INV",
+        "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "known"
+      ],
+      [
+        "C08-INV",
+        "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "known"
+      ],
+      [
+        "C09-INV",
+        "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "known"
+      ],
+      [
+        "C10-INV",
+        "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "known"
+      ],
+      [
+        "C11-INV",
+        "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "known"
+      ],
+      [
+        "C12-INV",
+        "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "known"
+      ],
+      [
+        "C13-INV",
+        "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "known"
+      ],
+      [
+        "C14-INV",
+        "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "known"
+      ],
+      [
+        "C15-INV",
+        "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "known"
+      ],
+      [
+        "C16-INV",
+        "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "known"
+      ],
+      [
+        "C16-INV2",
+        "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "known"
+      ],
+      [
+        "C17-INV",
+        "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "known"
+      ],
+      [
+        "C18-INV",
+        "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "known"
+      ],
+      [
+        "C19-INV",
+        "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "known"
+      ],
+      [
+        "C20-INV",
+        "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "known"
+      ],
+      [
+        "C21-INV",
+        "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "known"
+      ],
+      [
+        "C22-INV",
+        "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "known"
+      ],
+      [
+        "C23-INV",
+        "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "known"
+      ],
+      [
+        "C24-INV",
+        "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "known"
+      ],
+      [
+        "C25-INV",
+        "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "known"
+      ]
+    ],
+    "TX_TRANSFERRED_TO": [
+      [
+        "0x5e857c89f092901403c91fc634d84ff531b795303d448b9e6c1b25af251f5a05",
+        "0x5f6d2b112c2d0ebe87d0d95d08ce47e13e01866a",
+        738,
+        "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "94951335"
+      ],
+      [
+        "0x5acd0280e455643784a9c05942fb950c989bfa6b0659d358002fd76a5e6f4ded",
+        "0x750831f6bc81eb3f08149155bedd084fc51d715e",
+        92,
+        "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "2000000"
+      ],
+      [
+        "0x7858560afe25b850ce458695bdc001cb48fc52b1eeeadf1fe21d034510770963",
+        "0x8f10b468b06c6fd214b65f87778827f7d113f996",
+        794,
+        "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "5072557260"
+      ],
+      [
+        "0x7858560afe25b850ce458695bdc001cb48fc52b1eeeadf1fe21d034510770963",
+        "0x67366782805870060151383f4bbff9dab53e5cd6",
+        796,
+        "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "5072557260"
+      ],
+      [
+        "0x7858560afe25b850ce458695bdc001cb48fc52b1eeeadf1fe21d034510770963",
+        "0x8f10b468b06c6fd214b65f87778827f7d113f996",
+        798,
+        "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "5067462894"
+      ],
+      [
+        "0x7858560afe25b850ce458695bdc001cb48fc52b1eeeadf1fe21d034510770963",
+        "0x7769f7dd421deb9819f1b7089433d8d8b426419b",
+        800,
+        "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "5067462894"
+      ],
+      [
+        "0x094b7da1b90a0b2201c362a6ac2b6e0ec686c74b78bf954f5d9c79d38f9bc1d7",
+        "0x07964f135f276412b3182a3b2407b8dd45000000",
+        143,
+        "0xeb51d9a39ad5eef215dc0bf39a8821ff804a0f01",
+        "2000000000"
+      ],
+      [
+        "0x094b7da1b90a0b2201c362a6ac2b6e0ec686c74b78bf954f5d9c79d38f9bc1d7",
+        "0x75cf59a923a2649b84fa569bb97ea9694b6f26e4",
+        145,
+        "0xeb51d9a39ad5eef215dc0bf39a8821ff804a0f01",
+        "1994000000"
+      ],
+      [
+        "0x094b7da1b90a0b2201c362a6ac2b6e0ec686c74b78bf954f5d9c79d38f9bc1d7",
+        "0xa304823c775d13fc851379c75e2b6f300e223234",
+        146,
+        "0xeb51d9a39ad5eef215dc0bf39a8821ff804a0f01",
+        "99700000"
+      ],
+      [
+        "0x094b7da1b90a0b2201c362a6ac2b6e0ec686c74b78bf954f5d9c79d38f9bc1d7",
+        "0x882df4b0fb50a229c3b4124eb18c759911485bfb",
+        149,
+        "0xeb51d9a39ad5eef215dc0bf39a8821ff804a0f01",
+        "59820000"
+      ],
+      [
+        "0x094b7da1b90a0b2201c362a6ac2b6e0ec686c74b78bf954f5d9c79d38f9bc1d7",
+        "0xa304823c775d13fc851379c75e2b6f300e223234",
+        151,
+        "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063",
+        "11573642033445750"
+      ],
+      [
+        "0x094b7da1b90a0b2201c362a6ac2b6e0ec686c74b78bf954f5d9c79d38f9bc1d7",
+        "0x91f1d2c2165b17a1ed2dc3b73ae77224e6e1410e",
+        154,
+        "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063",
+        "8101549423412025"
+      ],
+      [
+        "0x094b7da1b90a0b2201c362a6ac2b6e0ec686c74b78bf954f5d9c79d38f9bc1d7",
+        "0xcac32193e1034967ccaa72b851700a48ac82749a",
+        155,
+        "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063",
+        "694418522006745"
+      ],
+      [
+        "0x094b7da1b90a0b2201c362a6ac2b6e0ec686c74b78bf954f5d9c79d38f9bc1d7",
+        "0x16409e5515c8028f446b78d4691a29c3690c04ac",
+        156,
+        "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063",
+        "1041627783010117"
+      ],
+      [
+        "0x094b7da1b90a0b2201c362a6ac2b6e0ec686c74b78bf954f5d9c79d38f9bc1d7",
+        "0x446f8ed5903e06025ee650039007eef0512a6bb8",
+        157,
+        "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063",
+        "694418522006745"
+      ],
+      [
+        "0x094b7da1b90a0b2201c362a6ac2b6e0ec686c74b78bf954f5d9c79d38f9bc1d7",
+        "0xa0bbe31d3cd9eac8d07f2e0b0b011118c292a913",
+        158,
+        "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063",
+        "1041627783010117"
+      ],
+      [
+        "0x094b7da1b90a0b2201c362a6ac2b6e0ec686c74b78bf954f5d9c79d38f9bc1d7",
+        "0x882df4b0fb50a229c3b4124eb18c759911485bfb",
+        159,
+        "0xeb51d9a39ad5eef215dc0bf39a8821ff804a0f01",
+        "39880000"
+      ],
+      [
+        "0x094b7da1b90a0b2201c362a6ac2b6e0ec686c74b78bf954f5d9c79d38f9bc1d7",
+        "0xa304823c775d13fc851379c75e2b6f300e223234",
+        161,
+        "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063",
+        "7715761338999881"
+      ],
+      [
+        "0x094b7da1b90a0b2201c362a6ac2b6e0ec686c74b78bf954f5d9c79d38f9bc1d7",
+        "0x280537d9641c3aa0f7ddeaa00602af1a60811c51",
+        165,
+        "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063",
+        "7715761338999882"
+      ],
+      [
+        "0x094b7da1b90a0b2201c362a6ac2b6e0ec686c74b78bf954f5d9c79d38f9bc1d7",
+        "0x882df4b0fb50a229c3b4124eb18c759911485bfb",
+        168,
+        "0xeb51d9a39ad5eef215dc0bf39a8821ff804a0f01",
+        "1894300000"
+      ],
+      [
+        "0x094b7da1b90a0b2201c362a6ac2b6e0ec686c74b78bf954f5d9c79d38f9bc1d7",
+        "0x75cf59a923a2649b84fa569bb97ea9694b6f26e4",
+        169,
+        "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063",
+        "366498648304048411"
+      ],
+      [
+        "0x094b7da1b90a0b2201c362a6ac2b6e0ec686c74b78bf954f5d9c79d38f9bc1d7",
+        "0x67366782805870060151383f4bbff9dab53e5cd6",
+        173,
+        "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063",
+        "366498648304048411"
+      ],
+      [
+        "0x094b7da1b90a0b2201c362a6ac2b6e0ec686c74b78bf954f5d9c79d38f9bc1d7",
+        "0x75cf59a923a2649b84fa569bb97ea9694b6f26e4",
+        174,
+        "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "366866"
+      ],
+      [
+        "0x094b7da1b90a0b2201c362a6ac2b6e0ec686c74b78bf954f5d9c79d38f9bc1d7",
+        "0x3ac4b2cdd65a9786d10d121ba4d4ad403f505d6d",
+        175,
+        "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "366866"
+      ],
+      [
+        "0x094b7da1b90a0b2201c362a6ac2b6e0ec686c74b78bf954f5d9c79d38f9bc1d7",
+        "0x75cf59a923a2649b84fa569bb97ea9694b6f26e4",
+        176,
+        "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270",
+        "4052739972692540831"
+      ],
+      [
+        "0xe29bf3e0981391dd978629db1e99c4e66943251bf8739761d2508a5c54032c7c",
+        "0x776023a4573bd972c4c3e2a76f611d3c2bef516e",
+        116,
+        "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "100000000"
+      ],
+      [
+        "0xe29bf3e0981391dd978629db1e99c4e66943251bf8739761d2508a5c54032c7c",
+        "0x66dbff2ce099d19b4e8c5dc8b254ec7aeaf5e642",
+        117,
+        "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "100000000"
+      ],
+      [
+        "0xe29bf3e0981391dd978629db1e99c4e66943251bf8739761d2508a5c54032c7c",
+        "0x8ce3468f8f9eeb5493901336563e0e07cb862cc1",
+        118,
+        "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "0"
+      ],
+      [
+        "0x7b6c311150276586b630dc3a1551315668177005cb31837ff95d9a4b7bf7db0c",
+        "0x00e7bc8c93d10e997593ca59747321e7ca2dd96a",
+        329,
+        "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "22450000"
+      ],
+      [
+        "0x7b6c311150276586b630dc3a1551315668177005cb31837ff95d9a4b7bf7db0c",
+        "0x722c5354a6aeb637702bd9be862b0da194e7755a",
+        330,
+        "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "1198000"
+      ],
+      [
+        "0x7b6c311150276586b630dc3a1551315668177005cb31837ff95d9a4b7bf7db0c",
+        "0x17c683fd2f13fd0ee54a59b3bb874b957c8c7f2d",
+        331,
+        "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "1252000"
+      ],
+      [
+        "0x7b6c311150276586b630dc3a1551315668177005cb31837ff95d9a4b7bf7db0c",
+        "0x4cce532d10703aeaa04d3adb77a603f42976f559",
+        332,
+        "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "87640"
+      ],
+      [
+        "0x7b6c311150276586b630dc3a1551315668177005cb31837ff95d9a4b7bf7db0c",
+        "0x300ffae771f589cf655a656083e1477a2d6c95b4",
+        336,
+        "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "1164"
+      ],
+      [
+        "0x7b6c311150276586b630dc3a1551315668177005cb31837ff95d9a4b7bf7db0c",
+        "0xbd206faaafcb79486e6fec08d74dcbe4c8ff42cd",
+        339,
+        "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "1163196"
+      ],
+      [
+        "0x7b6c311150276586b630dc3a1551315668177005cb31837ff95d9a4b7bf7db0c",
+        "0x4cce532d10703aeaa04d3adb77a603f42976f559",
+        346,
+        "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "1200000"
+      ],
+      [
+        "0x7b6c311150276586b630dc3a1551315668177005cb31837ff95d9a4b7bf7db0c",
+        "0xc53fb63dd72b990bfe7816f5e9775921c565ccd5",
+        348,
+        "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "2000000"
+      ],
+      [
+        "0x7b6c311150276586b630dc3a1551315668177005cb31837ff95d9a4b7bf7db0c",
+        "0x0375b023fad2643a0660ffaf8840769b736326c2",
+        350,
+        "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "16800000"
+      ],
+      [
+        "0x3e1b6243f0f74ef16ab02a6f62a92b30763ee8556d684cf908459d33cb63fd4a",
+        "0xdad4d0ee4260c1a9a25bb61099c9e518b5033e8e",
+        648,
+        "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "100000"
+      ],
+      [
+        "0x094801fdaee4acfbd2a150db0185074f7e76135595de7cbb749333c931420672",
+        "0xdad4d0ee4260c1a9a25bb61099c9e518b5033e8e",
+        126,
+        "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "250000"
+      ],
+      [
+        "0x5db5918a22234617ca5892e90ad3ec401c2f03bd0555ad23f47d5ce6ef9dd911",
+        "0xdad4d0ee4260c1a9a25bb61099c9e518b5033e8e",
+        434,
+        "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "1000000"
+      ]
+    ],
+    "TX_SENT_BY": [
+      [
+        "0x5e857c89f092901403c91fc634d84ff531b795303d448b9e6c1b25af251f5a05",
+        "0x0d0707963952f2fba59dd06f2b425ace40b492fe",
+        "known"
+      ],
+      [
+        "0x5acd0280e455643784a9c05942fb950c989bfa6b0659d358002fd76a5e6f4ded",
+        "0x51e3d44172868acc60d68ca99591ce4230bc75e0",
+        "known"
+      ],
+      [
+        "0x7858560afe25b850ce458695bdc001cb48fc52b1eeeadf1fe21d034510770963",
+        "0xd84d6af75fa5bd9cafb7284b346226e1c3585ccf",
+        "known"
+      ],
+      [
+        "0x094b7da1b90a0b2201c362a6ac2b6e0ec686c74b78bf954f5d9c79d38f9bc1d7",
+        "0x08f62429141d5a496dfda0e5239bd523d08cd9be",
+        "known"
+      ],
+      [
+        "0xe00f524301058205699c9f226df02b22bd6c9bbb3a990a36c48d35d41bc0a16f",
+        "0x9242966990b0b28caf896e9fbdf048044bc7555e",
+        "known"
+      ],
+      [
+        "0x27052b0a9da878c077a0c5431d2069e6d557f60a77b5bb1de922ba73d2b093c6",
+        "0x95c93d3e0d387d0bf0bd3c1861092ca85b219826",
+        "known"
+      ],
+      [
+        "0xe29bf3e0981391dd978629db1e99c4e66943251bf8739761d2508a5c54032c7c",
+        "0x9caf74b0617d7b0cf42336b2fc5ce95e6d2d1ab7",
+        "known"
+      ],
+      [
+        "0x7b6c311150276586b630dc3a1551315668177005cb31837ff95d9a4b7bf7db0c",
+        "0x4c74c361c4216676478ad1b3be25b23a4b552176",
+        "known"
+      ],
+      [
+        "0x3e1b6243f0f74ef16ab02a6f62a92b30763ee8556d684cf908459d33cb63fd4a",
+        "0x3004cee4065774e4bce4ec3ac5c56f3fe61d45b3",
+        "known"
+      ],
+      [
+        "0x094801fdaee4acfbd2a150db0185074f7e76135595de7cbb749333c931420672",
+        "0x3004cee4065774e4bce4ec3ac5c56f3fe61d45b3",
+        "known"
+      ],
+      [
+        "0x5db5918a22234617ca5892e90ad3ec401c2f03bd0555ad23f47d5ce6ef9dd911",
+        "0x3004cee4065774e4bce4ec3ac5c56f3fe61d45b3",
+        "known"
+      ]
+    ],
+    "TX_MOVED_TOKEN": [
+      [
+        "0x5e857c89f092901403c91fc634d84ff531b795303d448b9e6c1b25af251f5a05",
+        "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "known"
+      ],
+      [
+        "0x5acd0280e455643784a9c05942fb950c989bfa6b0659d358002fd76a5e6f4ded",
+        "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "known"
+      ],
+      [
+        "0x7858560afe25b850ce458695bdc001cb48fc52b1eeeadf1fe21d034510770963",
+        "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "known"
+      ],
+      [
+        "0x7858560afe25b850ce458695bdc001cb48fc52b1eeeadf1fe21d034510770963",
+        "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "known"
+      ],
+      [
+        "0x7858560afe25b850ce458695bdc001cb48fc52b1eeeadf1fe21d034510770963",
+        "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "known"
+      ],
+      [
+        "0x7858560afe25b850ce458695bdc001cb48fc52b1eeeadf1fe21d034510770963",
+        "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "known"
+      ],
+      [
+        "0x094b7da1b90a0b2201c362a6ac2b6e0ec686c74b78bf954f5d9c79d38f9bc1d7",
+        "0xeb51d9a39ad5eef215dc0bf39a8821ff804a0f01",
+        "known"
+      ],
+      [
+        "0x094b7da1b90a0b2201c362a6ac2b6e0ec686c74b78bf954f5d9c79d38f9bc1d7",
+        "0xeb51d9a39ad5eef215dc0bf39a8821ff804a0f01",
+        "known"
+      ],
+      [
+        "0x094b7da1b90a0b2201c362a6ac2b6e0ec686c74b78bf954f5d9c79d38f9bc1d7",
+        "0xeb51d9a39ad5eef215dc0bf39a8821ff804a0f01",
+        "known"
+      ],
+      [
+        "0x094b7da1b90a0b2201c362a6ac2b6e0ec686c74b78bf954f5d9c79d38f9bc1d7",
+        "0xeb51d9a39ad5eef215dc0bf39a8821ff804a0f01",
+        "known"
+      ],
+      [
+        "0x094b7da1b90a0b2201c362a6ac2b6e0ec686c74b78bf954f5d9c79d38f9bc1d7",
+        "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063",
+        "known"
+      ],
+      [
+        "0x094b7da1b90a0b2201c362a6ac2b6e0ec686c74b78bf954f5d9c79d38f9bc1d7",
+        "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063",
+        "known"
+      ],
+      [
+        "0x094b7da1b90a0b2201c362a6ac2b6e0ec686c74b78bf954f5d9c79d38f9bc1d7",
+        "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063",
+        "known"
+      ],
+      [
+        "0x094b7da1b90a0b2201c362a6ac2b6e0ec686c74b78bf954f5d9c79d38f9bc1d7",
+        "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063",
+        "known"
+      ],
+      [
+        "0x094b7da1b90a0b2201c362a6ac2b6e0ec686c74b78bf954f5d9c79d38f9bc1d7",
+        "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063",
+        "known"
+      ],
+      [
+        "0x094b7da1b90a0b2201c362a6ac2b6e0ec686c74b78bf954f5d9c79d38f9bc1d7",
+        "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063",
+        "known"
+      ],
+      [
+        "0x094b7da1b90a0b2201c362a6ac2b6e0ec686c74b78bf954f5d9c79d38f9bc1d7",
+        "0xeb51d9a39ad5eef215dc0bf39a8821ff804a0f01",
+        "known"
+      ],
+      [
+        "0x094b7da1b90a0b2201c362a6ac2b6e0ec686c74b78bf954f5d9c79d38f9bc1d7",
+        "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063",
+        "known"
+      ],
+      [
+        "0x094b7da1b90a0b2201c362a6ac2b6e0ec686c74b78bf954f5d9c79d38f9bc1d7",
+        "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063",
+        "known"
+      ],
+      [
+        "0x094b7da1b90a0b2201c362a6ac2b6e0ec686c74b78bf954f5d9c79d38f9bc1d7",
+        "0xeb51d9a39ad5eef215dc0bf39a8821ff804a0f01",
+        "known"
+      ],
+      [
+        "0x094b7da1b90a0b2201c362a6ac2b6e0ec686c74b78bf954f5d9c79d38f9bc1d7",
+        "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063",
+        "known"
+      ],
+      [
+        "0x094b7da1b90a0b2201c362a6ac2b6e0ec686c74b78bf954f5d9c79d38f9bc1d7",
+        "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063",
+        "known"
+      ],
+      [
+        "0x094b7da1b90a0b2201c362a6ac2b6e0ec686c74b78bf954f5d9c79d38f9bc1d7",
+        "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "known"
+      ],
+      [
+        "0x094b7da1b90a0b2201c362a6ac2b6e0ec686c74b78bf954f5d9c79d38f9bc1d7",
+        "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "known"
+      ],
+      [
+        "0x094b7da1b90a0b2201c362a6ac2b6e0ec686c74b78bf954f5d9c79d38f9bc1d7",
+        "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270",
+        "known"
+      ],
+      [
+        "0xe29bf3e0981391dd978629db1e99c4e66943251bf8739761d2508a5c54032c7c",
+        "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "known"
+      ],
+      [
+        "0xe29bf3e0981391dd978629db1e99c4e66943251bf8739761d2508a5c54032c7c",
+        "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "known"
+      ],
+      [
+        "0xe29bf3e0981391dd978629db1e99c4e66943251bf8739761d2508a5c54032c7c",
+        "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "known"
+      ],
+      [
+        "0x7b6c311150276586b630dc3a1551315668177005cb31837ff95d9a4b7bf7db0c",
+        "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "known"
+      ],
+      [
+        "0x7b6c311150276586b630dc3a1551315668177005cb31837ff95d9a4b7bf7db0c",
+        "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "known"
+      ],
+      [
+        "0x7b6c311150276586b630dc3a1551315668177005cb31837ff95d9a4b7bf7db0c",
+        "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "known"
+      ],
+      [
+        "0x7b6c311150276586b630dc3a1551315668177005cb31837ff95d9a4b7bf7db0c",
+        "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "known"
+      ],
+      [
+        "0x7b6c311150276586b630dc3a1551315668177005cb31837ff95d9a4b7bf7db0c",
+        "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "known"
+      ],
+      [
+        "0x7b6c311150276586b630dc3a1551315668177005cb31837ff95d9a4b7bf7db0c",
+        "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "known"
+      ],
+      [
+        "0x7b6c311150276586b630dc3a1551315668177005cb31837ff95d9a4b7bf7db0c",
+        "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "known"
+      ],
+      [
+        "0x7b6c311150276586b630dc3a1551315668177005cb31837ff95d9a4b7bf7db0c",
+        "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "known"
+      ],
+      [
+        "0x7b6c311150276586b630dc3a1551315668177005cb31837ff95d9a4b7bf7db0c",
+        "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "known"
+      ],
+      [
+        "0x3e1b6243f0f74ef16ab02a6f62a92b30763ee8556d684cf908459d33cb63fd4a",
+        "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "known"
+      ],
+      [
+        "0x094801fdaee4acfbd2a150db0185074f7e76135595de7cbb749333c931420672",
+        "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "known"
+      ],
+      [
+        "0x5db5918a22234617ca5892e90ad3ec401c2f03bd0555ad23f47d5ce6ef9dd911",
+        "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "known"
+      ]
+    ],
+    "TX_SETTLES": [
+      [
+        "0x5e857c89f092901403c91fc634d84ff531b795303d448b9e6c1b25af251f5a05",
+        "C01-INV",
+        "candidate",
+        "VERIFIED"
+      ],
+      [
+        "0x5acd0280e455643784a9c05942fb950c989bfa6b0659d358002fd76a5e6f4ded",
+        "C02-INV",
+        "candidate",
+        "VERIFIED"
+      ],
+      [
+        "0x5e857c89f092901403c91fc634d84ff531b795303d448b9e6c1b25af251f5a05",
+        "C03-INV",
+        "candidate",
+        "VERIFIED"
+      ],
+      [
+        "0x5e857c89f092901403c91fc634d84ff531b795303d448b9e6c1b25af251f5a05",
+        "C03-INV2",
+        "candidate",
+        "VERIFIED"
+      ],
+      [
+        "0x5e857c89f092901403c91fc634d84ff531b795303d448b9e6c1b25af251f5a05",
+        "C04-INV",
+        "candidate",
+        "CONFLICT"
+      ],
+      [
+        "0x7858560afe25b850ce458695bdc001cb48fc52b1eeeadf1fe21d034510770963",
+        "C05-INV",
+        "candidate",
+        "CONFLICT"
+      ],
+      [
+        "0x5acd0280e455643784a9c05942fb950c989bfa6b0659d358002fd76a5e6f4ded",
+        "C06-INV",
+        "candidate",
+        "CONFLICT"
+      ],
+      [
+        "0x094b7da1b90a0b2201c362a6ac2b6e0ec686c74b78bf954f5d9c79d38f9bc1d7",
+        "C07-INV",
+        "candidate",
+        "CONFLICT"
+      ],
+      [
+        "0xe00f524301058205699c9f226df02b22bd6c9bbb3a990a36c48d35d41bc0a16f",
+        "C08-INV",
+        "candidate",
+        "CONFLICT"
+      ],
+      [
+        "0x27052b0a9da878c077a0c5431d2069e6d557f60a77b5bb1de922ba73d2b093c6",
+        "C09-INV",
+        "candidate",
+        "CONFLICT"
+      ],
+      [
+        "0xe29bf3e0981391dd978629db1e99c4e66943251bf8739761d2508a5c54032c7c",
+        "C10-INV",
+        "candidate",
+        "CONFLICT"
+      ],
+      [
+        "0x7858560afe25b850ce458695bdc001cb48fc52b1eeeadf1fe21d034510770963",
+        "C11-INV",
+        "candidate",
+        "UNRESOLVED"
+      ],
+      [
+        "0x5e857c89f092901403c91fc634d84ff531b795303d448b9e6c1b25af251f5a05",
+        "C12-INV",
+        "candidate",
+        "CONFLICT"
+      ],
+      [
+        "0x5e857c89f092901403c91fc634d84ff531b795303d448b9e6c1b25af251f5a05",
+        "C13-INV",
+        "candidate",
+        "CONFLICT"
+      ],
+      [
+        "0x5e857c89f092901403c91fc634d84ff531b795303d448b9e6c1b25af251f5a05",
+        "C14-INV",
+        "candidate",
+        "CONFLICT"
+      ],
+      [
+        "0xe29bf3e0981391dd978629db1e99c4e66943251bf8739761d2508a5c54032c7c",
+        "C15-INV",
+        "candidate",
+        "UNRESOLVED"
+      ],
+      [
+        "0x5e857c89f092901403c91fc634d84ff531b795303d448b9e6c1b25af251f5a05",
+        "C16-INV",
+        "candidate",
+        "CONFLICT"
+      ],
+      [
+        "0x5e857c89f092901403c91fc634d84ff531b795303d448b9e6c1b25af251f5a05",
+        "C16-INV2",
+        "candidate",
+        "CONFLICT"
+      ],
+      [
+        "0x5acd0280e455643784a9c05942fb950c989bfa6b0659d358002fd76a5e6f4ded",
+        "C17-INV",
+        "candidate",
+        "CONFLICT"
+      ],
+      [
+        "0x5e857c89f092901403c91fc634d84ff531b795303d448b9e6c1b25af251f5a05",
+        "C18-INV",
+        "candidate",
+        "CONFLICT"
+      ],
+      [
+        "0x5e857c89f092901403c91fc634d84ff531b795303d448b9e6c1b25af251f5a05",
+        "C19-INV",
+        "candidate",
+        "CONFLICT"
+      ],
+      [
+        "0x5e857c89f092901403c91fc634d84ff531b795303d448b9e6c1b25af251f5a05",
+        "C20-INV",
+        "candidate",
+        "CONFLICT"
+      ],
+      [
+        "0x5e857c89f092901403c91fc634d84ff531b795303d448b9e6c1b25af251f5a05",
+        "C21-INV",
+        "candidate",
+        "CONFLICT"
+      ],
+      [
+        "0xe29bf3e0981391dd978629db1e99c4e66943251bf8739761d2508a5c54032c7c",
+        "C22-INV",
+        "candidate",
+        "VERIFIED"
+      ],
+      [
+        "0x7b6c311150276586b630dc3a1551315668177005cb31837ff95d9a4b7bf7db0c",
+        "C23-INV",
+        "candidate",
+        "UNRESOLVED"
+      ],
+      [
+        "0x5e857c89f092901403c91fc634d84ff531b795303d448b9e6c1b25af251f5a05",
+        "C24-INV",
+        "candidate",
+        "UNRESOLVED"
+      ],
+      [
+        "0x5e857c89f092901403c91fc634d84ff531b795303d448b9e6c1b25af251f5a05",
+        "C25-INV",
+        "candidate",
+        "CONFLICT"
+      ]
+    ],
+    "INVOICE_FROM_IMPORT": [
+      [
+        "C01-INV",
+        "IMP-SINGLE-C01",
+        "known"
+      ],
+      [
+        "C02-INV",
+        "IMP-SINGLE-C02",
+        "known"
+      ],
+      [
+        "C03-INV",
+        "IMP-SINGLE-C03",
+        "known"
+      ],
+      [
+        "C03-INV2",
+        "IMP-SINGLE-C03",
+        "known"
+      ],
+      [
+        "C04-INV",
+        "IMP-TOKEN-MAP-01",
+        "known"
+      ],
+      [
+        "C05-INV",
+        "IMP-TOKEN-MAP-01",
+        "known"
+      ],
+      [
+        "C06-INV",
+        "IMP-TOKEN-MAP-01",
+        "known"
+      ],
+      [
+        "C07-INV",
+        "IMP-TOKEN-MAP-01",
+        "known"
+      ],
+      [
+        "C08-INV",
+        "IMP-SINGLE-C08",
+        "known"
+      ],
+      [
+        "C09-INV",
+        "IMP-SINGLE-C09",
+        "known"
+      ],
+      [
+        "C10-INV",
+        "IMP-SINGLE-C10",
+        "known"
+      ],
+      [
+        "C11-INV",
+        "IMP-SINGLE-C11",
+        "known"
+      ],
+      [
+        "C12-INV",
+        "IMP-VENDOR-03",
+        "known"
+      ],
+      [
+        "C13-INV",
+        "IMP-VENDOR-03",
+        "known"
+      ],
+      [
+        "C14-INV",
+        "IMP-VENDOR-03",
+        "known"
+      ],
+      [
+        "C15-INV",
+        "IMP-SINGLE-C15",
+        "known"
+      ],
+      [
+        "C16-INV",
+        "IMP-REIMPORT-02",
+        "known"
+      ],
+      [
+        "C16-INV2",
+        "IMP-REIMPORT-02",
+        "known"
+      ],
+      [
+        "C17-INV",
+        "IMP-REIMPORT-02",
+        "known"
+      ],
+      [
+        "C18-INV",
+        "IMP-REIMPORT-02",
+        "known"
+      ],
+      [
+        "C19-INV",
+        "IMP-SINGLE-C19",
+        "known"
+      ],
+      [
+        "C20-INV",
+        "IMP-SINGLE-C20",
+        "known"
+      ],
+      [
+        "C21-INV",
+        "IMP-SINGLE-C21",
+        "known"
+      ],
+      [
+        "C22-INV",
+        "IMP-SINGLE-C22",
+        "known"
+      ],
+      [
+        "C23-INV",
+        "IMP-SINGLE-C23",
+        "known"
+      ],
+      [
+        "C24-INV",
+        "IMP-SINGLE-C24",
+        "known"
+      ],
+      [
+        "C25-INV",
+        "IMP-TOKEN-MAP-01",
+        "known"
+      ]
+    ],
+    "REQUEST_FROM_IMPORT": [
+      [
+        "C01-PR",
+        "IMP-SINGLE-C01",
+        "known"
+      ],
+      [
+        "C02-PR",
+        "IMP-SINGLE-C02",
+        "known"
+      ],
+      [
+        "C03-PR",
+        "IMP-SINGLE-C03",
+        "known"
+      ],
+      [
+        "C04-PR",
+        "IMP-TOKEN-MAP-01",
+        "known"
+      ],
+      [
+        "C05-PR",
+        "IMP-TOKEN-MAP-01",
+        "known"
+      ],
+      [
+        "C06-PR",
+        "IMP-TOKEN-MAP-01",
+        "known"
+      ],
+      [
+        "C07-PR",
+        "IMP-TOKEN-MAP-01",
+        "known"
+      ],
+      [
+        "C08-PR",
+        "IMP-SINGLE-C08",
+        "known"
+      ],
+      [
+        "C09-PR",
+        "IMP-SINGLE-C09",
+        "known"
+      ],
+      [
+        "C10-PR",
+        "IMP-SINGLE-C10",
+        "known"
+      ],
+      [
+        "C11-PR",
+        "IMP-SINGLE-C11",
+        "known"
+      ],
+      [
+        "C12-PR",
+        "IMP-VENDOR-03",
+        "known"
+      ],
+      [
+        "C13-PR",
+        "IMP-VENDOR-03",
+        "known"
+      ],
+      [
+        "C14-PR",
+        "IMP-VENDOR-03",
+        "known"
+      ],
+      [
+        "C15-PR",
+        "IMP-SINGLE-C15",
+        "known"
+      ],
+      [
+        "C16-PR",
+        "IMP-REIMPORT-02",
+        "known"
+      ],
+      [
+        "C17-PR",
+        "IMP-REIMPORT-02",
+        "known"
+      ],
+      [
+        "C18-PR1",
+        "IMP-REIMPORT-02",
+        "known"
+      ],
+      [
+        "C18-PR2",
+        "IMP-REIMPORT-02",
+        "known"
+      ],
+      [
+        "C19-PR",
+        "IMP-SINGLE-C19",
+        "known"
+      ],
+      [
+        "C20-PR",
+        "IMP-SINGLE-C20",
+        "known"
+      ],
+      [
+        "C21-PR",
+        "IMP-SINGLE-C21",
+        "known"
+      ],
+      [
+        "C22-PR",
+        "IMP-SINGLE-C22",
+        "known"
+      ],
+      [
+        "C23-PR",
+        "IMP-SINGLE-C23",
+        "known"
+      ],
+      [
+        "C25-PR",
+        "IMP-TOKEN-MAP-01",
+        "known"
+      ]
+    ],
+    "LEDGER_FROM_IMPORT": [
+      [
+        "C01-LE",
+        "IMP-SINGLE-C01",
+        "known"
+      ],
+      [
+        "C02-LE",
+        "IMP-SINGLE-C02",
+        "known"
+      ],
+      [
+        "C04-LE",
+        "IMP-TOKEN-MAP-01",
+        "known"
+      ],
+      [
+        "C06-LE",
+        "IMP-TOKEN-MAP-01",
+        "known"
+      ],
+      [
+        "C07-LE",
+        "IMP-TOKEN-MAP-01",
+        "known"
+      ],
+      [
+        "C08-LE",
+        "IMP-SINGLE-C08",
+        "known"
+      ],
+      [
+        "C09-LE",
+        "IMP-SINGLE-C09",
+        "known"
+      ],
+      [
+        "C11-LE",
+        "IMP-SINGLE-C11",
+        "known"
+      ],
+      [
+        "C14-LE",
+        "IMP-VENDOR-03",
+        "known"
+      ],
+      [
+        "C17-LE1",
+        "IMP-REIMPORT-02",
+        "known"
+      ],
+      [
+        "C17-LE2",
+        "IMP-REIMPORT-02",
+        "known"
+      ],
+      [
+        "C21-LE1",
+        "IMP-SINGLE-C21",
+        "known"
+      ],
+      [
+        "C24-LE",
+        "IMP-SINGLE-C24",
+        "known"
+      ]
+    ],
+    "CASE_COVERS_INVOICE": [
+      [
+        "C01",
+        "C01-INV",
+        "known"
+      ],
+      [
+        "C02",
+        "C02-INV",
+        "known"
+      ],
+      [
+        "C03",
+        "C03-INV",
+        "known"
+      ],
+      [
+        "C03",
+        "C03-INV2",
+        "known"
+      ],
+      [
+        "C04",
+        "C04-INV",
+        "known"
+      ],
+      [
+        "C05",
+        "C05-INV",
+        "known"
+      ],
+      [
+        "C06",
+        "C06-INV",
+        "known"
+      ],
+      [
+        "C07",
+        "C07-INV",
+        "known"
+      ],
+      [
+        "C08",
+        "C08-INV",
+        "known"
+      ],
+      [
+        "C09",
+        "C09-INV",
+        "known"
+      ],
+      [
+        "C10",
+        "C10-INV",
+        "known"
+      ],
+      [
+        "C11",
+        "C11-INV",
+        "known"
+      ],
+      [
+        "C12",
+        "C12-INV",
+        "known"
+      ],
+      [
+        "C13",
+        "C13-INV",
+        "known"
+      ],
+      [
+        "C14",
+        "C14-INV",
+        "known"
+      ],
+      [
+        "C15",
+        "C15-INV",
+        "known"
+      ],
+      [
+        "C16",
+        "C16-INV",
+        "known"
+      ],
+      [
+        "C16",
+        "C16-INV2",
+        "known"
+      ],
+      [
+        "C17",
+        "C17-INV",
+        "known"
+      ],
+      [
+        "C18",
+        "C18-INV",
+        "known"
+      ],
+      [
+        "C19",
+        "C19-INV",
+        "known"
+      ],
+      [
+        "C20",
+        "C20-INV",
+        "known"
+      ],
+      [
+        "C21",
+        "C21-INV",
+        "known"
+      ],
+      [
+        "C22",
+        "C22-INV",
+        "known"
+      ],
+      [
+        "C23",
+        "C23-INV",
+        "known"
+      ],
+      [
+        "C24",
+        "C24-INV",
+        "known"
+      ],
+      [
+        "C25",
+        "C25-INV",
+        "known"
+      ]
+    ],
+    "CASE_COVERS_TX": [
+      [
+        "C01",
+        "0x5e857c89f092901403c91fc634d84ff531b795303d448b9e6c1b25af251f5a05",
+        "known"
+      ],
+      [
+        "C02",
+        "0x5acd0280e455643784a9c05942fb950c989bfa6b0659d358002fd76a5e6f4ded",
+        "known"
+      ],
+      [
+        "C03",
+        "0x5e857c89f092901403c91fc634d84ff531b795303d448b9e6c1b25af251f5a05",
+        "known"
+      ],
+      [
+        "C04",
+        "0x5e857c89f092901403c91fc634d84ff531b795303d448b9e6c1b25af251f5a05",
+        "known"
+      ],
+      [
+        "C05",
+        "0x7858560afe25b850ce458695bdc001cb48fc52b1eeeadf1fe21d034510770963",
+        "known"
+      ],
+      [
+        "C06",
+        "0x5acd0280e455643784a9c05942fb950c989bfa6b0659d358002fd76a5e6f4ded",
+        "known"
+      ],
+      [
+        "C07",
+        "0x094b7da1b90a0b2201c362a6ac2b6e0ec686c74b78bf954f5d9c79d38f9bc1d7",
+        "known"
+      ],
+      [
+        "C08",
+        "0xe00f524301058205699c9f226df02b22bd6c9bbb3a990a36c48d35d41bc0a16f",
+        "known"
+      ],
+      [
+        "C09",
+        "0x27052b0a9da878c077a0c5431d2069e6d557f60a77b5bb1de922ba73d2b093c6",
+        "known"
+      ],
+      [
+        "C10",
+        "0xe29bf3e0981391dd978629db1e99c4e66943251bf8739761d2508a5c54032c7c",
+        "known"
+      ],
+      [
+        "C11",
+        "0x7858560afe25b850ce458695bdc001cb48fc52b1eeeadf1fe21d034510770963",
+        "known"
+      ],
+      [
+        "C12",
+        "0x5e857c89f092901403c91fc634d84ff531b795303d448b9e6c1b25af251f5a05",
+        "known"
+      ],
+      [
+        "C13",
+        "0x5e857c89f092901403c91fc634d84ff531b795303d448b9e6c1b25af251f5a05",
+        "known"
+      ],
+      [
+        "C14",
+        "0x5e857c89f092901403c91fc634d84ff531b795303d448b9e6c1b25af251f5a05",
+        "known"
+      ],
+      [
+        "C15",
+        "0xe29bf3e0981391dd978629db1e99c4e66943251bf8739761d2508a5c54032c7c",
+        "known"
+      ],
+      [
+        "C16",
+        "0x5e857c89f092901403c91fc634d84ff531b795303d448b9e6c1b25af251f5a05",
+        "known"
+      ],
+      [
+        "C17",
+        "0x5acd0280e455643784a9c05942fb950c989bfa6b0659d358002fd76a5e6f4ded",
+        "known"
+      ],
+      [
+        "C18",
+        "0x5e857c89f092901403c91fc634d84ff531b795303d448b9e6c1b25af251f5a05",
+        "known"
+      ],
+      [
+        "C19",
+        "0x5e857c89f092901403c91fc634d84ff531b795303d448b9e6c1b25af251f5a05",
+        "known"
+      ],
+      [
+        "C20",
+        "0x5e857c89f092901403c91fc634d84ff531b795303d448b9e6c1b25af251f5a05",
+        "known"
+      ],
+      [
+        "C21",
+        "0x5e857c89f092901403c91fc634d84ff531b795303d448b9e6c1b25af251f5a05",
+        "known"
+      ],
+      [
+        "C22",
+        "0xe29bf3e0981391dd978629db1e99c4e66943251bf8739761d2508a5c54032c7c",
+        "known"
+      ],
+      [
+        "C23",
+        "0x7b6c311150276586b630dc3a1551315668177005cb31837ff95d9a4b7bf7db0c",
+        "known"
+      ],
+      [
+        "C24",
+        "0x5e857c89f092901403c91fc634d84ff531b795303d448b9e6c1b25af251f5a05",
+        "known"
+      ],
+      [
+        "C25",
+        "0x5e857c89f092901403c91fc634d84ff531b795303d448b9e6c1b25af251f5a05",
+        "known"
+      ]
+    ]
+  },
+  "import_groups": {
+    "IMP-TOKEN-MAP-01": {
+      "cases": [
+        "C04",
+        "C05",
+        "C06",
+        "C07",
+        "C25"
+      ],
+      "source_file": "token_mapping_2026-10-18.csv",
+      "imported_at": "2026-10-18T06:40:00Z",
+      "note": "Token-contract mapping re-imported after a vendor-master migration."
+    },
+    "IMP-REIMPORT-02": {
+      "cases": [
+        "C16",
+        "C17",
+        "C18"
+      ],
+      "source_file": "month_end_rerun_2026-10-23.csv",
+      "imported_at": "2026-10-23T02:05:00Z",
+      "note": "Month-end job re-run after a timeout; records loaded twice."
+    },
+    "IMP-VENDOR-03": {
+      "cases": [
+        "C12",
+        "C13",
+        "C14"
+      ],
+      "source_file": "vendor_master_update_2026-10-20.csv",
+      "imported_at": "2026-10-20T11:12:00Z",
+      "note": "Vendor-master update that changed remittance destinations."
+    }
+  }
+}

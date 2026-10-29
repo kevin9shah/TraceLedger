@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Audit log — TraceLedger{% endblock %}
+{% block content %}
+<section>
+  <h2>Audit log</h2>
+  <p class="muted small">Every reviewer decision, append-only. Stored in a SQLite file, so it is
+     not tamper-proof and is not claimed to be.</p>
+  {% if audit %}
+  <table>
+    <tr><th>When</th><th>Case</th><th>Action</th><th>Reviewer</th><th>Rationale</th><th>Entry</th></tr>
+    {% for a in audit %}
+    <tr><td class="small muted">{{ a.at | ts }}</td>
+        <td class="mono small"><a href="{{ url_for('case_detail', case_id=a.case_id) }}">{{ a.case_id }}</a></td>
+        <td class="small"><strong>{{ a.action }}</strong></td>
+        <td class="small">{{ a.actor }}</td>
+        <td>{{ a.rationale }}</td>
+        <td class="mono small muted">{{ a.entry_id }}</td></tr>
+    {% endfor %}
+  </table>
+  {% else %}<p class="muted">No decisions recorded yet.</p>{% endif %}
+</section>
+{% endblock %}
