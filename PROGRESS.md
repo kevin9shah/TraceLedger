@@ -417,8 +417,8 @@ slot in when the tx hashes arrive.
 
 ---
 
-> **Merge note (2026-10-29).** Work proceeded in two sessions in parallel and both built a
-> CP4 benchmark. Neither is discarded; both accounts are kept below and the duplication is
+> **Merge note (2026-10-29).** Two collaborators worked in parallel and both built a CP4
+> benchmark (a teammate via PRs #1-#3, and this session). Neither is discarded; both accounts are kept below and the duplication is
 > recorded as RISKS.md P17 pending a decision on which dataset the project uses.
 
 ### 2026-10-29 — CP4 Benchmark Dataset Built & Validated (branch `cp4/benchmark-cases`)
@@ -436,3 +436,13 @@ slot in when the tx hashes arrive.
 - Built `scripts/validate_benchmark.py` and automated test `tests/test_benchmark_dataset.py`.
 - Automated test suite: **55 passing**, 3 skipped. All 25 cases strictly validate against JSON Schema Draft-7. All token addresses use verified tokens or explicitly annotated wrong assets. All tricky case criteria satisfied. D4 shared-root-cause link to A2 verified.
 
+
+### 2026-10-29 — repo state confirmed after merge
+- `git pull origin main`: already up to date; local and remote both at `4a9bddf`. No conflicts.
+- Pull requests: **0 open, 3 closed** (#1-#3, all merged, all from a teammate's
+  `cp4/benchmark-cases` branch). That branch has no commits missing from `main`.
+- Tests: 183 passing. Working tree clean.
+- **Coordination note:** the duplicated CP4 work happened because two collaborators built the same
+  checkpoint simultaneously. Agree ownership of CP6 (graph layer) before starting it, and resolve
+  P17 (which benchmark the project uses) first — scoring both and quoting the better result is not
+  an option (G10, G11).

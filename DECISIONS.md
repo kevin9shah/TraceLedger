@@ -512,8 +512,12 @@ evidence that labels authored alongside the system can be wrong (P16).
 
 
 ### D28 — Two CP4 benchmarks were built in parallel; both kept pending a decision
-**2026-10-29.** A push from another session added a second, independent CP4 benchmark. Merged
-rather than overwritten; nothing discarded.
+**2026-10-29.** A teammate (GitHub @nirmitjain2110) merged PRs #1-#3 adding a second,
+independent CP4 benchmark while this session was building one. Merged rather than overwritten;
+nothing discarded.
+
+This is a **coordination** problem as much as a technical one: two people built the same checkpoint
+at the same time. Before starting CP6, agree who owns it.
 
 | | `benchmark/` (this session) | `data/benchmark/` (other session) |
 |---|---|---|
@@ -525,7 +529,7 @@ rather than overwritten; nothing discarded.
 | Dataset tests | 30 (label leakage, near-duplicate signatures, float checks, records parse) | 1 function, ~55 assertions (Draft-7 schema, base-unit strings, category coverage, D4→A2 link) |
 | Results generated | yes, `scripts/run_benchmark.py` → `BENCHMARK_RESULTS.md` | not yet scored |
 
-Each is stronger exactly where the other is weak. The other session's scenario design directly
+Each is stronger exactly where the other is weak. The teammate's scenario design directly
 addresses P15, the limitation I had flagged as material: its cases are grounded in published
 typologies rather than invented by whoever wrote the system. Mine has chain data a judge can
 verify, and tests for the failure modes a self-authored benchmark is prone to.
@@ -534,7 +538,7 @@ verify, and tests for the failure modes a self-authored benchmark is prone to.
 benchmark-hygiene failure G10 and G11 exist to prevent. Until this is resolved,
 `BENCHMARK_RESULTS.md` is explicit that it covers `benchmark/` only.
 
-**Recommended resolution:** keep the other session's category structure, typology citations and
+**Recommended resolution:** keep the teammate's category structure, typology citations and
 `tricky_reason` fields, and re-point its cases at **real** transactions — fabricated hashes cannot
 be checked on a block explorer and cannot support the live-fire demo (D17). That keeps the better
 scenario design and the verifiable evidence, and discards neither contribution.
