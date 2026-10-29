@@ -1,0 +1,19 @@
+{
+  "case_id": "B1",
+  "verdict": "CONFLICT",
+  "conflict_types": ["status_conflict", "tx_reverted_ledger_paid"],
+  "verified_facts": [
+    "tx 0xb100...00b1 status: REVERTED on Polygon block 58800000 — gas_used equals gas_limit (out of gas)",
+    "No ERC-20 Transfer event emitted — zero USDC moved from sender to recipient",
+    "Gas (POL) was consumed by the failed execution",
+    "Ledger marks invoice INV-2024-B1-003 as PAID",
+    "payment_gateway_log confirms status was recorded on tx broadcast, not on confirmed receipt"
+  ],
+  "unverified": [],
+  "missing_evidence": [
+    "Vendor confirmation that they have not received funds (expected: they have not)"
+  ],
+  "explanation": "The USDC transfer transaction reverted on-chain due to insufficient gas. No tokens were transferred; only POL gas was consumed. The payment gateway incorrectly marked the invoice as PAID at broadcast time rather than waiting for confirmed on-chain receipt. The invoice is effectively unpaid and the vendor has received nothing.",
+  "recommended_action": "Re-submit the payment with sufficient gas limit (recommended: 65000 for standard ERC-20 transfer). Update the payment gateway to confirm receipt status before marking invoices PAID. Contact vendor to confirm non-receipt.",
+  "shared_root_cause_with": []
+}

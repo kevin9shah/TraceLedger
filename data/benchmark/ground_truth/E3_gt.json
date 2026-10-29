@@ -1,0 +1,18 @@
+{
+  "case_id": "E3",
+  "verdict": "SANCTIONS_EXPOSURE",
+  "conflict_types": [
+    "contract_level_blacklist_revert",
+    "unrecognized_failure_reason"
+  ],
+  "verified_facts": [
+    "tx 0xe300...00e3 status: reverted on Polygon block 59451000",
+    "revert reason confirmed: 'Blacklistable: account is blacklisted'",
+    "zero tokens transferred to recipient 0x0fac...00e3",
+    "accounting system misclassified revert as transient network failure and left payment in PENDING status"
+  ],
+  "unverified": [],
+  "missing_evidence": [],
+  "explanation": "The transfer transaction was submitted and mined, but the smart contract reverted execution because the vendor's wallet address was blacklisted by Circle. The payment gateway misreported the failure as a network error, hiding the critical sanctions freeze event.",
+  "recommended_action": "Cancel pending invoice retry immediately; initiate vendor KYC re-screening; file internal AML incident report"
+}

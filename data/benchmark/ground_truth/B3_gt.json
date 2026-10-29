@@ -1,0 +1,22 @@
+{
+  "case_id": "B3",
+  "verdict": "CONFLICT",
+  "conflict_types": ["wrong_token_contract", "asset_mismatch"],
+  "verified_facts": [
+    "tx 0xb300...00b3 status: success on Polygon block 59800000",
+    "ERC-20 Transfer event emitted by contract 0xc2132d...e8f (USDT0/Tether, decimals=6)",
+    "Invoice INV-2024-B3-022 specifies token contract 0x3c499c...3359 (native USDC)",
+    "Transfer contract 0xc2132d...e8f DOES NOT EQUAL invoice_token_contract 0x3c499c...3359",
+    "Transfer value 50000000000 base units = 50000.000000 — amount matches invoice numerically",
+    "Destination 0xHEL1000...00B3 matches approved_destination",
+    "approval_log records invoice_token_contract as USDC (0x3c499c...3359)"
+  ],
+  "unverified": [
+    "Whether the vendor's contract will accept USDT in lieu of USDC",
+    "Whether there is a material price difference between USDT and USDC at time of payment"
+  ],
+  "missing_evidence": [],
+  "explanation": "The invoice required payment in native USDC (0x3c499c...3359) but 50000 USDT (0xc2132d...e8f) was transferred instead. The numeric amount is identical because both tokens share 6 decimals on Polygon. The destination address is correct. The token contract mismatch constitutes a real conflict — the vendor may have invoiced in USDC for treasury or compliance reasons, and receiving USDT may require additional conversion steps or violate a contract clause.",
+  "recommended_action": "Confirm with vendor whether USDT is acceptable in lieu of USDC for this invoice. If not, send the correct USDC amount and arrange return of the USDT. Enforce token-contract validation at submission in the payment gateway — amount match alone is insufficient.",
+  "shared_root_cause_with": []
+}

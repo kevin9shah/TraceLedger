@@ -1,0 +1,73 @@
+{
+  "case_id": "F2",
+  "category": "insufficient_evidence",
+  "pattern_name": "Dual-control race condition — approval executed and revoked concurrently",
+  "real_world_source": "SEC internal accounting controls enforcement on segregated duties; FinCEN advisories on automated treasury payment override risks",
+  "chain_id": 137,
+  "chain_name": "polygon-pos",
+  "token_contract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+  "token_symbol_display": "USDC",
+  "simulated": true,
+  "is_tricky": true,
+  "tricky_reason": "The on-chain transaction succeeded with the expected token and amount. However, internal audit logs show two conflicting governance decisions recorded within 4 minutes: AP Manager authorized the invoice, but the Fraud Risk Officer flagged and revoked approval due to an ongoing vendor audit. Because the automated vault broadcasted the tx in the race window, internal records are fundamentally contradictory regarding whether the payment was authorized.",
+  "invoice": {
+    "invoice_id": "INV-2024-F2-990",
+    "vendor_id": "VEN-0992",
+    "vendor_name": "Aether Dynamics LLC",
+    "amount_display": "75000.000000 USDC",
+    "amount_base_units": "75000000000",
+    "invoice_token_contract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+    "approved_destination": "0x99200000000000000000000000000000000000F2",
+    "approval_timestamp": "2024-09-10T14:00:00Z",
+    "approver_id": "USR-AP-011"
+  },
+  "transaction": {
+    "tx_hash": "0xf2000000000000000000000000000000000000000000000000000000000000f2",
+    "block_number": 59711000,
+    "status": "success",
+    "from_address": "0xDeAdBeEf00000000000000000000000000000022",
+    "to_address": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+    "recipient": "0x99200000000000000000000000000000000000F2",
+    "amount_base_units": "75000000000",
+    "decimals": 6,
+    "timestamp": "2024-09-10T14:02:18Z",
+    "gas_used": 54200,
+    "gas_limit": 68000,
+    "revert_reason": null,
+    "erc20_transfer_event": {
+      "contract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+      "from": "0xDeAdBeEf00000000000000000000000000000022",
+      "to": "0x99200000000000000000000000000000000000F2",
+      "value": "75000000000"
+    },
+    "polygonscan_url": "https://polygonscan.com/tx/0xf2000000000000000000000000000000000000000000000000000000000000f2"
+  },
+  "business_records": [
+    {
+      "record_type": "approval_log",
+      "content": {
+        "timestamp": "2024-09-10T14:00:00Z",
+        "action": "APPROVED",
+        "approver_id": "USR-AP-011",
+        "invoice_id": "INV-2024-F2-990",
+        "note": "Standard AP signoff for delivery milestone 3."
+      }
+    },
+    {
+      "record_type": "approval_log",
+      "content": {
+        "timestamp": "2024-09-10T14:04:12Z",
+        "action": "REVOKED_AND_FROZEN",
+        "approver_id": "USR-RISK-003",
+        "invoice_id": "INV-2024-F2-990",
+        "note": "Security hold placed: vendor email domain suspected spoofed. Do not disburse."
+      }
+    },
+    {
+      "record_type": "audit_trail",
+      "content": {
+        "note": "Custody broadcasted tx at 14:02:18Z based on AP signoff, before Risk Officer's revocation was registered at 14:04:12Z. Authorization status is irreconcilably contradictory in internal controls."
+      }
+    }
+  ]
+}

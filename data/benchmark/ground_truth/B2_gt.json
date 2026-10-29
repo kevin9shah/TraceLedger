@@ -1,0 +1,18 @@
+{
+  "case_id": "B2",
+  "verdict": "CONFLICT",
+  "conflict_types": ["amount_mismatch"],
+  "verified_facts": [
+    "tx 0xb200...00b2 status: success on Polygon block 59100500",
+    "token contract 0x3c499c...3359 (native USDC, decimals=6) confirmed in token_registry.json",
+    "Transfer event value: 100000001 base units",
+    "Invoice requires: 100000000 base units (exactly 100.000000 USDC)",
+    "Difference: +1 base unit (overpayment of $0.000001 USDC)",
+    "payment_gateway_log attributes this to float arithmetic: round(100.0000001 * 1e6) = 100000001"
+  ],
+  "unverified": [],
+  "missing_evidence": [],
+  "explanation": "The payment was overpaid by exactly 1 micro-USDC (1 base unit) due to floating-point arithmetic in the payment gateway. The invoice amount 100.000000 USDC was represented as a float that carried a sub-micro-unit error; when multiplied by 10^6 and rounded, the result was 100000001 instead of 100000000. This is a known hazard of float-based stablecoin arithmetic. The vendor received 1 micro-unit more than invoiced; materially insignificant but a reconciliation discrepancy nonetheless.",
+  "recommended_action": "This is a minor overpayment with no material impact. Record the discrepancy in the audit log. Fix the gateway to use integer-native amount storage and avoid float-to-base-unit conversion. No further action required for this payment.",
+  "shared_root_cause_with": []
+}

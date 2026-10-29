@@ -1,0 +1,88 @@
+{
+  "case_id": "A2",
+  "category": "destination_conflict",
+  "pattern_name": "Address poisoning — vanity lookalike attack",
+  "real_world_source": "Chainalysis 2023 Crypto Crime Report, Chapter 'Scams', address poisoning section; Polygonscan forensic guide on vanity-address injection; arxiv.org/abs/2401.07566 (Address Poisoning on EVM chains study)",
+  "chain_id": 137,
+  "chain_name": "polygon-pos",
+  "token_contract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+  "token_symbol_display": "USDC",
+  "simulated": true,
+  "is_tricky": true,
+  "tricky_reason": "Attacker address shares first 5 and last 4 hex characters with the approved destination. A prefix-only or suffix-only check passes this. Only a full 42-character equality check catches it. Also: the poisoning tx is a separate zero-value tx that appears in the victim's history BEFORE the loss tx — the investigator must identify the poisoning event to explain how the wrong address entered the workflow.",
+  "invoice": {
+    "invoice_id": "INV-2024-A2-007",
+    "vendor_id": "VEN-0091",
+    "vendor_name": "Apex Logistics Ltd.",
+    "amount_display": "12500.000000 USDC",
+    "amount_base_units": "12500000000",
+    "invoice_token_contract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+    "approved_destination": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+    "approval_timestamp": "2024-04-02T08:30:00Z",
+    "approver_id": "USR-AP-003"
+  },
+  "transaction": {
+    "tx_hash": "0xa2000000000000000000000000000000000000000000000000000000000000a2",
+    "block_number": 55901881,
+    "status": "success",
+    "from_address": "0xDeAdBeEf00000000000000000000000000000002",
+    "to_address": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+    "recipient": "0xdAC17F000000000000000000000000000000ec7A",
+    "amount_base_units": "12500000000",
+    "decimals": 6,
+    "timestamp": "2024-04-03T10:15:44Z",
+    "gas_used": 52200,
+    "gas_limit": 65000,
+    "revert_reason": null,
+    "erc20_transfer_event": {
+      "contract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+      "from": "0xDeAdBeEf00000000000000000000000000000002",
+      "to": "0xdAC17F000000000000000000000000000000ec7A",
+      "value": "12500000000"
+    },
+    "polygonscan_url": "https://polygonscan.com/tx/0xa2000000000000000000000000000000000000000000000000000000000000a2"
+  },
+  "business_records": [
+    {
+      "record_type": "approval_log",
+      "content": {
+        "timestamp": "2024-04-02T08:30:00Z",
+        "action": "APPROVED",
+        "approver_id": "USR-AP-003",
+        "approved_destination": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+        "invoice_id": "INV-2024-A2-007"
+      }
+    },
+    {
+      "record_type": "payment_gateway_log",
+      "content": {
+        "timestamp": "2024-04-03T10:10:00Z",
+        "action": "ADDRESS_COPIED_FROM_HISTORY",
+        "address_used": "0xdAC17F000000000000000000000000000000ec7A",
+        "note": "Operator copied recipient from wallet transaction history UI. Poisoning tx from attacker inserted this address into history 18 hours earlier."
+      }
+    },
+    {
+      "record_type": "audit_trail",
+      "content": {
+        "poisoning_tx_hash": "0xa2aa0000000000000000000000000000000000000000000000000000000000aa",
+        "poisoning_tx_timestamp": "2024-04-02T16:22:00Z",
+        "poisoning_tx_value": "0",
+        "poisoning_from": "0xdAC17F000000000000000000000000000000ec7A",
+        "poisoning_to": "0xDeAdBeEf00000000000000000000000000000002",
+        "note": "Zero-value tx sent FROM the attacker vanity address TO the payer's wallet 18 hours before the loss tx. This planted the lookalike address in the payer's history."
+      }
+    },
+    {
+      "record_type": "ledger_entry",
+      "content": {
+        "timestamp": "2024-04-03T10:20:00Z",
+        "entry_type": "PAYMENT_SENT",
+        "invoice_id": "INV-2024-A2-007",
+        "tx_hash": "0xa2000000000000000000000000000000000000000000000000000000000000a2",
+        "recorded_destination": "0xdAC17F000000000000000000000000000000ec7A",
+        "status": "PAID"
+      }
+    }
+  ]
+}

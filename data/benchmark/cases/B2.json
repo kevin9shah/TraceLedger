@@ -1,0 +1,79 @@
+{
+  "case_id": "B2",
+  "category": "status_amount_conflict",
+  "pattern_name": "Off-by-one base-unit error — invoice flagged underpaid by 1 micro-unit",
+  "real_world_source": "Circle USDC developer docs on 6-decimal integer arithmetic; TraceLedger D6 (exact integer math, no float); documented reconciliation failure pattern in Polygon stablecoin payment research (github.com stablecoin decimal mismatch cases)",
+  "chain_id": 137,
+  "chain_name": "polygon-pos",
+  "token_contract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+  "token_symbol_display": "USDC",
+  "simulated": true,
+  "is_tricky": true,
+  "tricky_reason": "The amount difference is exactly 1 base unit (1 micro-USDC = $0.000001). A float-based reconciler rounding to 2 decimal places marks this CLEAN. Only exact integer comparison at the base-unit level catches this. This is the canonical argument for TraceLedger's integer-only math (D6).",
+  "invoice": {
+    "invoice_id": "INV-2024-B2-011",
+    "vendor_id": "VEN-0077",
+    "vendor_name": "Prism Analytics Corp.",
+    "amount_display": "100.000000 USDC",
+    "amount_base_units": "100000000",
+    "invoice_token_contract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+    "approved_destination": "0xb2010000000000000000000000000000000000b2",
+    "approval_timestamp": "2024-09-01T08:00:00Z",
+    "approver_id": "USR-AP-001"
+  },
+  "transaction": {
+    "tx_hash": "0xb2000000000000000000000000000000000000000000000000000000000000b2",
+    "block_number": 59100500,
+    "status": "success",
+    "from_address": "0xDeAdBeEf00000000000000000000000000000012",
+    "to_address": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+    "recipient": "0xb2010000000000000000000000000000000000b2",
+    "amount_base_units": "100000001",
+    "decimals": 6,
+    "timestamp": "2024-09-02T10:22:00Z",
+    "gas_used": 51800,
+    "gas_limit": 65000,
+    "revert_reason": null,
+    "erc20_transfer_event": {
+      "contract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+      "from": "0xDeAdBeEf00000000000000000000000000000012",
+      "to": "0xb2010000000000000000000000000000000000b2",
+      "value": "100000001"
+    },
+    "polygonscan_url": "https://polygonscan.com/tx/0xb2000000000000000000000000000000000000000000000000000000000000b2"
+  },
+  "business_records": [
+    {
+      "record_type": "approval_log",
+      "content": {
+        "timestamp": "2024-09-01T08:00:00Z",
+        "action": "APPROVED",
+        "approver_id": "USR-AP-001",
+        "approved_destination": "0xb2010000000000000000000000000000000000b2",
+        "invoice_id": "INV-2024-B2-011"
+      }
+    },
+    {
+      "record_type": "payment_gateway_log",
+      "content": {
+        "timestamp": "2024-09-02T10:20:00Z",
+        "action": "AMOUNT_COMPUTED",
+        "invoice_amount_float": 100.0000001,
+        "base_units_computed": 100000001,
+        "note": "Gateway computed base units as round(invoice_amount_float * 1e6). Floating point representation of 100.000000 introduced a 1-unit error. Sent 100000001 instead of 100000000."
+      }
+    },
+    {
+      "record_type": "ledger_entry",
+      "content": {
+        "timestamp": "2024-09-02T10:25:00Z",
+        "entry_type": "PAYMENT_SENT",
+        "invoice_id": "INV-2024-B2-011",
+        "tx_hash": "0xb2000000000000000000000000000000000000000000000000000000000000b2",
+        "recorded_amount": "100.000001 USDC",
+        "recorded_destination": "0xb2010000000000000000000000000000000000b2",
+        "status": "PAID"
+      }
+    }
+  ]
+}

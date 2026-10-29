@@ -1,0 +1,96 @@
+{
+  "case_id": "B6",
+  "category": "status_amount_conflict",
+  "pattern_name": "Low-gas pending tx mined late — duplicate autopayout triggered",
+  "real_world_source": "Polygonscan forensic guide: 'Status: Pending/Dropped — gas price below network base fee'; Polygon network congestion documentation; FinCEN guidance on automated payment retry logic",
+  "chain_id": 137,
+  "chain_name": "polygon-pos",
+  "token_contract": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+  "token_symbol_display": "USDT",
+  "simulated": true,
+  "is_tricky": false,
+  "invoice": {
+    "invoice_id": "INV-2024-B6-071",
+    "vendor_id": "VEN-0052",
+    "vendor_name": "Starbridge Consulting",
+    "amount_display": "7500.000000 USDT",
+    "amount_base_units": "7500000000",
+    "invoice_token_contract": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+    "approved_destination": "0xb6010000000000000000000000000000000000b6",
+    "approval_timestamp": "2024-12-01T10:00:00Z",
+    "approver_id": "USR-AP-002"
+  },
+  "transaction": {
+    "tx_hash": "0xb6010000000000000000000000000000000000000000000000000000000000b6",
+    "block_number": 61400000,
+    "status": "success",
+    "from_address": "0xDeAdBeEf00000000000000000000000000000016",
+    "to_address": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+    "recipient": "0xb6010000000000000000000000000000000000b6",
+    "amount_base_units": "7500000000",
+    "decimals": 6,
+    "timestamp": "2024-12-02T14:32:00Z",
+    "gas_used": 51900,
+    "gas_limit": 65000,
+    "revert_reason": null,
+    "erc20_transfer_event": {
+      "contract": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+      "from": "0xDeAdBeEf00000000000000000000000000000016",
+      "to": "0xb6010000000000000000000000000000000000b6",
+      "value": "7500000000"
+    },
+    "polygonscan_url": "https://polygonscan.com/tx/0xb6010000000000000000000000000000000000000000000000000000000000b6"
+  },
+  "business_records": [
+    {
+      "record_type": "approval_log",
+      "content": {
+        "timestamp": "2024-12-01T10:00:00Z",
+        "action": "APPROVED",
+        "approver_id": "USR-AP-002",
+        "approved_destination": "0xb6010000000000000000000000000000000000b6",
+        "invoice_id": "INV-2024-B6-071"
+      }
+    },
+    {
+      "record_type": "payment_gateway_log",
+      "content": {
+        "timestamp": "2024-12-02T10:00:00Z",
+        "action": "FIRST_SUBMISSION",
+        "tx_hash": "0xb6010000000000000000000000000000000000000000000000000000000000b6",
+        "gas_price_gwei": 0.001,
+        "note": "Submitted with gas price below network base fee during congestion. Tx entered mempool but not mined immediately."
+      }
+    },
+    {
+      "record_type": "payment_gateway_log",
+      "content": {
+        "timestamp": "2024-12-02T12:00:00Z",
+        "action": "TIMEOUT_AUTO_RETRY",
+        "note": "2-hour timeout elapsed. Automation assumed first tx dropped. Submitted replacement tx 0xb602 with higher gas. Both txs eventually mined."
+      }
+    },
+    {
+      "record_type": "payment_gateway_log",
+      "content": {
+        "timestamp": "2024-12-02T12:01:00Z",
+        "action": "SECOND_SUBMISSION",
+        "tx_hash": "0xb6020000000000000000000000000000000000000000000000000000000000b6",
+        "gas_price_gwei": 30,
+        "note": "Second tx mined at block 61400500 (30 mins after retry). First tx 0xb601 was also eventually mined at block 61400000 (same Polygon nonce collision did not occur — different nonce used)."
+      }
+    },
+    {
+      "record_type": "ledger_entry",
+      "content": {
+        "timestamp": "2024-12-02T14:35:00Z",
+        "entry_type": "PAYMENT_SENT",
+        "invoice_id": "INV-2024-B6-071",
+        "tx_hash": "0xb6010000000000000000000000000000000000000000000000000000000000b6",
+        "recorded_amount": "7500.000000 USDT",
+        "status": "PAID",
+        "note": "Only first tx recorded when mined. Second tx not linked."
+      }
+    }
+  ]
+}

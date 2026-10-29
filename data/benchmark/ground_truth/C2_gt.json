@@ -1,0 +1,20 @@
+{
+  "case_id": "C2",
+  "verdict": "CLEAN",
+  "conflict_types": [],
+  "verified_facts": [
+    "tx 0xc200...00c2 status: success on Polygon block 55900000",
+    "ERC-20 Transfer event emitted by contract 0xc2132d...e8f",
+    "0xc2132d...e8f is the canonical, authoritative Polygon Tether contract — verified in token_registry.json (CP1, block 96347626)",
+    "This contract now reports symbol='USDT0' and name='USDT0' due to LayerZero OFT migration (DECISIONS.md D6)",
+    "Invoice INV-2024-C2-016 specifies token_contract 0xc2132d...e8f — exact match",
+    "Transfer amount 10000000000 = 10000.000000 — matches invoice",
+    "Destination 0xNEX000...00C2 matches approved_destination",
+    "Reconciler rejection was a FALSE NEGATIVE caused by symbol-based matching against a stale whitelist"
+  ],
+  "unverified": [],
+  "missing_evidence": [],
+  "explanation": "This payment is CLEAN. The correct token contract, correct amount, and correct destination are all verified. The reconciler's rejection was a system error: it matched tokens by symbol string ('USDT') rather than by contract address (0xc2132d). The canonical Polygon Tether contract underwent the LayerZero USDT0 migration and now reports symbol='USDT0' — a real Polygon production fact. The invoice's token_contract field (0xc2132d) is a contract-address match; the symbol is irrelevant for identity. The invoice should be marked PAID and the reconciler must be updated to use contract-address-based identity.",
+  "recommended_action": "Mark invoice INV-2024-C2-016 as PAID. Update the reconciler to use token_contract address as identity, not symbol string. TraceLedger's token_registry.json already documents this contract correctly (symbol='USDT0', contract=0xc2132d) and should be used as the authoritative reference.",
+  "shared_root_cause_with": []
+}

@@ -1,0 +1,24 @@
+{
+  "case_id": "F2",
+  "verdict": "INSUFFICIENT_EVIDENCE",
+  "conflict_types": [
+    "contradictory_approval_audit_trail",
+    "authorization_race_condition"
+  ],
+  "verified_facts": [
+    "tx 0xf200...00f2 status: success on Polygon block 59711000",
+    "transferred 75,000 USDC to vendor approved destination 0x9920...00F2 at 14:02:18Z",
+    "approval log shows valid signoff by USR-AP-011 at 14:00:00Z",
+    "secondary security log shows explicit revocation by USR-RISK-003 at 14:04:12Z due to suspected domain spoof"
+  ],
+  "unverified": [
+    "Whether vendor domain spoof was substantiated by security",
+    "Whether the payment constitutes legitimate vendor settlement or unauthorized disbursement"
+  ],
+  "missing_evidence": [
+    "Security incident triage conclusion regarding vendor email authenticity",
+    "Formal executive sign-off resolving the approval-revocation conflict"
+  ],
+  "explanation": "On-chain funds settled successfully to the vendor's wallet, but internal authorization records contain direct contradictions: an approval immediately followed by a fraud revocation. Automated reconciliation cannot definitively declare the transaction clean or fraudulent without resolution of the security audit.",
+  "recommended_action": "Place ledger entry in ESCROW/PENDING_INVESTIGATION status; request resolution memo from Risk Officer and Head of AP"
+}

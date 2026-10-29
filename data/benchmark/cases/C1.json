@@ -1,0 +1,80 @@
+{
+  "case_id": "C1",
+  "category": "wrong_asset",
+  "pattern_name": "USDC.e (bridged) paid instead of native USDC — merchant gateway missed it",
+  "real_world_source": "Circle.com native USDC migration docs for Polygon (2023); Polygon bridge documentation distinguishing 0x3c499c (native) from 0x2791bc (bridged USDC.e); documented reconciliation failure in github.com stablecoin payment research",
+  "chain_id": 137,
+  "chain_name": "polygon-pos",
+  "token_contract": "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
+  "token_symbol_display": "USDC",
+  "simulated": true,
+  "is_tricky": true,
+  "tricky_reason": "Both native USDC (0x3c499c) and bridged USDC.e (0x2791bc) report symbol='USDC' and decimals=6. A symbol-based or amount-based reconciler marks this CLEAN. Only a contract-address check against the invoice's required token contract (0x3c499c) catches this. This is a real Polygon production fact discovered at CP1.",
+  "invoice": {
+    "invoice_id": "INV-2024-C1-009",
+    "vendor_id": "VEN-0081",
+    "vendor_name": "Pinnacle Payments Ltd.",
+    "amount_display": "25000.000000 USDC",
+    "amount_base_units": "25000000000",
+    "invoice_token_contract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+    "approved_destination": "0xc1010000000000000000000000000000000000c1",
+    "approval_timestamp": "2024-03-15T09:00:00Z",
+    "approver_id": "USR-AP-007"
+  },
+  "transaction": {
+    "tx_hash": "0xc1000000000000000000000000000000000000000000000000000000000000c1",
+    "block_number": 55500000,
+    "status": "success",
+    "from_address": "0xDeAdBeEf00000000000000000000000000000021",
+    "to_address": "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
+    "recipient": "0xc1010000000000000000000000000000000000c1",
+    "amount_base_units": "25000000000",
+    "decimals": 6,
+    "timestamp": "2024-03-16T11:45:00Z",
+    "gas_used": 52000,
+    "gas_limit": 65000,
+    "revert_reason": null,
+    "erc20_transfer_event": {
+      "contract": "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
+      "from": "0xDeAdBeEf00000000000000000000000000000021",
+      "to": "0xc1010000000000000000000000000000000000c1",
+      "value": "25000000000"
+    },
+    "polygonscan_url": "https://polygonscan.com/tx/0xc1000000000000000000000000000000000000000000000000000000000000c1"
+  },
+  "business_records": [
+    {
+      "record_type": "approval_log",
+      "content": {
+        "timestamp": "2024-03-15T09:00:00Z",
+        "action": "APPROVED",
+        "approver_id": "USR-AP-007",
+        "approved_destination": "0xc1010000000000000000000000000000000000c1",
+        "invoice_token_contract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "invoice_id": "INV-2024-C1-009"
+      }
+    },
+    {
+      "record_type": "payment_gateway_log",
+      "content": {
+        "timestamp": "2024-03-16T11:40:00Z",
+        "action": "ASSET_RESOLVED",
+        "resolved_contract": "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
+        "resolved_symbol": "USDC",
+        "note": "Payer's wallet defaulted to USDC.e (bridged) as it had the larger balance. Both show as 'USDC' in the wallet UI. No contract-level check at submission."
+      }
+    },
+    {
+      "record_type": "ledger_entry",
+      "content": {
+        "timestamp": "2024-03-16T11:50:00Z",
+        "entry_type": "PAYMENT_SENT",
+        "invoice_id": "INV-2024-C1-009",
+        "tx_hash": "0xc1000000000000000000000000000000000000000000000000000000000000c1",
+        "recorded_amount": "25000.000000 USDC",
+        "status": "PAID",
+        "note": "Ledger matched on symbol 'USDC' and amount. Did not validate contract address."
+      }
+    }
+  ]
+}

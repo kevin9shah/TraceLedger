@@ -1,0 +1,73 @@
+{
+  "case_id": "C3",
+  "category": "wrong_asset",
+  "pattern_name": "Native POL sent instead of USDC — wrong asset type entirely",
+  "real_world_source": "Polygonscan forensic guide on incorrect asset selection; documented user error pattern where native gas token is sent instead of ERC-20 stablecoin when wallet UI shows both in the same token list",
+  "chain_id": 137,
+  "chain_name": "polygon-pos",
+  "token_contract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+  "token_symbol_display": "USDC",
+  "simulated": true,
+  "is_tricky": false,
+  "invoice": {
+    "invoice_id": "INV-2024-C3-027",
+    "vendor_id": "VEN-0071",
+    "vendor_name": "Crest Capital Advisors",
+    "amount_display": "500.000000 USDC",
+    "amount_base_units": "500000000",
+    "invoice_token_contract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+    "approved_destination": "0xc3010000000000000000000000000000000000c3",
+    "approval_timestamp": "2024-05-10T08:30:00Z",
+    "approver_id": "USR-AP-001"
+  },
+  "transaction": {
+    "tx_hash": "0xc3000000000000000000000000000000000000000000000000000000000000c3",
+    "block_number": 56200000,
+    "status": "success",
+    "from_address": "0xDeAdBeEf00000000000000000000000000000023",
+    "to_address": "0xc3010000000000000000000000000000000000c3",
+    "recipient": "0xc3010000000000000000000000000000000000c3",
+    "amount_base_units": "500000000000000000000",
+    "decimals": 18,
+    "timestamp": "2024-05-11T10:00:00Z",
+    "gas_used": 21000,
+    "gas_limit": 21000,
+    "revert_reason": null,
+    "erc20_transfer_event": null,
+    "polygonscan_url": "https://polygonscan.com/tx/0xc3000000000000000000000000000000000000000000000000000000000000c3"
+  },
+  "business_records": [
+    {
+      "record_type": "approval_log",
+      "content": {
+        "timestamp": "2024-05-10T08:30:00Z",
+        "action": "APPROVED",
+        "approver_id": "USR-AP-001",
+        "approved_destination": "0xc3010000000000000000000000000000000000c3",
+        "invoice_token_contract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "invoice_id": "INV-2024-C3-027"
+      }
+    },
+    {
+      "record_type": "payment_gateway_log",
+      "content": {
+        "timestamp": "2024-05-11T09:55:00Z",
+        "action": "ASSET_SELECTED",
+        "asset": "POL (native)",
+        "note": "Operator selected native POL from wallet dropdown instead of USDC. Amount entered as 500 (interpreted as 500 POL at 18 decimals). No ERC-20 Transfer event emitted — this is a native value transfer, not a token transfer."
+      }
+    },
+    {
+      "record_type": "ledger_entry",
+      "content": {
+        "timestamp": "2024-05-11T10:05:00Z",
+        "entry_type": "PAYMENT_SENT",
+        "invoice_id": "INV-2024-C3-027",
+        "tx_hash": "0xc3000000000000000000000000000000000000000000000000000000000000c3",
+        "recorded_amount": "500",
+        "status": "PAID",
+        "note": "Ledger recorded amount without token type. Matched on amount integer only."
+      }
+    }
+  ]
+}

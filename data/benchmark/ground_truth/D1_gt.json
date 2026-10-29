@@ -1,0 +1,20 @@
+{
+  "case_id": "D1",
+  "verdict": "DUPLICATE",
+  "conflict_types": [
+    "reused_tx_hash",
+    "unsupported_second_invoice"
+  ],
+  "verified_facts": [
+    "tx 0xd100...00d1 status: success on Polygon block 57900000",
+    "tx transfers 4000000000 base units (4000 USDC) to vendor approved destination 0xRWD0...00D1 exactly once",
+    "ledger entry for INV-2024-D1-001 correctly matches tx 0xd100...00d1",
+    "ledger entry for INV-2024-D1-002 cites identical tx hash 0xd100...00d1 with no corresponding second on-chain transfer"
+  ],
+  "unverified": [],
+  "missing_evidence": [
+    "Valid transaction hash or payment proof for INV-2024-D1-002"
+  ],
+  "explanation": "A single on-chain transaction hash is recorded against two distinct invoices. Only one transfer of 4000 USDC occurred on Polygon. INV-2024-D1-002 is marked PAID in the ERP ledger erroneously due to an operator copy-paste error.",
+  "recommended_action": "Reopen invoice INV-2024-D1-002 as UNPAID; verify with vendor whether second payment was initiated; implement unique tx-hash constraint in ledger database"
+}

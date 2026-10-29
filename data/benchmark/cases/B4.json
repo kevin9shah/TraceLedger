@@ -1,0 +1,82 @@
+{
+  "case_id": "B4",
+  "category": "status_amount_conflict",
+  "pattern_name": "Split payment — ERP matched only first partial tx, second orphaned",
+  "real_world_source": "TRM Labs velocity anomaly category; FinCEN SAR guidance on split transactions and structuring indicators in payment rails",
+  "chain_id": 137,
+  "chain_name": "polygon-pos",
+  "token_contract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+  "token_symbol_display": "USDC",
+  "simulated": true,
+  "is_tricky": false,
+  "invoice": {
+    "invoice_id": "INV-2024-B4-039",
+    "vendor_id": "VEN-0019",
+    "vendor_name": "Vector Dynamics Inc.",
+    "amount_display": "20000.000000 USDC",
+    "amount_base_units": "20000000000",
+    "invoice_token_contract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+    "approved_destination": "0xb4010000000000000000000000000000000000b4",
+    "approval_timestamp": "2024-11-01T09:00:00Z",
+    "approver_id": "USR-AP-008"
+  },
+  "transaction": {
+    "tx_hash": "0xb4010000000000000000000000000000000000000000000000000000000000b4",
+    "block_number": 60200000,
+    "status": "success",
+    "from_address": "0xDeAdBeEf00000000000000000000000000000014",
+    "to_address": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+    "recipient": "0xb4010000000000000000000000000000000000b4",
+    "amount_base_units": "10000000000",
+    "decimals": 6,
+    "timestamp": "2024-11-02T11:00:00Z",
+    "gas_used": 52000,
+    "gas_limit": 65000,
+    "revert_reason": null,
+    "erc20_transfer_event": {
+      "contract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+      "from": "0xDeAdBeEf00000000000000000000000000000014",
+      "to": "0xb4010000000000000000000000000000000000b4",
+      "value": "10000000000"
+    },
+    "polygonscan_url": "https://polygonscan.com/tx/0xb4010000000000000000000000000000000000000000000000000000000000b4"
+  },
+  "business_records": [
+    {
+      "record_type": "approval_log",
+      "content": {
+        "timestamp": "2024-11-01T09:00:00Z",
+        "action": "APPROVED",
+        "approver_id": "USR-AP-008",
+        "approved_destination": "0xb4010000000000000000000000000000000000b4",
+        "invoice_id": "INV-2024-B4-039",
+        "note": "Full invoice amount 20000 USDC approved."
+      }
+    },
+    {
+      "record_type": "payment_gateway_log",
+      "content": {
+        "timestamp": "2024-11-02T10:55:00Z",
+        "action": "SPLIT_PAYMENT_INITIATED",
+        "reason": "Payer treasury liquidity constraint — only 10000 USDC available in hot wallet at time of payment. Remaining 10000 to be sent same day.",
+        "tx1_hash": "0xb4010000000000000000000000000000000000000000000000000000000000b4",
+        "tx1_amount": "10000000000",
+        "tx2_hash": "0xb4020000000000000000000000000000000000000000000000000000000000b4",
+        "tx2_amount": "10000000000",
+        "note": "ERP matched tx1 to invoice and marked PAID on receipt of tx1. tx2 was processed separately and not linked to this invoice."
+      }
+    },
+    {
+      "record_type": "ledger_entry",
+      "content": {
+        "timestamp": "2024-11-02T11:05:00Z",
+        "entry_type": "PAYMENT_SENT",
+        "invoice_id": "INV-2024-B4-039",
+        "tx_hash": "0xb4010000000000000000000000000000000000000000000000000000000000b4",
+        "recorded_amount": "10000.000000 USDC",
+        "status": "PAID",
+        "note": "ERP auto-matched first incoming tx to invoice. Did not wait for second tx. Invoice marked PAID at 50% of required amount."
+      }
+    }
+  ]
+}

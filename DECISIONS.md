@@ -509,3 +509,32 @@ assumed.
 
 Recorded because it cuts both ways: it is evidence the benchmark can catch a real error, and
 evidence that labels authored alongside the system can be wrong (P16).
+
+
+### D28 — Two CP4 benchmarks were built in parallel; both kept pending a decision
+**2026-10-29.** A push from another session added a second, independent CP4 benchmark. Merged
+rather than overwritten; nothing discarded.
+
+| | `benchmark/` (this session) | `data/benchmark/` (other session) |
+|---|---|---|
+| Cases | 25, one inputs file + one labels file | 25, one file per case + per-case ground truth |
+| Chain data | **real** Polygon transactions, verifiable on a block explorer | **fabricated** hashes (`0xa1000…00a1`), labelled `simulated: true` |
+| Scenario grounding | operator notes written by the model | **FinCEN, TRM Labs, Chainalysis, OFAC, Circle, SEC** typologies cited per case |
+| Categories | 15 issue types | 6 named categories incl. **sanctions/frozen assets** and **insufficient evidence** |
+| Shared root cause | not covered | **D4 links to A2** — exactly what CP6's graph layer needs |
+| Dataset tests | 30 (label leakage, near-duplicate signatures, float checks, records parse) | 1 function, ~55 assertions (Draft-7 schema, base-unit strings, category coverage, D4→A2 link) |
+| Results generated | yes, `scripts/run_benchmark.py` → `BENCHMARK_RESULTS.md` | not yet scored |
+
+Each is stronger exactly where the other is weak. The other session's scenario design directly
+addresses P15, the limitation I had flagged as material: its cases are grounded in published
+typologies rather than invented by whoever wrote the system. Mine has chain data a judge can
+verify, and tests for the failure modes a self-authored benchmark is prone to.
+
+**What must not happen:** running both and quoting whichever scores better. That is precisely the
+benchmark-hygiene failure G10 and G11 exist to prevent. Until this is resolved,
+`BENCHMARK_RESULTS.md` is explicit that it covers `benchmark/` only.
+
+**Recommended resolution:** keep the other session's category structure, typology citations and
+`tricky_reason` fields, and re-point its cases at **real** transactions — fabricated hashes cannot
+be checked on a block explorer and cannot support the live-fire demo (D17). That keeps the better
+scenario design and the verifiable evidence, and discards neither contribution.

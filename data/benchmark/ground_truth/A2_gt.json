@@ -1,0 +1,23 @@
+{
+  "case_id": "A2",
+  "verdict": "CONFLICT",
+  "conflict_types": ["destination_mismatch", "address_poisoning"],
+  "verified_facts": [
+    "tx 0xa200...00a2 status: success on Polygon block 55901881",
+    "token contract 0x3c499c...3359 (native USDC, decimals=6) confirmed in token_registry.json",
+    "Transfer value 12500000000 base units = 12500.000000 USDC — matches invoice",
+    "Transfer recipient 0xdAC17F000000000000000000000000000000ec7A does NOT equal approved_destination 0xdAC17F958D2ee523a2206206994597C13D831ec7",
+    "Addresses share first 7 chars (0xdAC17F) and last 4 chars (ec7A) but differ in the 32 middle characters",
+    "Poisoning tx 0xa2aa...00aa: zero-value transfer FROM attacker vanity address TO payer wallet, timestamped 18h before the loss tx — planted the lookalike in payer history"
+  ],
+  "unverified": [
+    "Whether attacker has moved the 12500 USDC onward",
+    "Whether any other wallets in payer's org have been poisoned with the same vanity address"
+  ],
+  "missing_evidence": [
+    "Screen recording or log of which address the operator copied from the wallet UI"
+  ],
+  "explanation": "Classic address poisoning attack on Polygon. The attacker generated a vanity address sharing the first 7 and last 4 hex characters of the vendor's approved destination, then sent a zero-value transaction to the payer's wallet 18 hours before the payment was due — inserting the lookalike into the payer's recent-transaction history. When the operator copied the recipient from history rather than the approved address book, 12500 USDC was sent to the attacker. The poisoning transaction is on-chain and constitutes the root-cause evidence.",
+  "recommended_action": "Contact Circle for emergency freeze on 0xdAC17F000000000000000000000000000000ec7A. Purge wallet transaction history from payment workflow; enforce address-book-only payments. Audit all other recent outgoing payments for similar prefix/suffix matches.",
+  "shared_root_cause_with": ["D4"]
+}

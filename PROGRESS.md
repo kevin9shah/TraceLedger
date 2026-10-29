@@ -414,3 +414,25 @@ slot in when the tx hashes arrive.
   but the transaction genuinely contains USDT, so the verifier was right to pass the asset check.
   The case was rebuilt to invoice native USDC, which really is absent, with all four token
   contracts listed in the note so the premise is checkable.
+
+---
+
+> **Merge note (2026-10-29).** Work proceeded in two sessions in parallel and both built a
+> CP4 benchmark. Neither is discarded; both accounts are kept below and the duplication is
+> recorded as RISKS.md P17 pending a decision on which dataset the project uses.
+
+### 2026-10-29 — CP4 Benchmark Dataset Built & Validated (branch `cp4/benchmark-cases`)
+- Designed and approved 25 real-pattern benchmark cases across 6 distinct categories based on
+  FinCEN, TRM Labs, Chainalysis, OFAC SDN actions, Circle docs, and SEC advisories:
+  - Category A: Destination Conflict (6 cases: BEC, address poisoning, unapproved address change, similar-name routing, contract destination, stale cache)
+  - Category B: Status / Amount Conflict (6 cases: reverted tx, 1 micro-unit off-by-one, USDT paid on USDC invoice, split payment, webhook retry duplicate, gas-spike delayed tx duplicate)
+  - Category C: Wrong Asset / Contract (4 cases: bridged USDC.e vs native USDC, canonical Tether USDT0 symbol mismatch, native POL vs ERC-20, counterfeit fake USDC)
+  - Category D: Duplicate / Shared-Root-Cause (4 cases: single tx on two invoices, refund misclassified as payment, recurring invoice collision, multi-hop shared root cause linking to case A2)
+  - Category E: Sanctions / Frozen Asset (3 cases: post-settlement OFAC blacklist, incoming SDN strict liability, smart contract blacklist revert)
+  - Category F: Insufficient Evidence (2 cases: non-existent Polygon tx hash, dual-control concurrent approval/revocation race condition)
+- All 25 input case files (`data/benchmark/cases/*.json`) and 25 ground-truth files (`data/benchmark/ground_truth/*.json`) created with separate directories.
+- Built `data/benchmark/schema.json` with strict Draft-7 schemas for `#case` and `#ground_truth`.
+- Built `data/benchmark/manifest.json` indexing all 25 cases, categories, tricky reasons, and ground-truth pairings.
+- Built `scripts/validate_benchmark.py` and automated test `tests/test_benchmark_dataset.py`.
+- Automated test suite: **55 passing**, 3 skipped. All 25 cases strictly validate against JSON Schema Draft-7. All token addresses use verified tokens or explicitly annotated wrong assets. All tricky case criteria satisfied. D4 shared-root-cause link to A2 verified.
+

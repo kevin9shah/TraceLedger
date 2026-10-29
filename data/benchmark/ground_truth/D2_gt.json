@@ -1,0 +1,18 @@
+{
+  "case_id": "D2",
+  "verdict": "DUPLICATE",
+  "conflict_types": [
+    "direction_reversal_conflict",
+    "refund_misclassified_as_disbursement"
+  ],
+  "verified_facts": [
+    "tx 0xd200...00d2 status: success on Polygon block 58120040",
+    "tx transferred 6500 USDC from vendor (0x8400...00D2) TO payer (0xDeAdBeEf...0042) — this is an INCOMING transfer (refund)",
+    "invoice INV-2024-D2-019 was already settled by prior payment tx 0xd2aa...00d2",
+    "ledger incorrectly logged incoming refund tx as a secondary outgoing PAYMENT_SENT entry"
+  ],
+  "unverified": [],
+  "missing_evidence": [],
+  "explanation": "Vendor refunded 6,500 USDC to payer's treasury due to order cancellation, but payer's automated ingestion classified the transaction as an outgoing disbursement, recording double payments against invoice INV-2024-D2-019.",
+  "recommended_action": "Reclassify tx 0xd200...00d2 as CREDIT/REFUND in accounting ledger; reconcile net balance of INV-2024-D2-019 to 0.00 USDC"
+}
