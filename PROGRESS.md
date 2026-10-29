@@ -651,3 +651,20 @@ VERIFIED   destination.approval  on the approved-address list
   append-only history displayed.
 - Tests: **288 passing** (261 -> 288), including each of the 4 reviewer actions individually and
   that the word "immutable" appears nowhere in the UI.
+
+
+### 2026-10-29 — React-based crypto terminal frontend built (`frontend/`)
+- Built a modern, clean, crypto-terminal React frontend in `frontend/` focused on operational UX and project content:
+  - High-contrast dark terminal palette (`#090a0e`, `#11131a`, `#1e222d`, neon emerald `#10b981`, laser crimson `#ef4444`, electric cyan `#06b6d4`, JetBrains Mono).
+  - Clean API proxy in `vite.config.js` to route `/api` to Flask port 5001.
+  - Added RESTful JSON endpoints to `traceledger/web/app.py` (`/api/status`, `/api/cases`, `/api/case/<id>`, `/api/case/new`, `/api/case/<id>/review`, `/api/audit`, `/api/presets`, `/api/benchmark`, `/api/graph/root_cause`), plus static SPA serving on `/app` from `frontend/dist`.
+- Six dedicated views built and integrated:
+  1. **Live Fire Demo (`LiveDemo.jsx`)**: Implements the 3-minute stage demo from `docs/demo_script.md` across Beats 0–5 (Setup, Live mainnet ingestion & wrong-asset conflict, Plain LLM baseline failure, Memo prompt injection quarantine, TigerGraph 11-invoices->1-batch root cause, and Under-determined refusal).
+  2. **Case Creator (`CaseCreator.jsx`)**: Ingests tx hash, verified Polygon token contracts, and offers 1-click real mainnet presets (Cake Wallet transfers, multi-transfers, reverted txs, zero-value txs).
+  3. **Case Explorer (`CaseList.jsx`)**: Searchable, filterable cases table with state badges.
+  4. **Case Review Room (`CaseDetail.jsx`)**: Full evidentiary chain, deterministic findings (conflicts first), LLM report, validator audit, and Wispr Flow dictation-friendly review console (unrestricted textarea with zero paste interception, adhering to D13/D41/S15).
+  5. **Benchmark Explorer (`BenchmarkView.jsx`)**: CP8 3-way benchmark comparison matrix (`rules_only` 68% vs `plain_llm` 64% vs `TraceLedger` 100%), highlighting the 0% false-resolution rate, and 25 ground-truth cases explorer.
+  6. **Graph vs SQL Explorer (`GraphExplorer.jsx`)**: TigerGraph Savanna vs SQLite root-cause cluster explorer (11 invoices -> 3 import batches) and GSQL query viewer.
+  7. **Audit Trail (`AuditView.jsx`)**: Full append-only audit trail with search and direct case links.
+- Production build verified: `npm run build` succeeds in 439ms. All **288 backend tests pass** with zero regressions.
+
