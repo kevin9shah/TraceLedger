@@ -28,11 +28,18 @@ from flask import Flask, abort, jsonify, redirect, render_template, request, sen
 
 from traceledger.chain.rpc import EvmRpc, RpcError
 from traceledger.chain.tokens import TokenMetadataError, read_token_metadata
-from traceledger.chain.transfers import TransactionNotFound, fetch_transaction_facts
+from traceledger.chain.transfers import (
+    TRANSFER_TOPIC,
+    TransactionNotFound,
+    fetch_transaction_facts,
+)
 from traceledger.config import ConfigError, load_config
 from traceledger.records import ApprovedAddress, Invoice, PaymentRequest, RecordError
 from traceledger.store import REVIEW_ACTIONS, Store, StoreError
 from traceledger.verify import Status, verify_payment_case
+
+# The demo wallet transfers are sent to. Overridable per request via ?address=
+DEMO_DESTINATION = "0xdad4d0ee4260c1a9a25bb61099c9e518b5033e8e"
 
 STATUS_ORDER = {Status.CONFLICT: 0, Status.MISSING: 1, Status.NEXT_STEP: 2, Status.VERIFIED: 3}
 
@@ -143,9 +150,6 @@ def create_app(db_path: str | Path | None = None) -> Flask:
     def audit():
         return render_template("audit.html", audit=store.audit_trail())
 
-    from traceledger.web.api import api as api_blueprint
-    app.register_blueprint(api_blueprint)
-
     @app.route("/healthz")
     def healthz():
         return {"ok": True, "chain_id": cfg.chain_id, "cases": len(store.list_cases())}
@@ -174,8 +178,9 @@ def create_app(db_path: str | Path | None = None) -> Flask:
 
     @app.route("/api/cases")
     def api_cases():
-        cases = store.list_cases()
-        return jsonify([c.as_dict() for c in cases])
+        # store.list_cases() returns plain dicts; calling .as_dict() on them raised a 500
+        # and the frontend silently rendered an empty list.
+        return jsonify(store.list_cases())
 
     @app.route("/api/case/<case_id>")
     def api_case_detail(case_id: str):
@@ -187,7 +192,7 @@ def create_app(db_path: str | Path | None = None) -> Flask:
         report = store.get_report(case_id)
         audit = [a.as_dict() for a in store.audit_trail(case_id)]
         return jsonify({
-            "case": case.as_dict(),
+            "case": case,   # already a plain dict from the store
             "findings": findings,
             "report": report,
             "audit": audit,
@@ -251,7 +256,36 @@ def create_app(db_path: str | Path | None = None) -> Flask:
                      "payment_request": payment_request.raw if payment_request else None,
                      "approved": [a.raw for a in approved_records]})
         store.save_findings(case_id, [f.as_dict() for f in result.findings])
-        return jsonify({"case_id": case_id, "findings_count": len(result.findings)}), 201
+
+        # Draft the narrative, then gate it through the validator. The findings above already
+        # stand on their own: if the model is unavailable or misbehaves, the case is still
+        # complete and the report records why it is absent (D38). A model outage degrades the
+        # prose, never the facts.
+        llm_error = None
+        try:
+            from traceledger.llm.investigate import investigate
+            from traceledger.llm.provider import LLMError, provider_from_config
+            investigation = investigate(
+                provider_from_config(cfg), result, invoice, payment_request,
+                case_ledger_entries if "case_ledger_entries" in dir() else ())
+            store.save_report(case_id, investigation.as_dict())
+        except Exception as exc:  # noqa: BLE001 - drafting must never break case creation
+            llm_error = f"{type(exc).__name__}: {exc}"
+            store.save_report(case_id, {
+                "summary": ("The narrative layer was unavailable, so this case has verified "
+                            "findings but no drafted report. The findings stand on their own."),
+                "llm_error": llm_error,
+                "validation": {"accepted": True, "downgraded": 0, "lines": [], "violations": []},
+                "hypotheses": [], "next_steps": [],
+            })
+
+        return jsonify({
+            "case_id": case_id,
+            "findings_count": len(result.findings),
+            "conflict_count": len(result.conflicts),
+            "report_available": llm_error is None,
+            "llm_error": llm_error,
+        }), 201
 
     @app.route("/api/case/<case_id>/review", methods=["POST"])
     def api_review(case_id: str):
@@ -274,46 +308,202 @@ def create_app(db_path: str | Path | None = None) -> Flask:
 
     @app.route("/api/presets")
     def api_presets():
-        real_txs_file = ROOT / "data" / "real_txs.json"
-        presets = []
-        if real_txs_file.exists():
-            try:
-                data = json.loads(real_txs_file.read_text())
-                presets = data.get("transfers", [])
-            except Exception:
-                pass
-        return jsonify(presets)
+        """Ready-made demo cases, in the shape the UI's preset chips use.
+
+        Keys match the frontend's local PRESETS constant (`name`, `hash`, `token`, `amount`,
+        `dest`, `desc`) so the hardcoded list can be replaced by live data.
+
+        Built from data/real_txs.json, so every hash is one actually sent or observed -- never
+        invented (G3). Each transfer yields two presets: one matched against an invoice naming a
+        DIFFERENT token (the wrong-asset demo) and one against the token that actually arrived
+        (the clean control), because a demo that only ever shows conflicts invites the question
+        "does it ever say yes?".
+        """
+        real_file = ROOT / "data" / "real_txs.json"
+        if not real_file.exists():
+            return jsonify([])
+        try:
+            real = json.loads(real_file.read_text())
+        except (OSError, json.JSONDecodeError):
+            return jsonify([])
+
+        usdc_native = "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359"
+        out = []
+        for t in real.get("transfers", []):
+            if t.get("origin") != "cake_wallet_demo":
+                continue
+            base = int(t["amount_base_units"])
+            human = f"{base / 10 ** 6:.6f}".rstrip("0").rstrip(".")
+            label = cfg.token_contracts.get(t["token_contract"], "token")
+            out.append({
+                "name": f"Wrong asset: {human} {label} vs USDC invoice",
+                "hash": t["tx_hash"],
+                "token": usdc_native,
+                "amount": human,
+                "dest": t["recipient"],
+                "desc": (f"Real Cake Wallet transfer, block {t['block_number']}. The invoice "
+                         f"names the USDC contract; the chain delivered {t['token_contract']}, "
+                         "which reports symbol 'USDT0'."),
+                "expected": "CONFLICT - wrong asset",
+            })
+            out.append({
+                "name": f"Clean: {human} {label} vs matching invoice",
+                "hash": t["tx_hash"],
+                "token": t["token_contract"],
+                "amount": human,
+                "dest": t["recipient"],
+                "desc": (f"The same real transfer, block {t['block_number']}, matched against an "
+                         "invoice naming the token that actually arrived."),
+                "expected": "VERIFIED - no conflict",
+            })
+        return jsonify(out)
 
     @app.route("/api/benchmark")
     def api_benchmark():
-        results_file = ROOT / "benchmark" / "three_way.json"
-        if not results_file.exists():
-            results_file = ROOT / "benchmark" / "results.json"
-        data = {}
-        if results_file.exists():
-            try:
-                data = json.loads(results_file.read_text())
-            except Exception:
-                pass
+        """Real benchmark output, shaped as the rows the UI renders.
+
+        Columns use the short keys the frontend already expects (`id`, `title`, `exp`, `rules`,
+        `llm`, `tl`, `rulesMiss`, `llmMiss`) so the view can read live data instead of a
+        hardcoded table. Titles come from benchmark/cases.json and outcomes from the recorded
+        run, so nothing on screen is invented (G3, G10).
+        """
+        three_file = ROOT / "benchmark" / "three_way.json"
         cases_file = ROOT / "benchmark" / "cases.json"
-        cases = []
+        if not three_file.exists():
+            return jsonify({"rows": [], "results": {}, "cases": [],
+                            "note": "no benchmark run recorded yet"}), 200
+        three = json.loads(three_file.read_text())
+        titles = {}
         if cases_file.exists():
-            try:
-                cases = json.loads(cases_file.read_text())
-            except Exception:
-                pass
-        return jsonify({"results": data, "cases": cases})
+            titles = {c["case_id"]: c["title"]
+                      for c in json.loads(cases_file.read_text()).get("cases", [])}
+        scores = three.get("scores", {})
+        key = {"rules_only": "rules", "plain_llm": "llm", "traceledger": "tl"}
+        rows: dict[str, dict] = {}
+        for system, score in scores.items():
+            short = key.get(system, system)
+            for entry in score.get("per_case", []):
+                cid = entry["case_id"]
+                row = rows.setdefault(cid, {"id": cid, "title": titles.get(cid, cid),
+                                            "exp": entry["expected"]})
+                row[short] = entry["got"]
+                if entry["outcome_correct"] is False:
+                    row[f"{short}Miss"] = True
+        return jsonify({
+            "model": three.get("model"),
+            "case_count": three.get("case_count"),
+            "rows": [rows[k] for k in sorted(rows)],
+            "results": scores,
+            "cases": [rows[k] for k in sorted(rows)],   # alias, same data
+            "caveat": ("Preliminary, 25 synthetic cases. TraceLedger's score is circular: the "
+                       "cases and the system share an author (RISKS.md P16). What is meaningful "
+                       "is the comparison of failure modes, especially false-resolution rate."),
+        })
 
     @app.route("/api/graph/root_cause")
     def api_graph_root_cause():
+        """Shared-root-cause clusters from the recorded TigerGraph run.
+
+        `live` is False and `source` names where the numbers came from, because the workspace is
+        normally stopped (it bills hourly) and presenting recorded output as a live query would
+        be a false claim (G3, G10).
+        """
         graph_file = ROOT / "benchmark" / "graph_vs_sql.json"
-        data = {}
-        if graph_file.exists():
-            try:
-                data = json.loads(graph_file.read_text())
-            except Exception:
-                pass
-        return jsonify(data)
+        if not graph_file.exists():
+            return jsonify({"live": False, "clusters": [], "flagged_invoices": 0,
+                            "note": "no graph run recorded yet"}), 200
+        try:
+            data = json.loads(graph_file.read_text())
+        except (OSError, json.JSONDecodeError) as exc:
+            return jsonify({"error": f"could not read the recorded graph run: {exc}"}), 500
+
+        engine = "tigergraph" if data.get("tigergraph") else "sql"
+        rows = (data.get(engine) or {}).get("results", [])
+        clusters = []
+        for row in rows:
+            ids = [i for i in (row.get("invoice_ids") or "").split(",") if i]
+            clusters.append({
+                "batchId": row.get("import_event_id"),
+                "cause": row.get("import_event_id"),
+                "batch": row.get("source_file"),
+                "invoices": ids,
+                "count": row.get("affected_invoices", len(ids)),
+            })
+        agreement = data.get("agreement") or {}
+        return jsonify({
+            "live": False,
+            "source": engine,
+            "recorded_note": ("These clusters are from a recorded run against the TigerGraph "
+                              "workspace, not a live query. The workspace is normally stopped."),
+            "flagged_invoices": data.get("flagged_invoice_total", 0),
+            "clusters": clusters,
+            "comparison": {
+                "identical_results": agreement.get("identical_results"),
+                "sql_median_ms": agreement.get("sql_median_ms"),
+                "graph_median_ms": agreement.get("graph_median_ms"),
+                "sql_faster_by": agreement.get("sql_faster_by"),
+                "note": ("Both engines return identical results and SQL is faster at this scale. "
+                         "The graph is not claimed to be faster (RISKS.md P7)."),
+            },
+        })
+
+    @app.route("/api/watch/latest")
+    def api_watch_latest():
+        """Find the most recent token transfer to a watched address.
+
+        The live-fire demo path (D17): a transfer is sent from a phone, and this finds it. Copying
+        a 66-character hash off a phone screen in front of an audience is the single most likely
+        thing to go wrong on stage, so it is removed from the demo entirely.
+
+        Scans only the configured token contracts (G7) over a bounded block window, newest first.
+        Read-only: `eth_getLogs` cannot move anything.
+        """
+        address = (request.args.get("address") or DEMO_DESTINATION).strip().lower()
+        try:
+            window = min(max(int(request.args.get("blocks", 900)), 1), 5000)
+        except ValueError:
+            return jsonify({"error": "blocks must be an integer"}), 400
+        if not (address.startswith("0x") and len(address) == 42):
+            return jsonify({"error": f"not a 20-byte address: {address}"}), 400
+
+        rpc = EvmRpc(cfg.rpc_url, cfg.chain_id)
+        try:
+            head = int(rpc.call("eth_blockNumber"), 16)
+            topic_to = "0x" + "0" * 24 + address[2:]
+            found = []
+            for contract in cfg.token_contracts:
+                logs = rpc.call("eth_getLogs", [{
+                    "fromBlock": hex(max(head - window, 0)), "toBlock": "latest",
+                    "address": contract,
+                    "topics": [TRANSFER_TOPIC, None, topic_to],
+                }]) or []
+                for log in logs:
+                    value = int(log["data"], 16) if log["data"] not in ("", "0x") else 0
+                    found.append({
+                        "tx_hash": log["transactionHash"],
+                        "block_number": int(log["blockNumber"], 16),
+                        "token_contract": contract,
+                        "token_label": cfg.token_contracts[contract],
+                        "amount_base_units": str(value),
+                        "amount": f"{value / 10 ** 6:.6f}".rstrip("0").rstrip("."),
+                        "sender": "0x" + log["topics"][1][-40:],
+                        "recipient": address,
+                        "log_index": int(log["logIndex"], 16),
+                    })
+        except (RpcError, ValueError, KeyError) as exc:
+            return jsonify({"error": str(exc)}), 502
+
+        found.sort(key=lambda t: (t["block_number"], t["log_index"]), reverse=True)
+        return jsonify({
+            "watched_address": address,
+            "scanned_blocks": window,
+            "head_block": head,
+            "transfer_count": len(found),
+            "latest": found[0] if found else None,
+            "transfers": found[:10],
+            "note": ("No transfer found in the scanned window." if not found else
+                     f"{len(found)} transfer(s) found; newest first."),
+        })
 
     frontend_dist = ROOT / "frontend" / "dist"
     if frontend_dist.exists():
