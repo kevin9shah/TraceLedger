@@ -7,21 +7,27 @@ Tick only when exit criteria are demonstrably met, with evidence recorded in the
 |---|---|---|---|---|
 | CP0 | Repo + memory files | Six MD files exist, `.env.example`, `.gitignore` covers `.env`, README stub | DONE | `ls` output in PROGRESS.md 2026-10-29; `.gitignore:153` = `.env` |
 | CP1 ★ | Sponsor smoke tests | TigerGraph instance reachable via `pyTigerGraph` with a trivial query; chain + tokens chosen; Cake Wallet check recorded; dictation works in a test textarea | **DONE** 2026-10-29 | all 6 sub-items evidenced in the CP1 breakdown below |
-| CP2 | Data model + real tx capture | Schema documented; `data/real_txs.json` has ≥3 real hashes from Cake Wallet transfers (human-supplied); parser verified against them | TODO | — |
-| CP3 | Deterministic verifier + tests | Verifies status, contract, decimals, amount, destination, duplicates; unit tests pass | TODO | — |
-| CP4 ★ | Benchmark v1 | 25 synthetic cases + separate ground truth; schema validated; cross-token and tricky cases present; human reviews realism | TODO | — |
-| CP5 | Rules-only baseline | Runs on all 25; scores recorded in `BENCHMARK_RESULTS.md` | TODO | — |
+| CP2 | Data model + real tx capture | Schema documented; `data/real_txs.json` has ≥3 real hashes from Cake Wallet transfers (human-supplied); parser verified against them | **PARTIAL** — 2 of 3 | Schema: `docs/data_model.md`. Parser: `traceledger/chain/transfers.py`, verified against **3 real Polygon transactions** (offline fixtures in `tests/fixtures/`, captured by `scripts/capture_fixtures.py`) — 94 tests pass. `data/real_txs.json` holds 24 verified transfers, all `origin: public_mainnet`. **Outstanding: human-supplied Cake Wallet transfers** (wallet is unfunded) |
+| CP3 | Deterministic verifier + tests | Verifies status, contract, decimals, amount, destination, duplicates; unit tests pass. **Plus (D17): accepts a tx hash and produces a cited verdict with no LLM in the path** | **DONE** 2026-10-29 | `traceledger/verify.py` (9 checks + orchestrator), `traceledger/records.py`. **139 tests pass.** End-to-end against live Polygon via `scripts/investigate.py`: invoice-says-USDC vs delivered-USDT → `CONFLICT` exit 1; correct token → `VERIFIED`×6 exit 0; off-by-one-base-unit → `CONFLICT`. S20 satisfied by `test_catch_does_not_depend_on_the_symbol_string` (parametrised over `USDC`/`USDT`/`USDT0`/``/`None`/`TOTALLY-WRONG`) |
+| CP4 ★ | Benchmark v1 | 25 synthetic cases + separate ground truth; schema validated; cross-token and tricky cases present; human reviews realism. **Plus (D17): cases built on the real contract ambiguity (both `symbol="USDC"` contracts, `USDT0`) and at least one genuinely under-determined case for the refusal beat** | **BUILT — realism NOT validated by a domain expert (RISKS.md P15)** | `benchmark/cases.json` (25 cases, inputs only), `benchmark/ground_truth.json` (labels, separate), `benchmark/chain_facts.json` (8 **real** Polygon transactions). Outcomes: 17 conflict / 4 no_conflict / 4 unresolved; 15 distinct issue types. `tests/test_benchmark.py` — 30 hygiene/schema tests pass (no label leakage, no near-duplicate signatures, all records parse under the production model, chain evidence real and never simulated). Suite: **182 tests pass** |
+| CP5 | Rules-only baseline | Runs on all 25; scores recorded in `BENCHMARK_RESULTS.md` | **DONE** 2026-10-29 | `traceledger/baselines/rules_only.py`, run by `scripts/run_benchmark.py`. Rules-only: **68% outcome accuracy (17/25)**, 41% issue identification (7/17), 32% false-resolution rate, 0% false positives on clean cases, 0/4 abstentions (over-answered 4/4). TraceLedger deterministic layer alongside: 100%/100% — **flagged as circular, not a win (RISKS.md P16)**. Raw output in `benchmark/results.json` |
 | CP6 | Graph layer | Data loaded into TigerGraph; ≥3 GSQL queries; root-cause query works; export saved to `graph/export/` | TODO | — |
-| CP7 | LLM investigation + validator | Structured report with evidence IDs; validator rejects invalid citations; prompt-injection test passes | TODO | — |
+| CP7 | LLM investigation + validator | Structured report with evidence IDs; validator rejects invalid citations; prompt-injection test passes. **Plus (D17): refusal path returns `UNRESOLVED` + the evidence that would settle it; plain-LLM baseline runnable side by side on identical input** | TODO | — |
 | CP8 ★ | Three-way comparison | Rules vs plain LLM vs TraceLedger, all metrics, plus graph-vs-SQL; honest write-up of wins and failures | TODO | — |
-| CP9 | Dashboard + review flow | Create case, view report, 4 reviewer actions, audit log, dictation-friendly UI | TODO | — |
-| CP10 ★ | Demo + pitch readiness | Scripted 3-minute demo runs end to end; README, limitations slide, sponsor usage evidenced | TODO | — |
+| CP9 | Dashboard + review flow | Create case, view report, 4 reviewer actions, audit log, dictation-friendly UI. **Plus (D17): ingest a case from a pasted tx hash and render it live.** Dictation constraint (S15): never block paste, never rewrite field values on change, never clear fields on blur — re-run `ui/dictation_test.html` against the real form before ticking | TODO | — |
+| CP10 ★ | Demo + pitch readiness | Scripted 3-minute demo runs end to end; README, limitations slide, sponsor usage evidenced. **Plus (D17): live-fire run rehearsed on the venue network, and a labelled REPLAY fallback that is never presented as live** | TODO | — |
 
 ★ = stop for human check before proceeding.
 
 ## CP8 metrics to compute
 Issue-identification accuracy · evidence support rate · unsupported-claim rate · evidence-reference validity ·
 abstention quality · false-resolution rate · tool/query efficiency · reviewer time (only if actually timed).
+
+**Latency** is measured too — end-to-end per case, and the graph query vs the equivalent SQL —
+and written to `BENCHMARK_RESULTS.md` from real runs. No latency figure may appear in the README,
+pitch or `DECISIONS.md` before it has been measured (G10, D16). For reference, the measured round
+trip to the Savanna workspace was 1.47–1.94 s on 2026-10-29, so claims of millisecond user-visible
+graph queries are false for this deployment.
 
 
 ## CP1 breakdown

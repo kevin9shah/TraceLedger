@@ -23,6 +23,50 @@ Verified so far, by code rather than assumption:
 - Dictation (Wispr Flow) accepted by the review fields, with the raw event log captured.
 - 47 unit tests passing, including refusal of every write/signing RPC method.
 
+## The demo: live fire
+
+The demo is not a recording and not a fixture. A member of the audience sends a real stablecoin
+transfer from their own wallet on Polygon; TraceLedger ingests the transaction hash, reads the
+transfer from mainnet, and renders the case while they watch. The invoice it is matched against
+names a *different* token contract, so the system reports a **CONFLICT** and cites the contract
+address and block it just read. Anyone in the room can verify it on a block explorer.
+
+It works because of a fact that is true on Polygon today, not because of a rule written to fire on
+a magic string: the canonical Tether contract `0xc2132d…` reports `symbol="USDT0"`, and two
+distinct live contracts both report `symbol="USDC"` (native `0x3c499c…` and bridged `0x2791Bc…`).
+Any reconciliation that matches assets by ticker is wrong on the largest stablecoin on that chain.
+TraceLedger identifies tokens by contract address and reads `decimals()` from the contract.
+
+Three further beats, each of which the audience can test rather than take on trust:
+
+1. **The same case, same data, given to a plain LLM.** It answers confidently. The comparison is
+   watched rather than claimed.
+2. **The laptop is handed over.** Anyone may type whatever they like into an invoice memo field to
+   try to force a "settled" verdict. Uploaded text is data, never instructions.
+3. **It refuses.** On a genuinely under-determined case the answer is `UNRESOLVED`, together with
+   the specific evidence that would settle it.
+
+## Architecture
+
+Layers, in the order they run. Each layer may only weaken the one above it, never override it.
+
+1. **Deterministic verification (code, no LLM).** Transaction status, token contract, decimals,
+   amount, destination, duplicate identifiers, arithmetic. Amounts are integer base units; no
+   floating point, and the LLM never computes.
+2. **Evidence retrieval and linking.** Relationships are built only when the basis is known;
+   uncertain links are labelled `candidate`.
+3. **Graph layer (TigerGraph).** Relationship queries and shared-root-cause grouping — many
+   exceptions tracing back to one import batch. Benchmarked against the equivalent SQL at CP8, and
+   reported honestly if SQL ties.
+4. **LLM investigation (hosted API, constrained).** Proposes competing hypotheses, selects the next
+   evidence to fetch, drafts the report. Never authoritative on chain facts.
+5. **Independent validator (code).** Every cited evidence ID must exist and every number must match
+   the deterministic layer. Failures are rejected and retried, or downgraded to `unproven`.
+6. **Human review.** Decision and rationale recorded in an audit log.
+
+Latency is measured at CP8 and reported from real runs. No performance figures appear in this
+README until they have been measured.
+
 ## Scope (MVP)
 - One EVM chain; USDC and USDT, identified by **contract address** (never by symbol).
 - Three exception types: duplicate records, status conflict, destination/instruction conflict.

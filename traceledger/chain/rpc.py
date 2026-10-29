@@ -24,6 +24,7 @@ READ_ONLY_METHODS = frozenset({
     "eth_getTransactionReceipt",
     "eth_getBlockByNumber",
     "eth_getBlockByHash",
+    "eth_getLogs",
 })
 
 

@@ -1,0 +1,417 @@
+{
+  "_comment": "Chain facts for benchmark cases, captured from REAL Polygon transactions so benchmark runs are reproducible offline. Business records are synthetic; these are not (G3, P4).",
+  "chain_id": 137,
+  "rpc_url": "https://polygon-bor-rpc.publicnode.com",
+  "captured_at_head_block": 96371566,
+  "facts": {
+    "single_usdt": {
+      "tx_hash": "0x5e857c89f092901403c91fc634d84ff531b795303d448b9e6c1b25af251f5a05",
+      "status": 1,
+      "succeeded": true,
+      "block_number": 96369410,
+      "chain_id": 137,
+      "sender": "0x0d0707963952f2fba59dd06f2b425ace40b492fe",
+      "called_contract": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+      "confirmations": 2158,
+      "transfers": [
+        {
+          "token": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+          "sender": "0x0d0707963952f2fba59dd06f2b425ace40b492fe",
+          "recipient": "0x5f6d2b112c2d0ebe87d0d95d08ce47e13e01866a",
+          "value": "94951335",
+          "log_index": 738
+        }
+      ],
+      "simulated": false,
+      "provenance": {
+        "rpc_url": "https://polygon-bor-rpc.publicnode.com",
+        "chain_id": 137,
+        "method": "eth_getTransactionReceipt",
+        "read_at": 1793262729.660295
+      }
+    },
+    "two_token": {
+      "tx_hash": "0x7858560afe25b850ce458695bdc001cb48fc52b1eeeadf1fe21d034510770963",
+      "status": 1,
+      "succeeded": true,
+      "block_number": 96369410,
+      "chain_id": 137,
+      "sender": "0xd84d6af75fa5bd9cafb7284b346226e1c3585ccf",
+      "called_contract": "0x7769f7dd421deb9819f1b7089433d8d8b426419b",
+      "confirmations": 2159,
+      "transfers": [
+        {
+          "token": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+          "sender": "0x7769f7dd421deb9819f1b7089433d8d8b426419b",
+          "recipient": "0x8f10b468b06c6fd214b65f87778827f7d113f996",
+          "value": "5072557260",
+          "log_index": 794
+        },
+        {
+          "token": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+          "sender": "0x8f10b468b06c6fd214b65f87778827f7d113f996",
+          "recipient": "0x67366782805870060151383f4bbff9dab53e5cd6",
+          "value": "5072557260",
+          "log_index": 796
+        },
+        {
+          "token": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+          "sender": "0x67366782805870060151383f4bbff9dab53e5cd6",
+          "recipient": "0x8f10b468b06c6fd214b65f87778827f7d113f996",
+          "value": "5067462894",
+          "log_index": 798
+        },
+        {
+          "token": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+          "sender": "0x8f10b468b06c6fd214b65f87778827f7d113f996",
+          "recipient": "0x7769f7dd421deb9819f1b7089433d8d8b426419b",
+          "value": "5067462894",
+          "log_index": 800
+        }
+      ],
+      "simulated": false,
+      "provenance": {
+        "rpc_url": "https://polygon-bor-rpc.publicnode.com",
+        "chain_id": 137,
+        "method": "eth_getTransactionReceipt",
+        "read_at": 1793262730.8963451
+      }
+    },
+    "many_tokens": {
+      "tx_hash": "0x094b7da1b90a0b2201c362a6ac2b6e0ec686c74b78bf954f5d9c79d38f9bc1d7",
+      "status": 1,
+      "succeeded": true,
+      "block_number": 96369411,
+      "chain_id": 137,
+      "sender": "0x08f62429141d5a496dfda0e5239bd523d08cd9be",
+      "called_contract": "0x07964f135f276412b3182a3b2407b8dd45000000",
+      "confirmations": 2158,
+      "transfers": [
+        {
+          "token": "0xeb51d9a39ad5eef215dc0bf39a8821ff804a0f01",
+          "sender": "0x08f62429141d5a496dfda0e5239bd523d08cd9be",
+          "recipient": "0x07964f135f276412b3182a3b2407b8dd45000000",
+          "value": "2000000000",
+          "log_index": 143
+        },
+        {
+          "token": "0xeb51d9a39ad5eef215dc0bf39a8821ff804a0f01",
+          "sender": "0x07964f135f276412b3182a3b2407b8dd45000000",
+          "recipient": "0x75cf59a923a2649b84fa569bb97ea9694b6f26e4",
+          "value": "1994000000",
+          "log_index": 145
+        },
+        {
+          "token": "0xeb51d9a39ad5eef215dc0bf39a8821ff804a0f01",
+          "sender": "0x75cf59a923a2649b84fa569bb97ea9694b6f26e4",
+          "recipient": "0xa304823c775d13fc851379c75e2b6f300e223234",
+          "value": "99700000",
+          "log_index": 146
+        },
+        {
+          "token": "0xeb51d9a39ad5eef215dc0bf39a8821ff804a0f01",
+          "sender": "0xa304823c775d13fc851379c75e2b6f300e223234",
+          "recipient": "0x882df4b0fb50a229c3b4124eb18c759911485bfb",
+          "value": "59820000",
+          "log_index": 149
+        },
+        {
+          "token": "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063",
+          "sender": "0x882df4b0fb50a229c3b4124eb18c759911485bfb",
+          "recipient": "0xa304823c775d13fc851379c75e2b6f300e223234",
+          "value": "11573642033445750",
+          "log_index": 151
+        },
+        {
+          "token": "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063",
+          "sender": "0xa304823c775d13fc851379c75e2b6f300e223234",
+          "recipient": "0x91f1d2c2165b17a1ed2dc3b73ae77224e6e1410e",
+          "value": "8101549423412025",
+          "log_index": 154
+        },
+        {
+          "token": "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063",
+          "sender": "0xa304823c775d13fc851379c75e2b6f300e223234",
+          "recipient": "0xcac32193e1034967ccaa72b851700a48ac82749a",
+          "value": "694418522006745",
+          "log_index": 155
+        },
+        {
+          "token": "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063",
+          "sender": "0xa304823c775d13fc851379c75e2b6f300e223234",
+          "recipient": "0x16409e5515c8028f446b78d4691a29c3690c04ac",
+          "value": "1041627783010117",
+          "log_index": 156
+        },
+        {
+          "token": "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063",
+          "sender": "0xa304823c775d13fc851379c75e2b6f300e223234",
+          "recipient": "0x446f8ed5903e06025ee650039007eef0512a6bb8",
+          "value": "694418522006745",
+          "log_index": 157
+        },
+        {
+          "token": "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063",
+          "sender": "0xa304823c775d13fc851379c75e2b6f300e223234",
+          "recipient": "0xa0bbe31d3cd9eac8d07f2e0b0b011118c292a913",
+          "value": "1041627783010117",
+          "log_index": 158
+        },
+        {
+          "token": "0xeb51d9a39ad5eef215dc0bf39a8821ff804a0f01",
+          "sender": "0xa304823c775d13fc851379c75e2b6f300e223234",
+          "recipient": "0x882df4b0fb50a229c3b4124eb18c759911485bfb",
+          "value": "39880000",
+          "log_index": 159
+        },
+        {
+          "token": "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063",
+          "sender": "0x882df4b0fb50a229c3b4124eb18c759911485bfb",
+          "recipient": "0xa304823c775d13fc851379c75e2b6f300e223234",
+          "value": "7715761338999881",
+          "log_index": 161
+        },
+        {
+          "token": "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063",
+          "sender": "0xa304823c775d13fc851379c75e2b6f300e223234",
+          "recipient": "0x280537d9641c3aa0f7ddeaa00602af1a60811c51",
+          "value": "7715761338999882",
+          "log_index": 165
+        },
+        {
+          "token": "0xeb51d9a39ad5eef215dc0bf39a8821ff804a0f01",
+          "sender": "0x75cf59a923a2649b84fa569bb97ea9694b6f26e4",
+          "recipient": "0x882df4b0fb50a229c3b4124eb18c759911485bfb",
+          "value": "1894300000",
+          "log_index": 168
+        },
+        {
+          "token": "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063",
+          "sender": "0x882df4b0fb50a229c3b4124eb18c759911485bfb",
+          "recipient": "0x75cf59a923a2649b84fa569bb97ea9694b6f26e4",
+          "value": "366498648304048411",
+          "log_index": 169
+        },
+        {
+          "token": "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063",
+          "sender": "0x75cf59a923a2649b84fa569bb97ea9694b6f26e4",
+          "recipient": "0x67366782805870060151383f4bbff9dab53e5cd6",
+          "value": "366498648304048411",
+          "log_index": 173
+        },
+        {
+          "token": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+          "sender": "0x67366782805870060151383f4bbff9dab53e5cd6",
+          "recipient": "0x75cf59a923a2649b84fa569bb97ea9694b6f26e4",
+          "value": "366866",
+          "log_index": 174
+        },
+        {
+          "token": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+          "sender": "0x75cf59a923a2649b84fa569bb97ea9694b6f26e4",
+          "recipient": "0x3ac4b2cdd65a9786d10d121ba4d4ad403f505d6d",
+          "value": "366866",
+          "log_index": 175
+        },
+        {
+          "token": "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270",
+          "sender": "0x3ac4b2cdd65a9786d10d121ba4d4ad403f505d6d",
+          "recipient": "0x75cf59a923a2649b84fa569bb97ea9694b6f26e4",
+          "value": "4052739972692540831",
+          "log_index": 176
+        }
+      ],
+      "simulated": false,
+      "provenance": {
+        "rpc_url": "https://polygon-bor-rpc.publicnode.com",
+        "chain_id": 137,
+        "method": "eth_getTransactionReceipt",
+        "read_at": 1793262731.91855
+      }
+    },
+    "reverted_a": {
+      "tx_hash": "0xe00f524301058205699c9f226df02b22bd6c9bbb3a990a36c48d35d41bc0a16f",
+      "status": 0,
+      "succeeded": false,
+      "block_number": 96371332,
+      "chain_id": 137,
+      "sender": "0x9242966990b0b28caf896e9fbdf048044bc7555e",
+      "called_contract": "0xc39efa2c1d747626ae2dfec3819af2e06db9cf6d",
+      "confirmations": 238,
+      "transfers": [],
+      "simulated": false,
+      "provenance": {
+        "rpc_url": "https://polygon-bor-rpc.publicnode.com",
+        "chain_id": 137,
+        "method": "eth_getTransactionReceipt",
+        "read_at": 1793262732.973707
+      }
+    },
+    "reverted_b": {
+      "tx_hash": "0x27052b0a9da878c077a0c5431d2069e6d557f60a77b5bb1de922ba73d2b093c6",
+      "status": 0,
+      "succeeded": false,
+      "block_number": 96371445,
+      "chain_id": 137,
+      "sender": "0x95c93d3e0d387d0bf0bd3c1861092ca85b219826",
+      "called_contract": "0x4337084d9e255ff0702461cf8895ce9e3b5ff108",
+      "confirmations": 126,
+      "transfers": [],
+      "simulated": false,
+      "provenance": {
+        "rpc_url": "https://polygon-bor-rpc.publicnode.com",
+        "chain_id": 137,
+        "method": "eth_getTransactionReceipt",
+        "read_at": 1793262734.076033
+      }
+    },
+    "single_usdc": {
+      "tx_hash": "0x5acd0280e455643784a9c05942fb950c989bfa6b0659d358002fd76a5e6f4ded",
+      "status": 1,
+      "succeeded": true,
+      "block_number": 96371405,
+      "chain_id": 137,
+      "sender": "0x51e3d44172868acc60d68ca99591ce4230bc75e0",
+      "called_contract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+      "confirmations": 167,
+      "transfers": [
+        {
+          "token": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+          "sender": "0x51e3d44172868acc60d68ca99591ce4230bc75e0",
+          "recipient": "0x750831f6bc81eb3f08149155bedd084fc51d715e",
+          "value": "2000000",
+          "log_index": 92
+        }
+      ],
+      "simulated": false,
+      "provenance": {
+        "rpc_url": "https://polygon-bor-rpc.publicnode.com",
+        "chain_id": 137,
+        "method": "eth_getTransactionReceipt",
+        "read_at": 1793262735.103723
+      }
+    },
+    "split_w_zero": {
+      "tx_hash": "0xe29bf3e0981391dd978629db1e99c4e66943251bf8739761d2508a5c54032c7c",
+      "status": 1,
+      "succeeded": true,
+      "block_number": 96371405,
+      "chain_id": 137,
+      "sender": "0x9caf74b0617d7b0cf42336b2fc5ce95e6d2d1ab7",
+      "called_contract": "0x07d79f0f6879f4d555431573320236628d16083e",
+      "confirmations": 167,
+      "transfers": [
+        {
+          "token": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+          "sender": "0x8ce3468f8f9eeb5493901336563e0e07cb862cc1",
+          "recipient": "0x776023a4573bd972c4c3e2a76f611d3c2bef516e",
+          "value": "100000000",
+          "log_index": 116
+        },
+        {
+          "token": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+          "sender": "0x776023a4573bd972c4c3e2a76f611d3c2bef516e",
+          "recipient": "0x66dbff2ce099d19b4e8c5dc8b254ec7aeaf5e642",
+          "value": "100000000",
+          "log_index": 117
+        },
+        {
+          "token": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+          "sender": "0x776023a4573bd972c4c3e2a76f611d3c2bef516e",
+          "recipient": "0x8ce3468f8f9eeb5493901336563e0e07cb862cc1",
+          "value": "0",
+          "log_index": 118
+        }
+      ],
+      "simulated": false,
+      "provenance": {
+        "rpc_url": "https://polygon-bor-rpc.publicnode.com",
+        "chain_id": 137,
+        "method": "eth_getTransactionReceipt",
+        "read_at": 1793262736.139047
+      }
+    },
+    "ambiguous": {
+      "tx_hash": "0x7b6c311150276586b630dc3a1551315668177005cb31837ff95d9a4b7bf7db0c",
+      "status": 1,
+      "succeeded": true,
+      "block_number": 96371408,
+      "chain_id": 137,
+      "sender": "0x4c74c361c4216676478ad1b3be25b23a4b552176",
+      "called_contract": "0xbb2616bf167695d548698beb933d0fdea8f847bf",
+      "confirmations": 165,
+      "transfers": [
+        {
+          "token": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+          "sender": "0x3e5a9812b80d56b826dac8d57b9a801dd58bde38",
+          "recipient": "0x00e7bc8c93d10e997593ca59747321e7ca2dd96a",
+          "value": "22450000",
+          "log_index": 329
+        },
+        {
+          "token": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+          "sender": "0x00e7bc8c93d10e997593ca59747321e7ca2dd96a",
+          "recipient": "0x722c5354a6aeb637702bd9be862b0da194e7755a",
+          "value": "1198000",
+          "log_index": 330
+        },
+        {
+          "token": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+          "sender": "0x00e7bc8c93d10e997593ca59747321e7ca2dd96a",
+          "recipient": "0x17c683fd2f13fd0ee54a59b3bb874b957c8c7f2d",
+          "value": "1252000",
+          "log_index": 331
+        },
+        {
+          "token": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+          "sender": "0x17c683fd2f13fd0ee54a59b3bb874b957c8c7f2d",
+          "recipient": "0x4cce532d10703aeaa04d3adb77a603f42976f559",
+          "value": "87640",
+          "log_index": 332
+        },
+        {
+          "token": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+          "sender": "0x17c683fd2f13fd0ee54a59b3bb874b957c8c7f2d",
+          "recipient": "0x300ffae771f589cf655a656083e1477a2d6c95b4",
+          "value": "1164",
+          "log_index": 336
+        },
+        {
+          "token": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+          "sender": "0x17c683fd2f13fd0ee54a59b3bb874b957c8c7f2d",
+          "recipient": "0xbd206faaafcb79486e6fec08d74dcbe4c8ff42cd",
+          "value": "1163196",
+          "log_index": 339
+        },
+        {
+          "token": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+          "sender": "0x00e7bc8c93d10e997593ca59747321e7ca2dd96a",
+          "recipient": "0x4cce532d10703aeaa04d3adb77a603f42976f559",
+          "value": "1200000",
+          "log_index": 346
+        },
+        {
+          "token": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+          "sender": "0x00e7bc8c93d10e997593ca59747321e7ca2dd96a",
+          "recipient": "0xc53fb63dd72b990bfe7816f5e9775921c565ccd5",
+          "value": "2000000",
+          "log_index": 348
+        },
+        {
+          "token": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+          "sender": "0x00e7bc8c93d10e997593ca59747321e7ca2dd96a",
+          "recipient": "0x0375b023fad2643a0660ffaf8840769b736326c2",
+          "value": "16800000",
+          "log_index": 350
+        }
+      ],
+      "simulated": false,
+      "provenance": {
+        "rpc_url": "https://polygon-bor-rpc.publicnode.com",
+        "chain_id": 137,
+        "method": "eth_getTransactionReceipt",
+        "read_at": 1793262737.131619
+      }
+    }
+  }
+}
