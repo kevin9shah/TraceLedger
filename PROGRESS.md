@@ -214,3 +214,19 @@ Remaining: the two Cake Wallet token contract addresses (RISKS.md P13).
 ### Next: CP3 (deterministic verifier + tests)
 CP2 needs the human's real transfers, so CP3 is taken first — it depends only on data shape. CP2 will
 slot in when the tx hashes arrive.
+
+
+### 2026-10-29 — SECURITY: committed TigerGraph secret (RISKS.md S16)
+- Auditing the human's `CP1` commit (`22573dd`) found a **live TigerGraph database secret in
+  `.env.example`**, which is tracked — it had been pasted there instead of into the gitignored
+  `.env`. The commit is on `origin/main` at `github.com/kevin9shah/TraceLedger`.
+- Exposure assessed, not assumed: GitHub returns **404 unauthenticated**, so the repo is private.
+  Limited to the owner and any collaborators; not public.
+- Actions taken: secret removed from `.env.example` (commit pending).
+- **Action required from the human: rotate the secret** in Savanna's Database Secrets screen.
+  Removing a secret from a file does not un-expose it; only replacement does.
+- Prevented from recurring: `tests/test_no_secrets_committed.py` asserts every credential field in
+  `.env.example` is blank, that no key material appears there, and that `.env` is untracked and
+  ignored. Tests now **57 passing**. DECISIONS.md D15.
+- History rewrite deliberately **not** performed — it needs a force push, which is destructive and
+  needs explicit approval (G13), and it is unnecessary once the old secret is dead.

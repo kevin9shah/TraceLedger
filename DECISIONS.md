@@ -203,3 +203,19 @@ set from what the chain says, and `data/token_registry.json` is regenerated from
 Consequence: CP1's Cake Wallet item is satisfied by the verified candidate contracts plus the chain
 choice; which of Polygon's two `symbol="USDC"` contracts is in play is determined at CP2 from the
 actual transfer. This is stronger evidence than a screenshot of a wallet screen, so nothing is lost.
+
+
+### D15 — Credential hygiene is enforced by tests, not by discipline
+**2026-10-29.** A live TigerGraph secret reached `origin/main` because it was pasted into the
+committed `.env.example` instead of the gitignored `.env`. The two files differ by one character of
+filename, which makes this an easy and repeatable mistake.
+
+`tests/test_no_secrets_committed.py` now asserts, on every test run:
+- `TG_SECRET`, `TG_PASSWORD`, `GOOGLE_API_KEY`, `ANTHROPIC_API_KEY` and `TG_HOST` are **blank** in
+  `.env.example` (host included, because it is instance-specific and identifies the workspace);
+- no `PRIVATE_KEY`/`SEED_PHRASE`/`MNEMONIC` assignment and no 32-byte hex value appears there;
+- `.env` is **not** tracked by git, and `.gitignore` covers it.
+
+Rejected: a note in the README asking people to be careful. The first occurrence of this mistake
+happened while the rule was already written down in G2 and in `.env.example`'s own header comment.
+A test fails; a comment does not.

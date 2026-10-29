@@ -22,6 +22,8 @@ Live risk register. Update on any new issue. Sponsor-tool problems are recorded 
 | S4 | **Wispr Flow** — sources conflict on whether a public API exists | OPEN | Treat as OS-level dictation only. UI must work with plain typing. Never fake an integration. No Wispr Flow code, SDK or API call exists in this repo. |
 | S5 | `polygon-rpc.com` rejects keyless calls (`-32051 tenant disabled`) | CLOSED 2026-10-29 | Switched to `polygon-bor-rpc.publicnode.com`; `1rpc.io/matic` and `polygon.drpc.org` verified as fallbacks (DECISIONS.md D7) |
 
+| S16 | **A live TigerGraph database secret was committed and pushed** in `.env.example` (commit `22573dd`, `origin/main`) | **ACTIVE — requires the human to rotate the secret** | The repo is **private** (GitHub returns 404 unauthenticated), so exposure is limited to the owner and any collaborators, not the public. Remediation: (1) delete the secret in Savanna's **Database Secrets** screen and create a new one — this is the only fix that matters, since removing a secret from git does not un-expose it; (2) put the new value in `.env` **only**; (3) `.env.example` scrubbed locally, commit pending; (4) history rewrite optional once the old secret is dead, and would need a force push (G13 — ask first). Prevented from recurring by `tests/test_no_secrets_committed.py` |
+
 ## Product / method risks
 
 | ID | Risk | Why it matters | Mitigation in build |
