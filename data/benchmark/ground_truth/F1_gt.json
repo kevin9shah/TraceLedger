@@ -1,0 +1,22 @@
+{
+  "case_id": "F1",
+  "verdict": "INSUFFICIENT_EVIDENCE",
+  "conflict_types": [
+    "non_existent_tx_hash",
+    "unverified_onchain_settlement"
+  ],
+  "verified_facts": [
+    "invoice INV-2024-F1-014 recorded as PAID in ERP ledger citing hash 0xf100...00f1",
+    "JSON-RPC query to Polygon node confirms tx hash 0xf100...00f1 does not exist in block receipts or mempool"
+  ],
+  "unverified": [
+    "Whether payment was executed on a different network (e.g. Ethereum, Arbitrum)",
+    "Whether hash was mistyped by accounting clerk"
+  ],
+  "missing_evidence": [
+    "Valid Polygon transaction hash",
+    "On-chain transfer receipt"
+  ],
+  "explanation": "The transaction hash recorded in the enterprise ledger cannot be found on Polygon mainnet. Verification is blocked by missing on-chain evidence; payment cannot be confirmed or reconciled.",
+  "recommended_action": "Mark invoice as UNVERIFIED; request raw transaction receipt and chain ID from payer operations team"
+}

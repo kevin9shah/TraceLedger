@@ -1,0 +1,114 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "TraceLedger Benchmark Schemas",
+  "definitions": {
+    "case": {
+      "$id": "#case",
+      "type": "object",
+      "required": [
+        "case_id", "category", "pattern_name", "real_world_source",
+        "chain_id", "chain_name", "token_contract", "token_symbol_display",
+        "invoice", "transaction", "business_records",
+        "is_tricky", "simulated"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "case_id":            { "type": "string", "pattern": "^[A-F][0-9]+$" },
+        "category":           { "type": "string", "enum": [
+          "destination_conflict", "status_amount_conflict",
+          "wrong_asset", "duplicate_shared_cause",
+          "sanctions_frozen", "insufficient_evidence"
+        ]},
+        "pattern_name":       { "type": "string" },
+        "real_world_source":  { "type": "string" },
+        "chain_id":           { "type": "integer", "const": 137 },
+        "chain_name":         { "type": "string",  "const": "polygon-pos" },
+        "token_contract":     {
+          "type": "string",
+          "pattern": "^0x[0-9a-f]{40}$",
+          "description": "Lowercase contract address from token_registry.json, or null for wrong-asset cases where the contract is unknown/counterfeit/native-gas."
+        },
+        "token_symbol_display": { "type": ["string", "null"] },
+        "simulated":          { "type": "boolean", "const": true },
+        "is_tricky":          { "type": "boolean" },
+        "tricky_reason":      { "type": "string" },
+        "invoice": {
+          "type": "object",
+          "required": ["invoice_id","vendor_id","vendor_name","amount_display","amount_base_units","invoice_token_contract","approved_destination","approval_timestamp","approver_id"],
+          "additionalProperties": false,
+          "properties": {
+            "invoice_id":             { "type": "string" },
+            "vendor_id":              { "type": "string" },
+            "vendor_name":            { "type": "string" },
+            "amount_display":         { "type": "string", "description": "Human-readable e.g. '5000.000000 USDC'" },
+            "amount_base_units":      { "type": "string", "pattern": "^[0-9]+$", "description": "Integer string, no float" },
+            "invoice_token_contract": { "type": "string" },
+            "approved_destination":   { "type": "string", "pattern": "^0x[0-9a-fA-F]{40}$" },
+            "approval_timestamp":     { "type": "string", "format": "date-time" },
+            "approver_id":            { "type": "string" }
+          }
+        },
+        "transaction": {
+          "type": "object",
+          "required": ["tx_hash","block_number","status","from_address","to_address","recipient","amount_base_units","decimals","timestamp","gas_used","gas_limit"],
+          "additionalProperties": false,
+          "properties": {
+            "tx_hash":          { "type": "string", "pattern": "^0x[0-9a-f]{64}$" },
+            "block_number":     { "type": ["integer","null"] },
+            "status":           { "type": "string", "enum": ["success","reverted","pending","dropped","frozen"] },
+            "from_address":     { "type": "string", "pattern": "^0x[0-9a-fA-F]{40}$" },
+            "to_address":       { "type": "string", "pattern": "^0x[0-9a-fA-F]{40}$", "description": "The contract called (token contract or native token router)" },
+            "recipient":        { "type": "string", "pattern": "^0x[0-9a-fA-F]{40}$", "description": "Decoded Transfer event 'to' field" },
+            "amount_base_units":{ "type": "string", "pattern": "^[0-9]+$" },
+            "decimals":         { "type": "integer" },
+            "timestamp":        { "type": "string", "format": "date-time" },
+            "gas_used":         { "type": "integer" },
+            "gas_limit":        { "type": "integer" },
+            "revert_reason":    { "type": ["string","null"] },
+            "erc20_transfer_event": {
+              "type": ["object","null"],
+              "properties": {
+                "contract":  { "type": "string" },
+                "from":      { "type": "string" },
+                "to":        { "type": "string" },
+                "value":     { "type": "string" }
+              }
+            },
+            "polygonscan_url":  { "type": "string" }
+          }
+        },
+        "business_records": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["record_type","content"],
+            "properties": {
+              "record_type": { "type": "string", "enum": [
+                "ledger_entry","approval_log","address_change_log",
+                "email_thread","payment_gateway_log","audit_trail"
+              ]},
+              "content": { "type": "object" }
+            }
+          }
+        }
+      }
+    },
+    "ground_truth": {
+      "$id": "#ground_truth",
+      "type": "object",
+      "required": ["case_id","verdict","conflict_types","verified_facts","unverified","missing_evidence","explanation","recommended_action"],
+      "additionalProperties": false,
+      "properties": {
+        "case_id":            { "type": "string" },
+        "verdict":            { "type": "string", "enum": ["CONFLICT","CLEAN","DUPLICATE","INSUFFICIENT_EVIDENCE","SANCTIONS_EXPOSURE"] },
+        "conflict_types":     { "type": "array", "items": { "type": "string" } },
+        "verified_facts":     { "type": "array", "items": { "type": "string" } },
+        "unverified":         { "type": "array", "items": { "type": "string" } },
+        "missing_evidence":   { "type": "array", "items": { "type": "string" } },
+        "explanation":        { "type": "string" },
+        "recommended_action": { "type": "string" },
+        "shared_root_cause_with": { "type": "array", "items": { "type": "string" }, "description": "Other case_ids that share the same root-cause entity (for graph-layer test)" }
+      }
+    }
+  }
+}

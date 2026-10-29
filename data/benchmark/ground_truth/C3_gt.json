@@ -1,0 +1,21 @@
+{
+  "case_id": "C3",
+  "verdict": "CONFLICT",
+  "conflict_types": ["wrong_token_contract", "native_gas_instead_of_erc20"],
+  "verified_facts": [
+    "tx 0xc300...00c3 status: success on Polygon block 56200000",
+    "tx.to is 0xCRE000...00C3 (vendor wallet address), NOT a token contract",
+    "No ERC-20 Transfer event emitted — this is a native POL value transfer",
+    "gas_used = gas_limit = 21000 — the signature of a simple native ETH/POL value transfer, not an ERC-20 call",
+    "amount_base_units 500000000000000000000 at decimals=18 = 500 POL (native gas token)",
+    "Invoice requires 500000000 base units of USDC (decimals=6) via contract 0x3c499c...3359",
+    "No USDC was transferred — zero USDC moved in this transaction"
+  ],
+  "unverified": [],
+  "missing_evidence": [
+    "Vendor confirmation of whether they received POL and whether it is acceptable in lieu of USDC"
+  ],
+  "explanation": "500 POL (Polygon's native gas token) was sent to the vendor wallet instead of 500 USDC. The transaction is a native value transfer (gas_used=21000, no ERC-20 Transfer event). The invoice requires USDC specifically. At spot price, 500 POL is not equivalent to 500 USDC — POL is a volatile asset. The vendor received the wrong asset type entirely. The USDC invoice is unpaid.",
+  "recommended_action": "Send 500 USDC (0x3c499c...3359) to the vendor. Confirm whether the vendor will return the 500 POL or whether it will be netted against future invoices. Enforce asset-type validation in the payment gateway: require the ERC-20 Transfer event to match the invoice's token_contract before marking PAID.",
+  "shared_root_cause_with": []
+}

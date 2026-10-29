@@ -1,0 +1,23 @@
+{
+  "case_id": "D4",
+  "verdict": "CONFLICT",
+  "conflict_types": [
+    "destination_mismatch",
+    "shared_syndicate_exploit",
+    "mule_intermediary_forwarding"
+  ],
+  "verified_facts": [
+    "tx 0xd400...00d4 status: success on Polygon block 58510200",
+    "amount matches invoice (18,000 USDC)",
+    "recipient is intermediary 0x7770...0777 instead of approved vendor destination 0x1120...00D4",
+    "intermediary forwarded all 18,000 USDC via tx 0xd4ff...00ff to address 0xdAC17F000000000000000000000000000000ec7A",
+    "address 0xdAC17F000000000000000000000000000000ec7A is the identical attacker address identified in benchmark case A2"
+  ],
+  "unverified": [],
+  "missing_evidence": [],
+  "explanation": "Payment was misrouted to an unapproved mule intermediary wallet which immediately consolidated the funds to the attacker address 0xdAC17F...ec7A from case A2. This proves a shared root cause and coordinated threat syndicate across both incidents.",
+  "recommended_action": "Execute graph cluster freeze petition linking cases A2 and D4; report consolidated attacker wallet 0xdAC17F...ec7A to Circle and law enforcement",
+  "shared_root_cause_with": [
+    "A2"
+  ]
+}

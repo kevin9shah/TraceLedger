@@ -1,0 +1,79 @@
+{
+  "case_id": "D2",
+  "category": "duplicate_shared_cause",
+  "pattern_name": "Refund transaction recorded as secondary outgoing payment — double-credit conflict",
+  "real_world_source": "TRM Labs layered intermediary typology; ERP invoice lifecycle reconciliation anomalies; FinCEN guidance on internal payment posting controls",
+  "chain_id": 137,
+  "chain_name": "polygon-pos",
+  "token_contract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+  "token_symbol_display": "USDC",
+  "simulated": true,
+  "is_tricky": false,
+  "invoice": {
+    "invoice_id": "INV-2024-D2-019",
+    "vendor_id": "VEN-0084",
+    "vendor_name": "Helios Cloud Infrastructure",
+    "amount_display": "6500.000000 USDC",
+    "amount_base_units": "6500000000",
+    "invoice_token_contract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+    "approved_destination": "0x84000000000000000000000000000000000000D2",
+    "approval_timestamp": "2024-07-10T11:00:00Z",
+    "approver_id": "USR-AP-002"
+  },
+  "transaction": {
+    "tx_hash": "0xd2000000000000000000000000000000000000000000000000000000000000d2",
+    "block_number": 58120040,
+    "status": "success",
+    "from_address": "0x84000000000000000000000000000000000000D2",
+    "to_address": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+    "recipient": "0xDeAdBeEf00000000000000000000000000000042",
+    "amount_base_units": "6500000000",
+    "decimals": 6,
+    "timestamp": "2024-07-12T15:30:00Z",
+    "gas_used": 54000,
+    "gas_limit": 70000,
+    "revert_reason": null,
+    "erc20_transfer_event": {
+      "contract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+      "from": "0x84000000000000000000000000000000000000D2",
+      "to": "0xDeAdBeEf00000000000000000000000000000042",
+      "value": "6500000000"
+    },
+    "polygonscan_url": "https://polygonscan.com/tx/0xd2000000000000000000000000000000000000000000000000000000000000d2"
+  },
+  "business_records": [
+    {
+      "record_type": "ledger_entry",
+      "content": {
+        "timestamp": "2024-07-11T09:00:00Z",
+        "entry_type": "PAYMENT_SENT",
+        "invoice_id": "INV-2024-D2-019",
+        "tx_hash": "0xd2aa0000000000000000000000000000000000000000000000000000000000d2",
+        "recorded_amount": "6500.000000 USDC",
+        "status": "PAID"
+      }
+    },
+    {
+      "record_type": "ledger_entry",
+      "content": {
+        "timestamp": "2024-07-12T16:00:00Z",
+        "entry_type": "PAYMENT_SENT",
+        "invoice_id": "INV-2024-D2-019",
+        "tx_hash": "0xd2000000000000000000000000000000000000000000000000000000000000d2",
+        "recorded_amount": "6500.000000 USDC",
+        "status": "PAID",
+        "note": "Automated ingestion parsed incoming refund tx as an additional outgoing payment settlement."
+      }
+    },
+    {
+      "record_type": "email_thread",
+      "content": {
+        "from": "billing@helioscloud.io",
+        "to": "ap@acmecorp.com",
+        "timestamp": "2024-07-12T14:45:00Z",
+        "subject": "Overpayment refund for INV-2024-D2-019",
+        "body": "We processed a full refund of 6,500 USDC back to your treasury wallet via tx 0xd200...00d2 due to order cancellation."
+      }
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "case_id": "A1",
+  "verdict": "CONFLICT",
+  "conflict_types": ["destination_mismatch", "unauthorized_address_change"],
+  "verified_facts": [
+    "tx 0xa100...00a1 status: success on Polygon block 55301244",
+    "token contract 0x3c499c...3359 (native USDC, decimals=6) confirmed in token_registry.json",
+    "Transfer event value 5000000000 base units = 5000.000000 USDC — matches invoice amount exactly",
+    "Transfer event recipient 0xBEC000...0001 does NOT match approved_destination 0xAb5801...eC9B",
+    "Approval log (2024-03-10T09:00Z) records destination as 0xAb5801...eC9B",
+    "Address change email originated from meridi4n-supply.com (digit '4'), not meridian-supply.com"
+  ],
+  "unverified": [
+    "Whether the vendor's legitimate email was actually compromised or the domain lookalike is an external actor",
+    "Whether 0xBEC000...0001 has moved funds onward"
+  ],
+  "missing_evidence": [
+    "No address-change approval in the approval_log — the change from email was never formally approved",
+    "No confirmation from vendor via out-of-band channel (phone) that they requested the address change"
+  ],
+  "explanation": "Payment executed correctly on-chain but was routed to an attacker-controlled address substituted via a Business Email Compromise attack. The sender received a spoofed email from a lookalike domain (meridi4n vs. meridian) instructing them to update the payment destination. No formal address-change approval exists in the approval log. Funds of 5000 USDC are at the attacker address and not recoverable without issuer freeze action.",
+  "recommended_action": "Immediately contact Circle (USDC issuer) with tx hash and attacker address to request emergency freeze. File report with FinCEN and local law enforcement. Contact legitimate vendor via verified phone number to confirm no address change was requested.",
+  "shared_root_cause_with": []
+}

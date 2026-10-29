@@ -1,0 +1,73 @@
+{
+  "case_id": "B1",
+  "category": "status_amount_conflict",
+  "pattern_name": "Reverted transaction — ledger incorrectly marked Paid",
+  "real_world_source": "Polygonscan forensic guide: 'Status: Failed/Reverted — no USDC/USDT tokens transferred, only gas consumed'; FinCEN guidance on payment gateway reconciliation failures",
+  "chain_id": 137,
+  "chain_name": "polygon-pos",
+  "token_contract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+  "token_symbol_display": "USDC",
+  "simulated": true,
+  "is_tricky": true,
+  "tricky_reason": "The tx hash exists on-chain and was submitted successfully (not dropped). A system that only checks 'did we broadcast a tx hash?' marks this PAID. Only checking the actual tx receipt status reveals the revert. Gas was consumed (POL deducted) but zero USDC moved.",
+  "invoice": {
+    "invoice_id": "INV-2024-B1-003",
+    "vendor_id": "VEN-0061",
+    "vendor_name": "Summit Infrastructure Ltd.",
+    "amount_display": "9500.000000 USDC",
+    "amount_base_units": "9500000000",
+    "invoice_token_contract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+    "approved_destination": "0xb1010000000000000000000000000000000000b1",
+    "approval_timestamp": "2024-08-05T09:30:00Z",
+    "approver_id": "USR-AP-004"
+  },
+  "transaction": {
+    "tx_hash": "0xb1000000000000000000000000000000000000000000000000000000000000b1",
+    "block_number": 58800000,
+    "status": "reverted",
+    "from_address": "0xDeAdBeEf00000000000000000000000000000011",
+    "to_address": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+    "recipient": "0xb1010000000000000000000000000000000000b1",
+    "amount_base_units": "0",
+    "decimals": 6,
+    "timestamp": "2024-08-06T14:01:00Z",
+    "gas_used": 25000,
+    "gas_limit": 25000,
+    "revert_reason": "out of gas",
+    "erc20_transfer_event": null,
+    "polygonscan_url": "https://polygonscan.com/tx/0xb1000000000000000000000000000000000000000000000000000000000000b1"
+  },
+  "business_records": [
+    {
+      "record_type": "approval_log",
+      "content": {
+        "timestamp": "2024-08-05T09:30:00Z",
+        "action": "APPROVED",
+        "approver_id": "USR-AP-004",
+        "approved_destination": "0xb1010000000000000000000000000000000000b1",
+        "invoice_id": "INV-2024-B1-003"
+      }
+    },
+    {
+      "record_type": "payment_gateway_log",
+      "content": {
+        "timestamp": "2024-08-06T14:02:00Z",
+        "action": "TX_BROADCAST",
+        "tx_hash": "0xb1000000000000000000000000000000000000000000000000000000000000b1",
+        "note": "Gateway recorded tx hash on broadcast. Status not re-checked after confirmation. Gateway marked invoice PAID on broadcast, not on confirmation."
+      }
+    },
+    {
+      "record_type": "ledger_entry",
+      "content": {
+        "timestamp": "2024-08-06T14:05:00Z",
+        "entry_type": "PAYMENT_SENT",
+        "invoice_id": "INV-2024-B1-003",
+        "tx_hash": "0xb1000000000000000000000000000000000000000000000000000000000000b1",
+        "recorded_destination": "0xb1010000000000000000000000000000000000b1",
+        "status": "PAID",
+        "note": "Status recorded on tx broadcast, not on-chain confirmation. Actual tx reverted."
+      }
+    }
+  ]
+}

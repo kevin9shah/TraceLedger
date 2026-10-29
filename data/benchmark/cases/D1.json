@@ -1,0 +1,75 @@
+{
+  "case_id": "D1",
+  "category": "duplicate_shared_cause",
+  "pattern_name": "Single tx hash referenced on two invoices — only one payment exists",
+  "real_world_source": "FinCEN SAR guidance on duplicate invoice fraud (FIN-2016-A003); SEC enforcement actions on payment processor internal controls; common enterprise ERP copy-paste reconciliation error pattern",
+  "chain_id": 137,
+  "chain_name": "polygon-pos",
+  "token_contract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+  "token_symbol_display": "USDC",
+  "simulated": true,
+  "is_tricky": false,
+  "invoice": {
+    "invoice_id": "INV-2024-D1-001",
+    "vendor_id": "VEN-0025",
+    "vendor_name": "Redwood Supplies Co.",
+    "amount_display": "4000.000000 USDC",
+    "amount_base_units": "4000000000",
+    "invoice_token_contract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+    "approved_destination": "0xd1010000000000000000000000000000000000d1",
+    "approval_timestamp": "2024-07-01T09:00:00Z",
+    "approver_id": "USR-AP-006"
+  },
+  "transaction": {
+    "tx_hash": "0xd1000000000000000000000000000000000000000000000000000000000000d1",
+    "block_number": 57900000,
+    "status": "success",
+    "from_address": "0xDeAdBeEf00000000000000000000000000000031",
+    "to_address": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+    "recipient": "0xd1010000000000000000000000000000000000d1",
+    "amount_base_units": "4000000000",
+    "decimals": 6,
+    "timestamp": "2024-07-02T10:00:00Z",
+    "gas_used": 52000,
+    "gas_limit": 65000,
+    "revert_reason": null,
+    "erc20_transfer_event": {
+      "contract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+      "from": "0xDeAdBeEf00000000000000000000000000000031",
+      "to": "0xd1010000000000000000000000000000000000d1",
+      "value": "4000000000"
+    },
+    "polygonscan_url": "https://polygonscan.com/tx/0xd1000000000000000000000000000000000000000000000000000000000000d1"
+  },
+  "business_records": [
+    {
+      "record_type": "ledger_entry",
+      "content": {
+        "timestamp": "2024-07-02T10:10:00Z",
+        "entry_type": "PAYMENT_SENT",
+        "invoice_id": "INV-2024-D1-001",
+        "tx_hash": "0xd1000000000000000000000000000000000000000000000000000000000000d1",
+        "recorded_amount": "4000.000000 USDC",
+        "status": "PAID"
+      }
+    },
+    {
+      "record_type": "ledger_entry",
+      "content": {
+        "timestamp": "2024-07-02T10:15:00Z",
+        "entry_type": "PAYMENT_SENT",
+        "invoice_id": "INV-2024-D1-002",
+        "tx_hash": "0xd1000000000000000000000000000000000000000000000000000000000000d1",
+        "recorded_amount": "4000.000000 USDC",
+        "status": "PAID",
+        "note": "AP clerk copy-pasted tx hash from INV-D1-001 entry. INV-D1-002 is a separate invoice for a different delivery. Only one on-chain payment exists."
+      }
+    },
+    {
+      "record_type": "audit_trail",
+      "content": {
+        "note": "Both INV-2024-D1-001 and INV-2024-D1-002 reference the same tx hash 0xd100...00d1. On-chain, this tx transferred exactly 4000000000 base units once. The vendor received 4000 USDC total, not 8000 USDC."
+      }
+    }
+  ]
+}

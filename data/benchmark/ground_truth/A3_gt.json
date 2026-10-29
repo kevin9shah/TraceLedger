@@ -1,0 +1,24 @@
+{
+  "case_id": "A3",
+  "verdict": "CONFLICT",
+  "conflict_types": ["destination_mismatch", "unapproved_address_change"],
+  "verified_facts": [
+    "tx 0xa300...00a3 status: success on Polygon block 53211007",
+    "token contract 0xc2132d...e8f (USDT0/Tether, decimals=6) confirmed in token_registry.json",
+    "Transfer value 3200000000 = 3200.000000 USDT — matches invoice amount",
+    "Transfer recipient 0xNEW000...0003 does NOT match approved_destination 0xOLD000...0003 recorded at approval time (2024-01-15)",
+    "address_change_log shows the new address was entered by USR-OPS-002 on 2024-02-06 with approved_by = null",
+    "No second approval entry in approval_log covering the address change for this invoice"
+  ],
+  "unverified": [
+    "Whether the vendor's original wallet was genuinely compromised as claimed",
+    "Whether 0xNEW000...0003 is actually controlled by the legitimate vendor"
+  ],
+  "missing_evidence": [
+    "Out-of-band confirmation from vendor that they own 0xNEW000...0003",
+    "Formal address-change approval for INV-2024-A3-019"
+  ],
+  "explanation": "Payment was sent to a new vendor address that was entered into the system without formal approval for this invoice. The address change was logged by an operator after a vendor phone call claiming wallet compromise, but no approver signed off on the change specifically for INV-2024-A3-019. The payment itself is on-chain and final; the conflict is a controls failure — payment went to an address that was never formally approved at the invoice level.",
+  "recommended_action": "Obtain out-of-band confirmation from vendor that 0xNEW000...0003 is their address. If confirmed legitimate, create retroactive approval record and close case. If unconfirmed, treat as potential BEC and contact Tether for freeze.",
+  "shared_root_cause_with": []
+}

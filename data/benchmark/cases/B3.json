@@ -1,0 +1,82 @@
+{
+  "case_id": "B3",
+  "category": "status_amount_conflict",
+  "pattern_name": "USDT paid on USDC invoice — amount matches, wrong asset",
+  "real_world_source": "Polygonscan forensic guide: 'USDT vs USDC token ID mismatch on multi-token checkouts'; Circle.com USDC developer documentation on contract-level identity; github.com stablecoin decimal mismatch research",
+  "chain_id": 137,
+  "chain_name": "polygon-pos",
+  "token_contract": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+  "token_symbol_display": "USDT",
+  "simulated": true,
+  "is_tricky": true,
+  "tricky_reason": "Both USDC and USDT on Polygon use 6 decimals. The numeric amount (50000000000 = 50000 units) is identical. A reconciler matching only on amount and status marks this CLEAN. Only checking the token contract address against the invoice's specified token contract reveals the wrong-asset conflict.",
+  "invoice": {
+    "invoice_id": "INV-2024-B3-022",
+    "vendor_id": "VEN-0044",
+    "vendor_name": "Helios Technology Partners",
+    "amount_display": "50000.000000 USDC",
+    "amount_base_units": "50000000000",
+    "invoice_token_contract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+    "approved_destination": "0xb3010000000000000000000000000000000000b3",
+    "approval_timestamp": "2024-10-01T10:00:00Z",
+    "approver_id": "USR-AP-006"
+  },
+  "transaction": {
+    "tx_hash": "0xb3000000000000000000000000000000000000000000000000000000000000b3",
+    "block_number": 59800000,
+    "status": "success",
+    "from_address": "0xDeAdBeEf00000000000000000000000000000013",
+    "to_address": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+    "recipient": "0xb3010000000000000000000000000000000000b3",
+    "amount_base_units": "50000000000",
+    "decimals": 6,
+    "timestamp": "2024-10-02T09:14:00Z",
+    "gas_used": 52000,
+    "gas_limit": 65000,
+    "revert_reason": null,
+    "erc20_transfer_event": {
+      "contract": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+      "from": "0xDeAdBeEf00000000000000000000000000000013",
+      "to": "0xb3010000000000000000000000000000000000b3",
+      "value": "50000000000"
+    },
+    "polygonscan_url": "https://polygonscan.com/tx/0xb3000000000000000000000000000000000000000000000000000000000000b3"
+  },
+  "business_records": [
+    {
+      "record_type": "approval_log",
+      "content": {
+        "timestamp": "2024-10-01T10:00:00Z",
+        "action": "APPROVED",
+        "approver_id": "USR-AP-006",
+        "approved_destination": "0xb3010000000000000000000000000000000000b3",
+        "invoice_id": "INV-2024-B3-022",
+        "invoice_token": "USDC",
+        "invoice_token_contract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359"
+      }
+    },
+    {
+      "record_type": "payment_gateway_log",
+      "content": {
+        "timestamp": "2024-10-02T09:10:00Z",
+        "action": "ASSET_SELECTED",
+        "asset_selected": "USDT",
+        "token_contract_used": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "note": "Operator selected USDT from multi-asset dropdown instead of USDC. Both show as $50,000. No contract-level check enforced at submission."
+      }
+    },
+    {
+      "record_type": "ledger_entry",
+      "content": {
+        "timestamp": "2024-10-02T09:20:00Z",
+        "entry_type": "PAYMENT_SENT",
+        "invoice_id": "INV-2024-B3-022",
+        "tx_hash": "0xb3000000000000000000000000000000000000000000000000000000000000b3",
+        "recorded_amount": "50000.000000",
+        "recorded_destination": "0xb3010000000000000000000000000000000000b3",
+        "status": "PAID",
+        "note": "Ledger did not record which token contract was used. Matched on amount only."
+      }
+    }
+  ]
+}

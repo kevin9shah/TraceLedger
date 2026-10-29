@@ -1,0 +1,79 @@
+{
+  "case_id": "C2",
+  "category": "wrong_asset",
+  "pattern_name": "USDT0 contract paid — system rejected it as unknown symbol",
+  "real_world_source": "TraceLedger direct discovery at CP1 (2026-10-29, DECISIONS.md D6): canonical Polygon Tether contract 0xc2132d reports symbol='USDT0' and name='USDT0' due to the USDT0/LayerZero OFT migration. Verified at block 96347626 via scripts/verify_tokens.py. This is the defining real-world finding of this codebase.",
+  "chain_id": 137,
+  "chain_name": "polygon-pos",
+  "token_contract": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+  "token_symbol_display": "USDT0",
+  "simulated": true,
+  "is_tricky": true,
+  "tricky_reason": "The contract 0xc2132d is the canonical, authoritative Polygon Tether address used by every major explorer and wallet. It now reports symbol='USDT0'. A rule that whitelists tokens by symbol='USDT' will reject this payment as an unknown/unrecognized token — a false negative against the correct contract. Only contract-address-based identity (as enforced by TraceLedger D6) correctly identifies this as the Tether token.",
+  "invoice": {
+    "invoice_id": "INV-2024-C2-016",
+    "vendor_id": "VEN-0063",
+    "vendor_name": "Nexus Trade Finance",
+    "amount_display": "10000.000000 USDT",
+    "amount_base_units": "10000000000",
+    "invoice_token_contract": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+    "approved_destination": "0xc2010000000000000000000000000000000000c2",
+    "approval_timestamp": "2024-04-20T09:00:00Z",
+    "approver_id": "USR-AP-004"
+  },
+  "transaction": {
+    "tx_hash": "0xc2000000000000000000000000000000000000000000000000000000000000c2",
+    "block_number": 55900000,
+    "status": "success",
+    "from_address": "0xDeAdBeEf00000000000000000000000000000022",
+    "to_address": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+    "recipient": "0xc2010000000000000000000000000000000000c2",
+    "amount_base_units": "10000000000",
+    "decimals": 6,
+    "timestamp": "2024-04-21T13:00:00Z",
+    "gas_used": 52000,
+    "gas_limit": 65000,
+    "revert_reason": null,
+    "erc20_transfer_event": {
+      "contract": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+      "from": "0xDeAdBeEf00000000000000000000000000000022",
+      "to": "0xc2010000000000000000000000000000000000c2",
+      "value": "10000000000"
+    },
+    "polygonscan_url": "https://polygonscan.com/tx/0xc2000000000000000000000000000000000000000000000000000000000000c2"
+  },
+  "business_records": [
+    {
+      "record_type": "approval_log",
+      "content": {
+        "timestamp": "2024-04-20T09:00:00Z",
+        "action": "APPROVED",
+        "approver_id": "USR-AP-004",
+        "approved_destination": "0xc2010000000000000000000000000000000000c2",
+        "invoice_token_contract": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "invoice_id": "INV-2024-C2-016"
+      }
+    },
+    {
+      "record_type": "payment_gateway_log",
+      "content": {
+        "timestamp": "2024-04-21T13:05:00Z",
+        "action": "RECONCILIATION_REJECTION",
+        "tx_hash": "0xc2000000000000000000000000000000000000000000000000000000000000c2",
+        "rejection_reason": "Token symbol 'USDT0' not in approved symbol whitelist. Expected 'USDT'. Payment flagged as UNMATCHED.",
+        "note": "Reconciler matched tokens by symbol string. Contract 0xc2132d now returns symbol='USDT0' due to LayerZero USDT0 migration. Reconciler is unaware of the migration."
+      }
+    },
+    {
+      "record_type": "ledger_entry",
+      "content": {
+        "timestamp": "2024-04-21T13:10:00Z",
+        "entry_type": "PAYMENT_UNMATCHED",
+        "invoice_id": "INV-2024-C2-016",
+        "tx_hash": "0xc2000000000000000000000000000000000000000000000000000000000000c2",
+        "status": "UNMATCHED",
+        "note": "Flagged as unknown token. Invoice remains open."
+      }
+    }
+  ]
+}

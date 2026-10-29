@@ -1,0 +1,20 @@
+{
+  "case_id": "D3",
+  "verdict": "DUPLICATE",
+  "conflict_types": [
+    "ambiguous_invoice_satisfaction",
+    "unsettled_invoice_marked_paid"
+  ],
+  "verified_facts": [
+    "tx 0xd300...00d3 status: success on Polygon block 58340100",
+    "single on-chain transfer of 3200 USDC from payer to vendor VEN-0033",
+    "two invoices exist for VEN-0033: INV-2024-D3-001 (3200 USDC) and INV-2024-D3-002 (3200 USDC)",
+    "tx hash 0xd300...00d3 was credited against both invoices in the ERP, but on-chain total paid is only 3200 USDC, leaving 3200 USDC outstanding"
+  ],
+  "unverified": [],
+  "missing_evidence": [
+    "Transaction proof for the remaining 3200 USDC owed across the two invoices"
+  ],
+  "explanation": "Two identical invoices from the same vendor each for 3,200 USDC were active in the same billing cycle. Only one payment of 3,200 USDC was executed on-chain, but the automated reconciliation system linked the single transaction to both invoices, leaving one invoice secretly unsettled.",
+  "recommended_action": "Apply tx 0xd300...00d3 exclusively to INV-2024-D3-001; revert INV-2024-D3-002 to UNPAID; initiate disbursement for INV-2024-D3-002"
+}

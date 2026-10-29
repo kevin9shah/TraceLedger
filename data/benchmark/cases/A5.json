@@ -1,0 +1,77 @@
+{
+  "case_id": "A5",
+  "category": "destination_conflict",
+  "pattern_name": "Payment sent to smart contract address — funds inaccessible",
+  "real_world_source": "Polygonscan forensic guide — eth_getCode returns non-zero for contract addresses; TraceLedger D14 discovery (Cake Wallet returned a contract address as a wallet receive address); documented pattern in Circle USDC developer docs",
+  "chain_id": 137,
+  "chain_name": "polygon-pos",
+  "token_contract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+  "token_symbol_display": "USDC",
+  "simulated": true,
+  "is_tricky": true,
+  "tricky_reason": "The tx is on-chain success and the amount is correct. The conflict is that the recipient is a smart contract (e.g., a DEX router) that has no withdraw function for arbitrary ERC-20 transfers. Rules checking only status+amount+token will pass this as CLEAN. Only a check against eth_getCode (or a known-contracts list) reveals the inaccessibility risk.",
+  "invoice": {
+    "invoice_id": "INV-2024-A5-044",
+    "vendor_id": "VEN-0033",
+    "vendor_name": "Hartwell Consulting Group",
+    "amount_display": "2000.000000 USDC",
+    "amount_base_units": "2000000000",
+    "invoice_token_contract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+    "approved_destination": "0x1a2B460579Bc0f32Eb445f785b6d85D1a4E2D00A",
+    "approval_timestamp": "2024-06-01T09:00:00Z",
+    "approver_id": "USR-AP-005"
+  },
+  "transaction": {
+    "tx_hash": "0xa5000000000000000000000000000000000000000000000000000000000000a5",
+    "block_number": 57100300,
+    "status": "success",
+    "from_address": "0xDeAdBeEf00000000000000000000000000000005",
+    "to_address": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+    "recipient": "0xa5C00000000000000000000000000000000000a5",
+    "amount_base_units": "2000000000",
+    "decimals": 6,
+    "timestamp": "2024-06-02T11:33:00Z",
+    "gas_used": 52000,
+    "gas_limit": 65000,
+    "revert_reason": null,
+    "erc20_transfer_event": {
+      "contract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+      "from": "0xDeAdBeEf00000000000000000000000000000005",
+      "to": "0xa5C00000000000000000000000000000000000a5",
+      "value": "2000000000"
+    },
+    "polygonscan_url": "https://polygonscan.com/tx/0xa5000000000000000000000000000000000000000000000000000000000000a5"
+  },
+  "business_records": [
+    {
+      "record_type": "approval_log",
+      "content": {
+        "timestamp": "2024-06-01T09:00:00Z",
+        "action": "APPROVED",
+        "approver_id": "USR-AP-005",
+        "approved_destination": "0x1a2B460579Bc0f32Eb445f785b6d85D1a4E2D00A",
+        "invoice_id": "INV-2024-A5-044"
+      }
+    },
+    {
+      "record_type": "payment_gateway_log",
+      "content": {
+        "timestamp": "2024-06-02T11:28:00Z",
+        "action": "ADDRESS_ENTERED_MANUALLY",
+        "address_used": "0xa5C00000000000000000000000000000000000a5",
+        "note": "Operator manually typed the address from a screenshot. Typed the QuickSwap router contract address instead of the vendor wallet. eth_getCode on this address returns non-zero bytecode — it is a smart contract."
+      }
+    },
+    {
+      "record_type": "ledger_entry",
+      "content": {
+        "timestamp": "2024-06-02T11:40:00Z",
+        "entry_type": "PAYMENT_SENT",
+        "invoice_id": "INV-2024-A5-044",
+        "tx_hash": "0xa5000000000000000000000000000000000000000000000000000000000000a5",
+        "recorded_destination": "0xa5C00000000000000000000000000000000000a5",
+        "status": "PAID"
+      }
+    }
+  ]
+}

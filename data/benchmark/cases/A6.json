@@ -1,0 +1,88 @@
+{
+  "case_id": "A6",
+  "category": "destination_conflict",
+  "pattern_name": "Cached old address — payer system did not propagate approved address change",
+  "real_world_source": "TRM Labs behavioral anomaly category; FinCEN guidance on payment system idempotency and stale-state failures in automated payment rails",
+  "chain_id": 137,
+  "chain_name": "polygon-pos",
+  "token_contract": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+  "token_symbol_display": "USDT",
+  "simulated": true,
+  "is_tricky": false,
+  "invoice": {
+    "invoice_id": "INV-2024-A6-058",
+    "vendor_id": "VEN-0028",
+    "vendor_name": "Orion Data Services",
+    "amount_display": "6000.000000 USDT",
+    "amount_base_units": "6000000000",
+    "invoice_token_contract": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+    "approved_destination": "0xa6010000000000000000000000000000000000a6",
+    "approval_timestamp": "2024-07-10T11:00:00Z",
+    "approver_id": "USR-AP-009"
+  },
+  "transaction": {
+    "tx_hash": "0xa6000000000000000000000000000000000000000000000000000000000000a6",
+    "block_number": 58002111,
+    "status": "success",
+    "from_address": "0xDeAdBeEf00000000000000000000000000000006",
+    "to_address": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+    "recipient": "0xa6020000000000000000000000000000000000a6",
+    "amount_base_units": "6000000000",
+    "decimals": 6,
+    "timestamp": "2024-07-11T08:15:00Z",
+    "gas_used": 51900,
+    "gas_limit": 65000,
+    "revert_reason": null,
+    "erc20_transfer_event": {
+      "contract": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+      "from": "0xDeAdBeEf00000000000000000000000000000006",
+      "to": "0xa6020000000000000000000000000000000000a6",
+      "value": "6000000000"
+    },
+    "polygonscan_url": "https://polygonscan.com/tx/0xa6000000000000000000000000000000000000000000000000000000000000a6"
+  },
+  "business_records": [
+    {
+      "record_type": "address_change_log",
+      "content": {
+        "timestamp": "2024-07-05T09:00:00Z",
+        "vendor_id": "VEN-0028",
+        "old_address": "0xa6020000000000000000000000000000000000a6",
+        "new_address": "0xa6010000000000000000000000000000000000a6",
+        "changed_by": "USR-AP-009",
+        "approved_by": "USR-CFO-001",
+        "note": "Vendor requested address update via secure vendor portal. Approved and recorded 2024-07-05."
+      }
+    },
+    {
+      "record_type": "approval_log",
+      "content": {
+        "timestamp": "2024-07-10T11:00:00Z",
+        "action": "APPROVED",
+        "approver_id": "USR-AP-009",
+        "approved_destination": "0xa6010000000000000000000000000000000000a6",
+        "invoice_id": "INV-2024-A6-058"
+      }
+    },
+    {
+      "record_type": "payment_gateway_log",
+      "content": {
+        "timestamp": "2024-07-11T08:10:00Z",
+        "action": "ADDRESS_RESOLVED_FROM_CACHE",
+        "resolved_address": "0xa6020000000000000000000000000000000000a6",
+        "note": "Payment automation module resolved vendor address from a local cache that was last refreshed 2024-06-28, before the address change was recorded. Cache TTL was 30 days."
+      }
+    },
+    {
+      "record_type": "ledger_entry",
+      "content": {
+        "timestamp": "2024-07-11T08:20:00Z",
+        "entry_type": "PAYMENT_SENT",
+        "invoice_id": "INV-2024-A6-058",
+        "tx_hash": "0xa6000000000000000000000000000000000000000000000000000000000000a6",
+        "recorded_destination": "0xa6020000000000000000000000000000000000a6",
+        "status": "PAID"
+      }
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "case_id": "E1",
+  "category": "sanctions_frozen",
+  "pattern_name": "Post-settlement OFAC SDN designation — recipient address blacklisted by Circle",
+  "real_world_source": "US Treasury OFAC SDN sanctions lists; Circle Centre Consortium blacklist mechanics; Tornado Cash designated address actions (2022-2024)",
+  "chain_id": 137,
+  "chain_name": "polygon-pos",
+  "token_contract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+  "token_symbol_display": "USDC",
+  "simulated": true,
+  "is_tricky": false,
+  "invoice": {
+    "invoice_id": "INV-2024-E1-501",
+    "vendor_id": "VEN-0419",
+    "vendor_name": "Oasis Global Logistics Ltd.",
+    "amount_display": "25000.000000 USDC",
+    "amount_base_units": "25000000000",
+    "invoice_token_contract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+    "approved_destination": "0x0fac0000000000000000000000000000000000e1",
+    "approval_timestamp": "2024-08-01T08:00:00Z",
+    "approver_id": "USR-AP-008"
+  },
+  "transaction": {
+    "tx_hash": "0xe1000000000000000000000000000000000000000000000000000000000000e1",
+    "block_number": 59102400,
+    "status": "success",
+    "from_address": "0xDeAdBeEf00000000000000000000000000000078",
+    "to_address": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+    "recipient": "0x0fac0000000000000000000000000000000000e1",
+    "amount_base_units": "25000000000",
+    "decimals": 6,
+    "timestamp": "2024-08-02T10:15:00Z",
+    "gas_used": 54000,
+    "gas_limit": 68000,
+    "revert_reason": null,
+    "erc20_transfer_event": {
+      "contract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+      "from": "0xDeAdBeEf00000000000000000000000000000078",
+      "to": "0x0fac0000000000000000000000000000000000e1",
+      "value": "25000000000"
+    },
+    "polygonscan_url": "https://polygonscan.com/tx/0xe1000000000000000000000000000000000000000000000000000000000000e1"
+  },
+  "business_records": [
+    {
+      "record_type": "ledger_entry",
+      "content": {
+        "timestamp": "2024-08-02T10:20:00Z",
+        "entry_type": "PAYMENT_SENT",
+        "invoice_id": "INV-2024-E1-501",
+        "tx_hash": "0xe1000000000000000000000000000000000000000000000000000000000000e1",
+        "status": "PAID"
+      }
+    },
+    {
+      "record_type": "audit_trail",
+      "content": {
+        "timestamp": "2024-08-03T14:00:00Z",
+        "compliance_alert": "OFAC SDN Blacklist update",
+        "target_address": "0x0fac0000000000000000000000000000000000e1",
+        "action_taken_by_issuer": "Circle Blacklisted Address (isBlacklisted=true)",
+        "note": "Recipient address was sanctioned by OFAC 24 hours after on-chain transfer. Circle invoked Blacklist() method on Polygon contract 0x3c49...3359."
+      }
+    }
+  ]
+}

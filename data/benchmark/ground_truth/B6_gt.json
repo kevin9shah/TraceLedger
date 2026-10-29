@@ -1,0 +1,23 @@
+{
+  "case_id": "B6",
+  "verdict": "DUPLICATE",
+  "conflict_types": ["duplicate_payment", "pending_tx_late_mining"],
+  "verified_facts": [
+    "tx 0xb601...00b6 status: success on Polygon block 61400000",
+    "token contract 0xc2132d...e8f (USDT0/Tether, decimals=6) confirmed in token_registry.json",
+    "Transfer: 7500000000 base units = 7500.000000 USDT to 0xSBC...00B6",
+    "payment_gateway_log confirms tx submitted with very low gas price (0.001 gwei) during network congestion",
+    "2-hour timeout triggered automatic retry at 12:00 — tx 0xb602 submitted with standard gas",
+    "gateway_log documents both txs were eventually mined (different nonces, no replacement)",
+    "Vendor received 15000.000000 USDT total for a 7500 USDT invoice"
+  ],
+  "unverified": [
+    "On-chain status of tx 0xb602...00b6 (documented in gateway log but not in primary tx record)"
+  ],
+  "missing_evidence": [
+    "tx 0xb602 receipt — needed to confirm total overpayment"
+  ],
+  "explanation": "A low-gas transaction submitted during Polygon network congestion sat in the mempool for 4 hours before being mined. The payment gateway's 2-hour retry timeout incorrectly assumed the transaction had dropped and submitted a replacement with a different nonce and higher gas. Both transactions were eventually mined, resulting in a 15000 USDT double payment for a 7500 USDT invoice. The root cause is the automation treating 'no confirmation in 2h' as 'dropped', without checking mempool status before re-submitting.",
+  "recommended_action": "Check tx 0xb602 on-chain. Contact vendor to recover the duplicate 7500 USDT. Fix automation: before any retry, check the original transaction's mempool/pending status via RPC. Use nonce replacement (same nonce, higher gas) rather than a new tx to prevent double-spend.",
+  "shared_root_cause_with": []
+}
