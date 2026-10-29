@@ -1,0 +1,79 @@
+{
+  "case_id": "A4",
+  "category": "destination_conflict",
+  "pattern_name": "Internal ops error — payment routed to wrong vendor with similar name",
+  "real_world_source": "SEC enforcement actions on payment processor internal controls failures; FinCEN SAR guidance on internal fraud and misrouted payments",
+  "chain_id": 137,
+  "chain_name": "polygon-pos",
+  "token_contract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+  "token_symbol_display": "USDC",
+  "simulated": true,
+  "is_tricky": false,
+  "invoice": {
+    "invoice_id": "INV-2024-A4-031",
+    "vendor_id": "VEN-0055",
+    "vendor_name": "Global Transit Solutions",
+    "amount_display": "8750.000000 USDC",
+    "amount_base_units": "8750000000",
+    "invoice_token_contract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+    "approved_destination": "0xa4010000000000000000000000000000000000a4",
+    "approval_timestamp": "2024-05-20T10:00:00Z",
+    "approver_id": "USR-AP-002"
+  },
+  "transaction": {
+    "tx_hash": "0xa4000000000000000000000000000000000000000000000000000000000000a4",
+    "block_number": 56744000,
+    "status": "success",
+    "from_address": "0xDeAdBeEf00000000000000000000000000000004",
+    "to_address": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+    "recipient": "0xa4020000000000000000000000000000000000a4",
+    "amount_base_units": "8750000000",
+    "decimals": 6,
+    "timestamp": "2024-05-21T13:05:22Z",
+    "gas_used": 52100,
+    "gas_limit": 65000,
+    "revert_reason": null,
+    "erc20_transfer_event": {
+      "contract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+      "from": "0xDeAdBeEf00000000000000000000000000000004",
+      "to": "0xa4020000000000000000000000000000000000a4",
+      "value": "8750000000"
+    },
+    "polygonscan_url": "https://polygonscan.com/tx/0xa4000000000000000000000000000000000000000000000000000000000000a4"
+  },
+  "business_records": [
+    {
+      "record_type": "approval_log",
+      "content": {
+        "timestamp": "2024-05-20T10:00:00Z",
+        "action": "APPROVED",
+        "approver_id": "USR-AP-002",
+        "approved_destination": "0xa4010000000000000000000000000000000000a4",
+        "invoice_id": "INV-2024-A4-031",
+        "vendor_id": "VEN-0055",
+        "vendor_name": "Global Transit Solutions"
+      }
+    },
+    {
+      "record_type": "payment_gateway_log",
+      "content": {
+        "timestamp": "2024-05-21T13:00:00Z",
+        "action": "VENDOR_SELECTED",
+        "selected_vendor_id": "VEN-0056",
+        "selected_vendor_name": "Global Transit Solutions LLC",
+        "note": "Two vendors share near-identical display names. Operator selected VEN-0056 (Global Transit Solutions LLC) instead of VEN-0055 (Global Transit Solutions). VEN-0056 address is 0xGTS20...00A4."
+      }
+    },
+    {
+      "record_type": "ledger_entry",
+      "content": {
+        "timestamp": "2024-05-21T13:10:00Z",
+        "entry_type": "PAYMENT_SENT",
+        "invoice_id": "INV-2024-A4-031",
+        "tx_hash": "0xa4000000000000000000000000000000000000000000000000000000000000a4",
+        "recorded_destination": "0xa4020000000000000000000000000000000000a4",
+        "status": "PAID"
+      }
+    }
+  ]
+}

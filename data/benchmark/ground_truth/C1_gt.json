@@ -1,0 +1,22 @@
+{
+  "case_id": "C1",
+  "verdict": "CONFLICT",
+  "conflict_types": ["wrong_token_contract", "native_vs_bridged_usdc"],
+  "verified_facts": [
+    "tx 0xc100...00c1 status: success on Polygon block 55500000",
+    "ERC-20 Transfer event emitted by contract 0x2791Bca1...84174 (USDC.e / bridged USD Coin PoS)",
+    "Invoice INV-2024-C1-009 specifies token contract 0x3c499c...3359 (native USD Coin, Circle-issued)",
+    "Both contracts report symbol='USDC' and decimals=6 — they are NOT the same asset",
+    "Transfer amount 25000000000 = 25000.000000 — matches invoice amount numerically",
+    "Destination 0xPIN1...00C1 matches approved_destination",
+    "payment_gateway_log confirms payer wallet defaulted to USDC.e without contract-level validation"
+  ],
+  "unverified": [
+    "Whether the vendor's contract or treasury policy requires specifically native USDC vs. USDC.e",
+    "Whether USDC.e is acceptable to the vendor in practice (some vendors treat them as interchangeable)"
+  ],
+  "missing_evidence": [],
+  "explanation": "The invoice required native USDC (0x3c499c, Circle-issued on Polygon) but 25000 USDC.e (0x2791Bca1, bridged from Ethereum via Polygon PoS bridge) was transferred instead. Both tokens display as 'USDC' in wallet UIs and have 6 decimals. The conflict is invisible to any system that matches on symbol or amount alone. USDC.e is a distinct asset on a distinct contract and may not be accepted by the vendor's treasury system, liquidity pool, or compliance framework.",
+  "recommended_action": "Confirm with vendor whether USDC.e is acceptable. If not, send native USDC (0x3c499c...3359) and arrange bridging or swap of the USDC.e by the vendor or payer. Enforce contract-address validation at payment submission — never match on token symbol alone.",
+  "shared_root_cause_with": []
+}

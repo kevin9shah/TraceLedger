@@ -1,0 +1,18 @@
+{
+  "case_id": "E1",
+  "verdict": "SANCTIONS_EXPOSURE",
+  "conflict_types": [
+    "ofac_sdn_designation",
+    "issuer_asset_freeze"
+  ],
+  "verified_facts": [
+    "tx 0xe100...00e1 status: success on Polygon block 59102400",
+    "transferred 25,000 USDC to vendor address 0x0fac...00e1 matching invoice approved destination",
+    "destination address 0x0fac...00e1 subsequently designated under OFAC SDN sanctions list",
+    "Circle executed Blacklist() function on-chain locking the funds at recipient address"
+  ],
+  "unverified": [],
+  "missing_evidence": [],
+  "explanation": "Payment was legally approved and settled on-chain, but the recipient address was subsequently added to the OFAC SDN list and frozen on-chain by Circle. While destination matched at execution time, holding or further transacting presents severe sanctions liability.",
+  "recommended_action": "Freeze internal counterparty account immediately; file OFAC blocked property report; notify legal counsel and bank compliance"
+}

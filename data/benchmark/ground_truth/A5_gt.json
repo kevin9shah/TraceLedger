@@ -1,0 +1,22 @@
+{
+  "case_id": "A5",
+  "verdict": "CONFLICT",
+  "conflict_types": ["destination_mismatch", "payment_to_contract_address"],
+  "verified_facts": [
+    "tx 0xa500...00a5 status: success on Polygon block 57100300",
+    "token contract 0x3c499c...3359 (native USDC, decimals=6) confirmed in token_registry.json",
+    "Transfer value 2000000000 = 2000.000000 USDC — matches invoice amount",
+    "Transfer recipient 0xa5C000...00a5 does NOT match approved_destination 0x1a2B46...D00A",
+    "eth_getCode on 0xa5C000...00a5 returns non-zero bytecode — this is a smart contract, not a wallet",
+    "Smart contract at recipient does not implement a recover() or withdrawal function for arbitrary ERC-20 tokens"
+  ],
+  "unverified": [
+    "Whether the contract owner has any governance path to retrieve accidentally sent tokens"
+  ],
+  "missing_evidence": [
+    "Contract ABI for 0xa5C000...00a5 to definitively confirm lack of withdrawal function"
+  ],
+  "explanation": "2000 USDC was sent to a smart contract address (likely a DEX router) instead of the approved vendor wallet. The transaction was valid on-chain and the transfer event confirms receipt by the contract. However, standard DEX router contracts do not implement token rescue functions for unsolicited ERC-20 transfers, making these funds practically unrecoverable. The approved destination and the actual recipient are entirely different addresses.",
+  "recommended_action": "Treat funds as lost. Contact the contract's protocol team as a long-shot recovery attempt. Re-issue payment to the correct vendor address 0x1a2B46...D00A after out-of-band address confirmation. Implement paste-and-verify workflow to prevent manual address entry errors.",
+  "shared_root_cause_with": []
+}

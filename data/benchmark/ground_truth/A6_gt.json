@@ -1,0 +1,21 @@
+{
+  "case_id": "A6",
+  "verdict": "CONFLICT",
+  "conflict_types": ["destination_mismatch", "stale_cached_address"],
+  "verified_facts": [
+    "tx 0xa600...00a6 status: success on Polygon block 58002111",
+    "token contract 0xc2132d...e8f (USDT0/Tether, decimals=6) confirmed in token_registry.json",
+    "Transfer value 6000000000 = 6000.000000 USDT — matches invoice amount",
+    "Transfer recipient 0xOLDA6...0006 does NOT match approved_destination 0xNEWA6...0006",
+    "address_change_log confirms old address was replaced with new address on 2024-07-05 with proper approval",
+    "approval_log for this invoice explicitly records approved_destination as the NEW address",
+    "payment_gateway_log confirms automation resolved address from a cache last refreshed 2024-06-28 — before the change"
+  ],
+  "unverified": [
+    "Whether the old address 0xOLDA6...0006 is still controlled by the legitimate vendor or has been abandoned/compromised"
+  ],
+  "missing_evidence": [],
+  "explanation": "6000 USDT was paid to an outdated vendor address because the payment automation module resolved the recipient from a local cache with a 30-day TTL. The vendor's address was legitimately changed and approved 6 days before payment, but the cache was not invalidated on address update. The invoice approval record explicitly shows the new address as the approved destination. This is a payment-system configuration failure, not fraud.",
+  "recommended_action": "Contact vendor to confirm whether they still control the old address and can access the funds. If yes, vendor should forward payment themselves. Fix the payment automation to invalidate vendor address cache entries on address change events. Re-evaluate 30-day cache TTL policy.",
+  "shared_root_cause_with": []
+}

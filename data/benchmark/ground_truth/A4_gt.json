@@ -1,0 +1,21 @@
+{
+  "case_id": "A4",
+  "verdict": "CONFLICT",
+  "conflict_types": ["destination_mismatch", "wrong_vendor_selected"],
+  "verified_facts": [
+    "tx 0xa400...00a4 status: success on Polygon block 56744000",
+    "token contract 0x3c499c...3359 (native USDC, decimals=6) confirmed in token_registry.json",
+    "Transfer value 8750000000 = 8750.000000 USDC — matches invoice amount",
+    "Transfer recipient 0xGTS2000...00A4 (VEN-0056) does NOT match approved_destination 0xGTS1000...00A4 (VEN-0055)",
+    "payment_gateway_log shows operator selected VEN-0056 (Global Transit Solutions LLC) not VEN-0055 (Global Transit Solutions)"
+  ],
+  "unverified": [
+    "Whether VEN-0056 will voluntarily return the misdirected funds"
+  ],
+  "missing_evidence": [
+    "Confirmation from VEN-0055 (correct vendor) that they have not received payment"
+  ],
+  "explanation": "Payment was accidentally sent to the wrong vendor (VEN-0056, Global Transit Solutions LLC) instead of the invoice's approved vendor (VEN-0055, Global Transit Solutions). The two vendors have near-identical display names and distinct wallet addresses. The operator selected the wrong vendor ID during payment processing. No fraud is indicated — this is an internal operational error. VEN-0055's invoice remains unpaid; VEN-0056 received funds to which they are not entitled.",
+  "recommended_action": "Contact VEN-0056 to request return of 8750 USDC. Issue the correct payment to VEN-0055. Implement vendor deduplication controls in the payment gateway to prevent same-name collisions.",
+  "shared_root_cause_with": []
+}

@@ -1,0 +1,22 @@
+{
+  "case_id": "B5",
+  "verdict": "DUPLICATE",
+  "conflict_types": ["duplicate_payment", "gateway_idempotency_failure"],
+  "verified_facts": [
+    "tx 0xb501...00b5 status: success on Polygon block 60800000",
+    "token contract 0x3c499c...3359 (native USDC, decimals=6) confirmed in token_registry.json",
+    "tx 0xb501 Transfer: 15000000000 base units = 15000.000000 USDC to 0xQFS...00B5",
+    "payment_gateway_log documents tx 0xb502...00b5 as second submission for same invoice due to webhook timeout",
+    "Both tx confirmed on-chain; vendor received 30000.000000 USDC for a 15000 USDC invoice",
+    "Only tx 0xb501 is recorded in the ledger; tx 0xb502 is unlinked"
+  ],
+  "unverified": [
+    "On-chain status of tx 0xb502...00b5 (documented in gateway log but not in the case transaction record — requires independent lookup)"
+  ],
+  "missing_evidence": [
+    "tx 0xb502 receipt — needed to confirm the overpayment amount"
+  ],
+  "explanation": "A webhook timeout caused the payment gateway to re-submit the same 15000 USDC payment twice. Both transactions were confirmed on-chain. The vendor received 30000 USDC in total against a 15000 USDC invoice. The ledger only records the first transaction. The second transaction is an orphaned overpayment that needs to be recovered from the vendor.",
+  "recommended_action": "Verify tx 0xb502 on-chain. Contact vendor to request return of the duplicate 15000 USDC overpayment. Implement idempotency keys in the payment gateway: an invoice must be locked to PROCESSING state before submission, preventing re-submission until on-chain confirmation or explicit human override.",
+  "shared_root_cause_with": ["D4"]
+}

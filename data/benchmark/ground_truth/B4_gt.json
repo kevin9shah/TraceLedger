@@ -1,0 +1,24 @@
+{
+  "case_id": "B4",
+  "verdict": "CONFLICT",
+  "conflict_types": ["amount_mismatch", "split_payment_unlinked"],
+  "verified_facts": [
+    "tx 0xb401...00b4 status: success on Polygon block 60200000",
+    "token contract 0x3c499c...3359 (native USDC, decimals=6) confirmed in token_registry.json",
+    "Transfer event value: 10000000000 base units = 10000.000000 USDC",
+    "Invoice INV-2024-B4-039 requires 20000000000 base units = 20000.000000 USDC",
+    "Shortfall: 10000000000 base units (50% underpayment on this tx alone)",
+    "payment_gateway_log documents tx2 (0xb402...00b4) as the second half, not linked to this invoice in the ERP",
+    "Ledger entry records 10000 USDC and marks status PAID — incorrect"
+  ],
+  "unverified": [
+    "Whether tx2 0xb402...00b4 was actually confirmed on-chain",
+    "Whether tx2 was correctly matched to a different invoice or remains orphaned"
+  ],
+  "missing_evidence": [
+    "tx2 (0xb4020000...00b4) receipt and ERP record — required to determine total funds received by vendor"
+  ],
+  "explanation": "The vendor's invoice of 20000 USDC was paid in two separate transactions of 10000 USDC each due to a hot-wallet liquidity constraint. The ERP auto-matched the first transaction to the invoice and incorrectly marked it as fully PAID at half the required amount. The second transaction is undocumented in this invoice's records. The invoice is effectively underpaid by 10000 USDC based on available evidence.",
+  "recommended_action": "Locate tx2 (0xb402...00b4) and determine its on-chain status. If confirmed and received by the vendor, link both transactions to this invoice and update the ledger to reflect full payment. If tx2 is unconfirmed or orphaned, submit a corrected second payment. Fix ERP to aggregate split payments before updating invoice status.",
+  "shared_root_cause_with": []
+}

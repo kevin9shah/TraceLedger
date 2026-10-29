@@ -1,0 +1,79 @@
+{
+  "case_id": "A3",
+  "category": "destination_conflict",
+  "pattern_name": "Vendor address changed before payment, approval not recorded",
+  "real_world_source": "TRM Labs behavioral and velocity anomaly category (2024 Stablecoin Threat Intelligence); internal-controls gap documented in SEC payment processor enforcement actions",
+  "chain_id": 137,
+  "chain_name": "polygon-pos",
+  "token_contract": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+  "token_symbol_display": "USDT",
+  "simulated": true,
+  "is_tricky": false,
+  "invoice": {
+    "invoice_id": "INV-2024-A3-019",
+    "vendor_id": "VEN-0017",
+    "vendor_name": "Cobalt Freight Partners",
+    "amount_display": "3200.000000 USDT",
+    "amount_base_units": "3200000000",
+    "invoice_token_contract": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+    "approved_destination": "0x01d00000000000000000000000000000000000a3",
+    "approval_timestamp": "2024-01-15T14:00:00Z",
+    "approver_id": "USR-AP-007"
+  },
+  "transaction": {
+    "tx_hash": "0xa3000000000000000000000000000000000000000000000000000000000000a3",
+    "block_number": 53211007,
+    "status": "success",
+    "from_address": "0xDeAdBeEf00000000000000000000000000000003",
+    "to_address": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+    "recipient": "0x0ea00000000000000000000000000000000000a3",
+    "amount_base_units": "3200000000",
+    "decimals": 6,
+    "timestamp": "2024-02-08T09:41:00Z",
+    "gas_used": 51800,
+    "gas_limit": 65000,
+    "revert_reason": null,
+    "erc20_transfer_event": {
+      "contract": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+      "from": "0xDeAdBeEf00000000000000000000000000000003",
+      "to": "0x0ea00000000000000000000000000000000000a3",
+      "value": "3200000000"
+    },
+    "polygonscan_url": "https://polygonscan.com/tx/0xa3000000000000000000000000000000000000000000000000000000000000a3"
+  },
+  "business_records": [
+    {
+      "record_type": "approval_log",
+      "content": {
+        "timestamp": "2024-01-15T14:00:00Z",
+        "action": "APPROVED",
+        "approver_id": "USR-AP-007",
+        "approved_destination": "0x01d00000000000000000000000000000000000a3",
+        "invoice_id": "INV-2024-A3-019"
+      }
+    },
+    {
+      "record_type": "address_change_log",
+      "content": {
+        "timestamp": "2024-02-06T11:20:00Z",
+        "vendor_id": "VEN-0017",
+        "old_address": "0x01d00000000000000000000000000000000000a3",
+        "new_address": "0x0ea00000000000000000000000000000000000a3",
+        "changed_by": "USR-OPS-002",
+        "approved_by": null,
+        "note": "Vendor called to say wallet was compromised. Ops updated address in system. No formal approval obtained for this invoice."
+      }
+    },
+    {
+      "record_type": "ledger_entry",
+      "content": {
+        "timestamp": "2024-02-08T09:50:00Z",
+        "entry_type": "PAYMENT_SENT",
+        "invoice_id": "INV-2024-A3-019",
+        "tx_hash": "0xa3000000000000000000000000000000000000000000000000000000000000a3",
+        "recorded_destination": "0x0ea00000000000000000000000000000000000a3",
+        "status": "PAID"
+      }
+    }
+  ]
+}

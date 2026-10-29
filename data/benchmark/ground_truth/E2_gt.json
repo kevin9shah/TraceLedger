@@ -1,0 +1,18 @@
+{
+  "case_id": "E2",
+  "verdict": "SANCTIONS_EXPOSURE",
+  "conflict_types": [
+    "sanctioned_counterparty_source",
+    "strict_liability_taint"
+  ],
+  "verified_facts": [
+    "tx 0xe200...00e2 status: success on Polygon block 59300150",
+    "received 15,000 USDC into treasury wallet 0xDeAdBeEf...0099",
+    "origin wallet 0x0fac...00e2 matches OFAC SDN sanctions list entry",
+    "invoice marked settled in enterprise accounts receivable"
+  ],
+  "unverified": [],
+  "missing_evidence": [],
+  "explanation": "Corporate treasury accepted 15,000 USDC from a counterparty wallet designated on the OFAC SDN list. Under US sanctions regulations, strict liability applies regardless of the recipient's knowledge or intent.",
+  "recommended_action": "Segregate received funds into an isolated un-spendable escrow wallet immediately; submit voluntary self-disclosure to OFAC within 10 business days"
+}

@@ -1,0 +1,22 @@
+{
+  "case_id": "C4",
+  "verdict": "CONFLICT",
+  "conflict_types": ["wrong_token_contract", "counterfeit_token"],
+  "verified_facts": [
+    "tx 0xc400...00c4 status: success on Polygon block 57000000",
+    "ERC-20 Transfer event emitted by contract 0xFAKEUSdc...00c4",
+    "Contract 0xFAKEUSdc...00c4 is NOT in token_registry.json (which contains only on-chain-verified contracts)",
+    "Invoice INV-2024-C4-038 requires token contract 0x3c499c...3359 (native USDC) — no match",
+    "Transfer amount 1000000000 = 1000.000000 at decimals=6 — matches invoice amount numerically",
+    "Destination 0xATL000...00C4 matches approved_destination",
+    "Auto-credit was a FALSE POSITIVE — real USDC (0x3c499c) was never transferred"
+  ],
+  "unverified": [
+    "Whether the counterfeit token has any redeemable value",
+    "Whether the counterfeit token contract has a malicious function (e.g., approval drain)"
+  ],
+  "missing_evidence": [],
+  "explanation": "A counterfeit token contract impersonating USDC was used to send 1000 units to the victim's address. The counterfeit contract reports symbol='USDC' and decimals=6 to match the real USDC metadata, but its contract address (0xFAKEUSdc...00c4) is not in any authoritative registry. Real USDC (0x3c499c...3359) was never transferred. The reconciler auto-credited the invoice based on symbol matching alone — a critical false positive. The counterfeit tokens have no redeemable cash value.",
+  "recommended_action": "Reverse the auto-credit: mark invoice as UNPAID. Investigate the sender 0xDeAdBeEf...0024 for fraud. Do not interact with the counterfeit contract or grant it any ERC-20 approval. Enforce contract-address whitelist validation against token_registry.json before any auto-credit. Alert the real USDC issuer (Circle) if the counterfeit is circulating at scale.",
+  "shared_root_cause_with": []
+}

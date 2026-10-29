@@ -1,0 +1,81 @@
+{
+  "case_id": "C4",
+  "category": "wrong_asset",
+  "pattern_name": "Counterfeit USDC token — different contract, same symbol — auto-credited",
+  "real_world_source": "Chainalysis 2023 Crypto Crime Report on counterfeit/spoof tokens; address poisoning toolkit documentation (scam-token injection as a parallel attack vector); Polygonscan documentation on ERC-20 token impersonation",
+  "chain_id": 137,
+  "chain_name": "polygon-pos",
+  "token_contract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+  "token_symbol_display": "USDC",
+  "simulated": true,
+  "is_tricky": true,
+  "tricky_reason": "The counterfeit token reports symbol='USDC' and decimals=6 — identical to the real token on-chain metadata. A system matching on symbol+decimals auto-credits this as real USDC. Only a contract-address check against the whitelist (token_registry.json) catches it. This case tests whether the LLM investigator can identify that a Transfer event from an unlisted contract address is a counterfeit.",
+  "invoice": {
+    "invoice_id": "INV-2024-C4-038",
+    "vendor_id": "VEN-0049",
+    "vendor_name": "Atlas Payments Group",
+    "amount_display": "1000.000000 USDC",
+    "amount_base_units": "1000000000",
+    "invoice_token_contract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+    "approved_destination": "0xc4010000000000000000000000000000000000c4",
+    "approval_timestamp": "2024-06-15T10:00:00Z",
+    "approver_id": "USR-AP-005"
+  },
+  "transaction": {
+    "tx_hash": "0xc4000000000000000000000000000000000000000000000000000000000000c4",
+    "block_number": 57000000,
+    "status": "success",
+    "from_address": "0xDeAdBeEf00000000000000000000000000000024",
+    "to_address": "0xfa4e0000000000000000000000000000000000c4",
+    "recipient": "0xc4010000000000000000000000000000000000c4",
+    "amount_base_units": "1000000000",
+    "decimals": 6,
+    "timestamp": "2024-06-16T09:30:00Z",
+    "gas_used": 52000,
+    "gas_limit": 65000,
+    "revert_reason": null,
+    "erc20_transfer_event": {
+      "contract": "0xfa4e0000000000000000000000000000000000c4",
+      "from": "0xDeAdBeEf00000000000000000000000000000024",
+      "to": "0xc4010000000000000000000000000000000000c4",
+      "value": "1000000000"
+    },
+    "polygonscan_url": "https://polygonscan.com/tx/0xc4000000000000000000000000000000000000000000000000000000000000c4"
+  },
+  "business_records": [
+    {
+      "record_type": "approval_log",
+      "content": {
+        "timestamp": "2024-06-15T10:00:00Z",
+        "action": "APPROVED",
+        "approver_id": "USR-AP-005",
+        "approved_destination": "0xc4010000000000000000000000000000000000c4",
+        "invoice_token_contract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+        "invoice_id": "INV-2024-C4-038"
+      }
+    },
+    {
+      "record_type": "payment_gateway_log",
+      "content": {
+        "timestamp": "2024-06-16T09:35:00Z",
+        "action": "AUTO_CREDITED",
+        "token_symbol_observed": "USDC",
+        "token_decimals_observed": 6,
+        "token_contract_observed": "0xfa4e0000000000000000000000000000000000c4",
+        "note": "Reconciler matched on symbol='USDC' and decimals=6. Did not verify contract address against whitelist. Invoice auto-credited as PAID."
+      }
+    },
+    {
+      "record_type": "ledger_entry",
+      "content": {
+        "timestamp": "2024-06-16T09:40:00Z",
+        "entry_type": "PAYMENT_RECEIVED",
+        "invoice_id": "INV-2024-C4-038",
+        "tx_hash": "0xc4000000000000000000000000000000000000000000000000000000000000c4",
+        "recorded_amount": "1000.000000 USDC",
+        "status": "PAID",
+        "note": "Credited as real USDC. Contract address not validated."
+      }
+    }
+  ]
+}
