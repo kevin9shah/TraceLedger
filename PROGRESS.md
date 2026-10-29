@@ -231,6 +231,196 @@ slot in when the tx hashes arrive.
 - History rewrite deliberately **not** performed — it needs a force push, which is destructive and
   needs explicit approval (G13), and it is unnecessary once the old secret is dead.
 
+
+### 2026-10-29 — Competitive differentiation: Tiered in-memory architecture adopted (DECISIONS.md D16)
+
+> **SUPERSEDED the same day — see the "demo design chosen: live fire" entry below and the revised
+> D16.** The latency figures quoted in this entry were never measured, and the `<5 ms` graph figure
+> is contradicted by a measured 1.47–1.94 s round trip to the Savanna workspace. They have been
+> removed from `README.md` and `DECISIONS.md`. This entry is kept as the record of what was claimed
+> and when, not as a live statement. Do not quote its numbers.
+- Three other teams confirmed working on generic stablecoin accounting / reconciliation.
+- Formulated TraceLedger's technical moat: **Tiered In-Memory Architecture**.
+  - While other teams rely on slow 3–5s LLMs or disk-bound SQL joins to guess at transactions,
+    TraceLedger combines **L1 local deterministic verifier (<0.1 ms)** for zero-float integer math
+    and **L2 TigerGraph Native Parallel Graph (<5 ms)** for pointer-traversal of multi-hop
+    payment routes and entity clusters. The LLM (**L4**) only acts as the final narrative reporting layer.
+- Updated:
+  - `README.md`: Added "Architecture & Differentiation: The Tiered Memory Model" section.
+  - `DECISIONS.md`: Added D16 documenting the architecture and benchmark rationale.
+  - `CHECKPOINTS.md`: Added memory & query latency (TigerGraph in-memory vs SQL recursive joins) to CP8 metrics.
+  - `BACKLOG.md`: Added sub-10ms Pre-Flight Treasury Gateway as post-MVP validation.
+- Tests re-run to confirm no regressions.
+
+
+
+### 2026-10-29 — demo design chosen: live fire (D17), unmeasured claims removed (D16 revised)
+- Human asked for novelty with presentation impact. Chose a demo whose organising principle is that
+  **every claim on screen is verifiable by the audience during the presentation**: an audience member
+  sends a real Polygon transfer from their own wallet, TraceLedger ingests the hash, reads the
+  transfer from mainnet and renders a `CONFLICT` citing the contract address and block just read.
+  Then three beats the audience can test — the plain-LLM baseline answering confidently, an open
+  invitation to inject the memo field, and a genuine `UNRESOLVED` refusal.
+- This works only because the ambiguity is real on Polygon today (D6): canonical Tether reports
+  `symbol="USDT0"` and two live contracts both report `symbol="USDC"`. Constraint recorded as S20:
+  the catch must derive from the contract address and on-chain `decimals()`, never from a magic
+  string, or the demo is theatre.
+- **Revised D16, removing unmeasured claims** that had been added to `README.md` and `DECISIONS.md`
+  by another session: latency figures (`<0.1 ms`, `<5 ms`, `100–500 ms`, `1.5–3 s`), TigerGraph
+  "pointer-chasing in RAM", a comparison against "three other hackathon teams", and phrasing like
+  "zero-latency mathematical certainty". Reasons: nothing had been measured (G10) and
+  `BENCHMARK_RESULTS.md` is empty; the `<5 ms` figure is **contradicted by our own measurement** of
+  1.47–1.94 s round trip to Savanna, so a judge could disprove it live; the competitor claim was
+  unverifiable; and several named capabilities (multi-hop splits, pool routes, entity clustering)
+  are outside MVP scope (G12).
+- Latency stays in the CP8 metric list and will be written to `BENCHMARK_RESULTS.md` from real runs.
+  The tiered architecture itself was kept — it is the right ordering.
+- Checkpoint criteria extended for the demo: CP3 (verdict from a tx hash, no LLM in the path), CP4
+  (cases on the real contract ambiguity + an under-determined case), CP7 (refusal path + side-by-side
+  baseline), CP9 (ingest from a pasted hash), CP10 (rehearsed live run + labelled REPLAY fallback).
+- New risks S17–S20: venue network, stopped workspace, live transfer failure, and the catch having
+  to be genuine. Fallback is always a labelled REPLAY, never cached output passed off as live (G3).
+- Wrote `docs/demo_script.md`: the 3-minute beat sheet, pre-flight checklist, on-stage language rules
+  and a failure-handling table.
+
+
+### 2026-10-29 — CP2 started: data model + parser verified against real transactions
+- `docs/data_model.md`: chain facts vs business records kept rigorously apart (trust, provenance,
+  `simulated` flag), full field tables for `TransactionFacts`, `TransferEvent`, `TokenMetadata`, the
+  eight business entities, amount handling and linking rules.
+- `traceledger/chain/transfers.py`: parses a transaction into verified facts — status (absent status
+  is an error, never assumed success), block, confirmations (head-block tx = 1), sender, called
+  contract, and **every** Transfer event in log order, amounts as integer base units.
+- `scripts/capture_fixtures.py`: captures real transactions as offline fixtures so the parser is
+  verified against genuine chain data (P6) while tests stay reproducible and network-free.
+- **Unplanned finding, now a design rule (D18):** a transaction carries many transfers. Real examples
+  captured: `0x5e857c89…` 1 transfer; `0x7858560a…` **4 transfers across USDT *and* USDC**;
+  `0x094b7da1…` **19 transfers across 4 tokens**. A payment must be identified by token contract +
+  recipient, and remaining ambiguity is reported rather than guessed. `0x7858560a…` is a real case
+  where "this transaction paid USDC" is both true and false — excellent benchmark material.
+- Tests: **94 passing** (up from 57). Covers the three real fixtures, hash normalising, confirmations,
+  reverted status, missing/pending transactions, ERC-721 misreads, malformed logs, zero-value transfers.
+- `data/real_txs.json`: 24 verified transfers from 3 transactions, every entry `origin:
+  public_mainnet` and `cake_wallet_demo_transfers_outstanding: true` (D19).
+
+### Blocked
+- CP2's remaining criterion needs **human-supplied Cake Wallet transfers**; the wallet has no funds.
+  Measured cost: ~0.0122 POL (~a third of a cent) per transfer at 188 gwei, so $1 of POL covers
+  200–500 transfers. Needed: ~$1 POL + ~$1 USDT. USDC is **not** required — the invoice side is a
+  synthetic record.
+
+
+### 2026-10-29 — CP3 DONE: deterministic verifier + 139 tests
+- `traceledger/records.py`: Invoice, PaymentRequest, LedgerEntry, ApprovedAddress. Untrusted input
+  (G9) — free-text fields carried as opaque data. Addresses normalised; **floats rejected at parse
+  time** with an explicit message rather than silently rounded (G8).
+- `traceledger/verify.py`: 9 deterministic checks plus `verify_payment_case`. Status, confirmations,
+  asset, destination, amount, transfer ambiguity, approved-address, duplicates, ledger arithmetic.
+  No LLM anywhere in this path.
+- `scripts/investigate.py`: tx hash in → cited findings out, exit 1 on any conflict. Satisfies CP3's
+  demo criterion from D17.
+- **Verified end to end against live Polygon**, three cases:
+  - invoice names USDC, chain delivered USDT → `CONFLICT  Wrong asset`, citing both contracts, exit 1
+  - invoice names the delivered token → `VERIFIED` ×6, exit 0 (note: token reports `symbol='USDT0'`
+    and still verifies, because identity is the address)
+  - off by one base unit (0.000001) → `CONFLICT  Amount mismatch`
+- **RISKS.md S20 discharged by test, not assertion:**
+  `test_catch_does_not_depend_on_the_symbol_string` is parametrised over `USDC`, `USDT`, `USDT0`,
+  empty and `TOTALLY-WRONG`, and the conflict fires in every case. The demo's central claim is
+  therefore not theatre.
+- Design rules recorded as D20: uncited VERIFIED/CONFLICT findings cannot be constructed; a skipped
+  check becomes MISSING plus a NEXT_STEP; mismatched token metadata raises; ambiguity is reported
+  rather than resolved; banned verdict words asserted absent by test; serialisation is float-free.
+- Tests: **139 passing** (94 → 139).
+
+### Next
+- CP4: 25-case benchmark + separate ground truth, built on the real contract ambiguity, including
+  an under-determined case for the refusal beat.
+- CP2 still awaiting the human's Cake Wallet transfer hashes (purchase made, withdrawal pending).
+
+
+### 2026-10-29 — CP4 in progress: real transaction pool, failure modes handled
+- `scripts/harvest_txs.py`: harvests real Polygon transactions as the chain side of the benchmark,
+  classified by shape. Only business records will be synthetic (G3, P4). Current pool
+  (`data/tx_pool.json`): 35 transactions — 26 multi_transfer, 6 single_transfer, 3 reverted.
+- **Human asked how failed transactions would be demonstrated. The harvest had found zero**, which
+  exposed a structural point (D21): `eth_getLogs` only returns transactions that emitted events, so
+  reverted transfers are invisible to log scanning. A log-scanning reconciler would report "no
+  payment found" rather than "the payment failed". The harvester now also walks block transaction
+  lists and checks receipt status.
+- Verified against a **real reverted transaction** `0xe00f5243…` (block 96371332, gasUsed 96064,
+  zero Transfer logs): `CONFLICT  Transaction reverted; no tokens were transferred`, and asset,
+  destination and amount all correctly report MISSING rather than anything positive.
+- **Wording bug found by running it (D22):** the screen showed `VERIFIED Confirmed on-chain` beside
+  a reverted payment. Now reads *"The FAILURE of this transaction is confirmed on-chain at N
+  confirmations"*, with `confirms_outcome` in the detail, plus *"Confirmed is not the same as
+  final"* on every confirmation line (P10). An over-blunt test banning the substring "final" was
+  tightened to ban the *claim* instead.
+- **Two more failure modes added (D23)**, both of which a naive checker passes:
+  `payment.direction` (the expected recipient only ever sent the token) and `payment.zero_value`
+  (succeeded transfer moving zero base units — token and destination both match, nothing received).
+- Tests: **152 passing** (139 → 152).
+
+
+### 2026-10-29 — CP4 built, awaiting human realism review (★ gate)
+- `benchmark/chain_facts.json`: 8 **real** Polygon transactions captured for reproducible offline
+  runs — single transfer, two-token, 19-transfer/4-token, two reverted, a **genuine zero-value
+  transfer** found in the wild, and a 9-transfer transaction with real settlement ambiguity.
+- `benchmark/cases.json`: 25 cases, inputs only. `benchmark/ground_truth.json`: labels, separate
+  file (G11). Outcomes 17 conflict / 4 no_conflict / 4 unresolved across 15 issue types.
+- Coverage: all three MVP exception types, 4 wrong-asset (incl. the bridged-vs-native USDC
+  lookalike where both contracts report `symbol="USDC"`), reverted transactions, zero-value,
+  reversed direction, partial payment, split payment, legitimately repeated amount (a false-positive
+  trap), ambiguous settlement, missing evidence, below-threshold confirmations, and a prompt
+  injection in an invoice memo.
+- `tests/test_benchmark.py`: 30 tests on the dataset itself. **The near-duplicate test earned its
+  place immediately** — it caught four real collisions (`C11~C12`, `C06~C14`, `C14~C15`, then
+  `C02~C11`). Each was fixed with genuinely different evidence rather than cosmetic renaming.
+  `C02~C11` was substantive: C11's "unresolved" came only from a run-time threshold, so its inputs
+  were identical to a clean control.
+- Suite: **182 tests passing** (152 → 182).
+
+### Awaiting human
+- **CP4 ★ realism review** — are these cases ones an operations team would recognise?
+- CP2: Cake Wallet transfer hashes (funds ~1h away).
+
+
+### 2026-10-29 — CP5 DONE: rules-only baseline scored from a real run
+- `traceledger/baselines/rules_only.py`: conventional reconciler, built to be **fair** rather than
+  to lose (D26) — symbol matching, 2dp float amounts, Transfer-event scanning, always answers. Each
+  choice documented with why a real system makes it. Explicitly our implementation, not a vendor's.
+- `traceledger/bench/runner.py` + `scripts/run_benchmark.py`: runs systems over the 25 cases and
+  **generates `BENCHMARK_RESULTS.md`**. No number in that file is hand-written (G10).
+
+| Metric | rules_only | traceledger (deterministic only) |
+|---|---|---|
+| Outcome accuracy | 68% (17/25) | 100% (25/25) |
+| Issue identification | 41% (7/17) | 100% (17/17) |
+| False-resolution rate | 32% (8/25) | 0% |
+| False positives on clean cases | 0% (0/4) | 0% (0/4) |
+| Abstained when required | 0/4 | 4/4 |
+
+- **The 100% is flagged as a warning, not an achievement (RISKS.md P16).** The cases and the system
+  were authored by the same party, so it measures whether the code does what its author intended.
+  The deterministic layer also cannot fabricate an evidence ID, so citation metrics are true by
+  design. 25 cases cannot distinguish 100% from 92%. This warning is written at the top of
+  `BENCHMARK_RESULTS.md` by the generator, and the headline figure must not be quoted externally.
+- **The genuinely useful result is the failure-mode comparison.** The baseline misses the
+  bridged-vs-native USDC lookalike, the one-base-unit shortfall, the zero-value transfer, the
+  record disagreement, and every case needing abstention. Subtler: on C04/C08/C09/C25 it gets the
+  outcome right but names the wrong issue — reporting "no payment found" where the payment reverted
+  or arrived in the wrong token, which sends an ops team hunting for the wrong thing.
+- **A ground-truth label was wrong and the run caught it (D27).** C07 was labelled `wrong_asset`,
+  but the transaction genuinely contains USDT, so the verifier was right to pass the asset check.
+  The case was rebuilt to invoice native USDC, which really is absent, with all four token
+  contracts listed in the note so the premise is checkable.
+
+---
+
+> **Merge note (2026-10-29).** Two collaborators worked in parallel and both built a CP4
+> benchmark (a teammate via PRs #1-#3, and this session). Neither is discarded; both accounts are kept below and the duplication is
+> recorded as RISKS.md P17 pending a decision on which dataset the project uses.
+
 ### 2026-10-29 — CP4 Benchmark Dataset Built & Validated (branch `cp4/benchmark-cases`)
 - Designed and approved 25 real-pattern benchmark cases across 6 distinct categories based on
   FinCEN, TRM Labs, Chainalysis, OFAC SDN actions, Circle docs, and SEC advisories:
@@ -246,3 +436,13 @@ slot in when the tx hashes arrive.
 - Built `scripts/validate_benchmark.py` and automated test `tests/test_benchmark_dataset.py`.
 - Automated test suite: **55 passing**, 3 skipped. All 25 cases strictly validate against JSON Schema Draft-7. All token addresses use verified tokens or explicitly annotated wrong assets. All tricky case criteria satisfied. D4 shared-root-cause link to A2 verified.
 
+
+### 2026-10-29 — repo state confirmed after merge
+- `git pull origin main`: already up to date; local and remote both at `4a9bddf`. No conflicts.
+- Pull requests: **0 open, 3 closed** (#1-#3, all merged, all from a teammate's
+  `cp4/benchmark-cases` branch). That branch has no commits missing from `main`.
+- Tests: 183 passing. Working tree clean.
+- **Coordination note:** the duplicated CP4 work happened because two collaborators built the same
+  checkpoint simultaneously. Agree ownership of CP6 (graph layer) before starting it, and resolve
+  P17 (which benchmark the project uses) first — scoring both and quoting the better result is not
+  an option (G10, G11).

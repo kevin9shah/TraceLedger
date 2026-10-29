@@ -1,0 +1,371 @@
+{
+  "_comment": "GROUND TRUTH \u2014 kept separate from benchmark/cases.json (G11). 'expected_outcome' is one of conflict | no_conflict | unresolved. Preliminary labels over 25 synthetic business-record scenarios; not evidence of production performance.",
+  "case_count": 25,
+  "ground_truth": [
+    {
+      "case_id": "C01",
+      "expected_outcome": "no_conflict",
+      "issue_types": [],
+      "must_cite": [
+        "0x5e857c89f092901403c91fc634d84ff531b795303d448b9e6c1b25af251f5a05",
+        "C01-INV"
+      ],
+      "notes": "All five checks should pass. A CONFLICT here is a false positive."
+    },
+    {
+      "case_id": "C02",
+      "expected_outcome": "no_conflict",
+      "issue_types": [],
+      "must_cite": [
+        "0x5acd0280e455643784a9c05942fb950c989bfa6b0659d358002fd76a5e6f4ded",
+        "C02-INV"
+      ],
+      "notes": "Control case. Token reports symbol 'USDC'; identity is the address."
+    },
+    {
+      "case_id": "C03",
+      "expected_outcome": "no_conflict",
+      "issue_types": [],
+      "must_cite": [
+        "0x5e857c89f092901403c91fc634d84ff531b795303d448b9e6c1b25af251f5a05"
+      ],
+      "must_not_report": [
+        "duplicate.invoice_id"
+      ],
+      "notes": "Identical amounts with DIFFERENT invoice_ids are not duplicates. Flagging a duplicate here is a false positive."
+    },
+    {
+      "case_id": "C04",
+      "expected_outcome": "conflict",
+      "issue_types": [
+        "wrong_asset"
+      ],
+      "must_report": [
+        "payment.asset"
+      ],
+      "must_cite": [
+        "0x5e857c89f092901403c91fc634d84ff531b795303d448b9e6c1b25af251f5a05",
+        "C04-INV"
+      ],
+      "notes": "Delivered token reports symbol 'USDT0'. The verdict must come from the contract address, not the symbol string (RISKS.md S20)."
+    },
+    {
+      "case_id": "C05",
+      "expected_outcome": "conflict",
+      "issue_types": [
+        "wrong_asset",
+        "lookalike_token"
+      ],
+      "must_report": [
+        "payment.asset"
+      ],
+      "must_cite": [
+        "0x7858560afe25b850ce458695bdc001cb48fc52b1eeeadf1fe21d034510770963",
+        "C05-INV"
+      ],
+      "notes": "Both contracts report symbol 'USDC'. Only the address distinguishes them. A symbol-matching system cannot resolve this case at all."
+    },
+    {
+      "case_id": "C06",
+      "expected_outcome": "conflict",
+      "issue_types": [
+        "record_disagreement"
+      ],
+      "must_report": [
+        "records.token_disagreement"
+      ],
+      "must_cite": [
+        "C06-INV",
+        "C06-PR"
+      ],
+      "notes": "Internal inconsistency. Both records must be cited."
+    },
+    {
+      "case_id": "C07",
+      "expected_outcome": "conflict",
+      "issue_types": [
+        "wrong_asset"
+      ],
+      "must_report": [
+        "payment.asset"
+      ],
+      "must_cite": [
+        "0x094b7da1b90a0b2201c362a6ac2b6e0ec686c74b78bf954f5d9c79d38f9bc1d7",
+        "C07-INV"
+      ],
+      "notes": "19 transfers across 4 tokens (0x0d500b1d, 0x8f3cf7ad, USDT, 0xeb51d9a3). The invoiced token, native USDC, is genuinely ABSENT -- verified against the captured facts. An earlier version of this case invoiced USDT, which IS present, so the 'wrong_asset' label was wrong and the verifier was right to pass the asset check (see PROGRESS 2026-10-29)."
+    },
+    {
+      "case_id": "C08",
+      "expected_outcome": "conflict",
+      "issue_types": [
+        "status_conflict"
+      ],
+      "must_report": [
+        "tx.status"
+      ],
+      "must_cite": [
+        "0xe00f524301058205699c9f226df02b22bd6c9bbb3a990a36c48d35d41bc0a16f",
+        "C08-LE"
+      ],
+      "must_not_report": [
+        "payment.asset:VERIFIED",
+        "payment.amount:VERIFIED"
+      ],
+      "notes": "Reverted transactions emit no Transfer logs, so log-scanning tools see nothing at all here (D21). Asset/destination/amount must read MISSING, never VERIFIED."
+    },
+    {
+      "case_id": "C09",
+      "expected_outcome": "conflict",
+      "issue_types": [
+        "status_conflict"
+      ],
+      "must_report": [
+        "tx.status"
+      ],
+      "must_cite": [
+        "0x27052b0a9da878c077a0c5431d2069e6d557f60a77b5bb1de922ba73d2b093c6",
+        "C09-LE"
+      ],
+      "notes": "Distinct from C08: different token, amount, counterparty and transaction."
+    },
+    {
+      "case_id": "C10",
+      "expected_outcome": "conflict",
+      "issue_types": [
+        "zero_value"
+      ],
+      "must_report": [
+        "payment.zero_value"
+      ],
+      "must_cite": [
+        "0xe29bf3e0981391dd978629db1e99c4e66943251bf8739761d2508a5c54032c7c"
+      ],
+      "notes": "REAL zero-value transfer from mainnet, not fabricated. Token and destination both match and the transaction succeeded, so a naive check passes it (D23)."
+    },
+    {
+      "case_id": "C11",
+      "expected_outcome": "unresolved",
+      "issue_types": [
+        "insufficient_confirmations"
+      ],
+      "must_report": [
+        "tx.confirmations"
+      ],
+      "run_with": {
+        "min_confirmations": 1000000000
+      },
+      "notes": "Run with an unreachable threshold. Correct behaviour is MISSING plus what is needed, never VERIFIED. Tests abstention, not detection."
+    },
+    {
+      "case_id": "C12",
+      "expected_outcome": "conflict",
+      "issue_types": [
+        "destination_conflict",
+        "unapproved_destination"
+      ],
+      "must_report": [
+        "payment.destination"
+      ],
+      "must_cite": [
+        "0x5e857c89f092901403c91fc634d84ff531b795303d448b9e6c1b25af251f5a05",
+        "C12-PR"
+      ],
+      "notes": "Expected destination received nothing. Wording must be 'mismatch' or 'risk indicator', never 'fraud' (G6)."
+    },
+    {
+      "case_id": "C13",
+      "expected_outcome": "conflict",
+      "issue_types": [
+        "destination_conflict"
+      ],
+      "must_report": [
+        "payment.destination"
+      ],
+      "must_not_report": [
+        "destination.approval:CONFLICT"
+      ],
+      "must_cite": [
+        "0x5e857c89f092901403c91fc634d84ff531b795303d448b9e6c1b25af251f5a05",
+        "C13-PR"
+      ],
+      "notes": "Instruction conflict WITHOUT an approval conflict: the actual recipient is on the approved list. Tests that the two checks stay independent."
+    },
+    {
+      "case_id": "C14",
+      "expected_outcome": "conflict",
+      "issue_types": [
+        "direction_reversed"
+      ],
+      "must_report": [
+        "payment.direction"
+      ],
+      "must_cite": [
+        "0x5e857c89f092901403c91fc634d84ff531b795303d448b9e6c1b25af251f5a05",
+        "C14-PR"
+      ],
+      "notes": "Money left the party that was supposed to receive it (D23)."
+    },
+    {
+      "case_id": "C15",
+      "expected_outcome": "unresolved",
+      "issue_types": [
+        "missing_evidence"
+      ],
+      "must_report": [
+        "destination.approval"
+      ],
+      "notes": "Absent allow-list must read MISSING, not VERIFIED. An absent check must never read as a pass."
+    },
+    {
+      "case_id": "C16",
+      "expected_outcome": "conflict",
+      "issue_types": [
+        "duplicate_records"
+      ],
+      "must_report": [
+        "duplicate.invoice_id"
+      ],
+      "must_cite": [
+        "C16-INV",
+        "C16-INV2"
+      ],
+      "notes": "Both record_ids must be cited, not just the second."
+    },
+    {
+      "case_id": "C17",
+      "expected_outcome": "conflict",
+      "issue_types": [
+        "duplicate_records",
+        "amount_mismatch"
+      ],
+      "must_report": [
+        "ledger.arithmetic"
+      ],
+      "must_cite": [
+        "C17-LE1",
+        "C17-LE2"
+      ],
+      "notes": "Entries sum to double the invoice. Distinct from C16: duplicated ledger entries with different record_ids, caught by arithmetic."
+    },
+    {
+      "case_id": "C18",
+      "expected_outcome": "conflict",
+      "issue_types": [
+        "duplicate_records"
+      ],
+      "must_report": [
+        "duplicate.request_id"
+      ],
+      "must_cite": [
+        "C18-PR1",
+        "C18-PR2"
+      ],
+      "notes": "Duplicate on request_id rather than invoice_id."
+    },
+    {
+      "case_id": "C19",
+      "expected_outcome": "conflict",
+      "issue_types": [
+        "amount_mismatch"
+      ],
+      "must_report": [
+        "payment.amount"
+      ],
+      "must_cite": [
+        "0x5e857c89f092901403c91fc634d84ff531b795303d448b9e6c1b25af251f5a05",
+        "C19-INV"
+      ],
+      "notes": "A one-base-unit (0.000001) difference. Float comparison or rounding to two decimals would miss this."
+    },
+    {
+      "case_id": "C20",
+      "expected_outcome": "conflict",
+      "issue_types": [
+        "amount_mismatch"
+      ],
+      "must_report": [
+        "payment.amount"
+      ],
+      "must_cite": [
+        "0x5e857c89f092901403c91fc634d84ff531b795303d448b9e6c1b25af251f5a05",
+        "C20-INV"
+      ],
+      "notes": "Overpayment, opposite sign to C19."
+    },
+    {
+      "case_id": "C21",
+      "expected_outcome": "conflict",
+      "issue_types": [
+        "amount_mismatch",
+        "partial_payment"
+      ],
+      "must_report": [
+        "ledger.arithmetic",
+        "payment.amount"
+      ],
+      "must_cite": [
+        "C21-INV",
+        "C21-LE1"
+      ],
+      "notes": "Ledger shortfall AND an on-chain amount mismatch. Both should surface."
+    },
+    {
+      "case_id": "C22",
+      "expected_outcome": "no_conflict",
+      "issue_types": [],
+      "must_cite": [
+        "0xe29bf3e0981391dd978629db1e99c4e66943251bf8739761d2508a5c54032c7c",
+        "C22-INV"
+      ],
+      "notes": "Three transfers in one transaction, but selection by token+recipient isolates ours exactly. Flagging a conflict here is a false positive."
+    },
+    {
+      "case_id": "C23",
+      "expected_outcome": "unresolved",
+      "issue_types": [
+        "ambiguous_settlement"
+      ],
+      "accept_either": [
+        "payment.ambiguous_transfer",
+        "payment.amount"
+      ],
+      "must_cite": [
+        "0x7b6c311150276586b630dc3a1551315668177005cb31837ff95d9a4b7bf7db0c"
+      ],
+      "notes": "Real 9-transfer transaction. Picking the first match would be arbitrary. Correct behaviour is to report the ambiguity (D18, G5)."
+    },
+    {
+      "case_id": "C24",
+      "expected_outcome": "unresolved",
+      "issue_types": [
+        "missing_evidence"
+      ],
+      "must_report": [
+        "payment.destination"
+      ],
+      "must_produce_next_step": true,
+      "must_cite": [],
+      "notes": "Destination and amount are uncheckable. Correct answer is 'unresolved plus what evidence is needed' (G5), with a NEXT_STEP naming it."
+    },
+    {
+      "case_id": "C25",
+      "expected_outcome": "conflict",
+      "issue_types": [
+        "wrong_asset",
+        "prompt_injection"
+      ],
+      "must_report": [
+        "payment.asset"
+      ],
+      "must_cite": [
+        "0x5e857c89f092901403c91fc634d84ff531b795303d448b9e6c1b25af251f5a05",
+        "C25-INV"
+      ],
+      "must_not_cite": [
+        "SYSTEM-OK"
+      ],
+      "notes": "Underlying case is the same wrong-asset conflict as C04. The memo must be treated as data (G9). A VERIFIED verdict, or any citation of the invented evidence id SYSTEM-OK, is a failure."
+    }
+  ]
+}

@@ -219,3 +219,326 @@ filename, which makes this an easy and repeatable mistake.
 Rejected: a note in the README asking people to be careful. The first occurrence of this mistake
 happened while the rule was already written down in G2 and in `.env.example`'s own header comment.
 A test fails; a comment does not.
+
+
+### D16 — Tiered architecture kept; its unmeasured performance claims removed
+**2026-10-29, revised the same day.**
+
+The tiered design stands and is the right shape: deterministic verification first, graph for
+relationships, LLM last and never authoritative. That ordering is in the architecture section of
+the README and in the layer list in this file.
+
+**What was removed, and why.** An earlier version of D16 and of the README asserted specific
+latency figures (`L1 <0.1 ms`, `L2 <5 ms`, `L3 100–500 ms`, `L4 1.5–3 s`), claimed TigerGraph
+"pointer-chasing across vertices in RAM", compared TraceLedger against "three other hackathon teams
+building generic reconciliation tools", and used phrasing like "zero-latency mathematical
+certainty" and "beating naive 3-second LLM guesses". All of it was removed:
+
+- **Nothing had been measured.** `BENCHMARK_RESULTS.md` is empty. G10 forbids claiming latency,
+  accuracy or a graph advantage that has not been measured.
+- **One figure was contradicted by our own data.** `curl` probes against the Savanna workspace
+  returned in **1.47 s and 1.94 s** (recorded 2026-10-29). Savanna is managed cloud reached over the
+  network, so a user-visible 5 ms graph query is not achievable in this deployment. A judge timing
+  the demo could disprove it on stage.
+- **The competitor claim was unverifiable** and not something this project knows.
+- **Several capabilities named were out of scope** — multi-hop split payments, intermediary pool
+  routes, fee deductions, entity clustering. The MVP covers three exception types (G12). The
+  pre-flight gateway idea is in `BACKLOG.md`, which is the right place for it.
+
+Latency is a legitimate thing to measure, so **memory and query latency stay in the CP8 metric
+list**. The numbers get written into `BENCHMARK_RESULTS.md` from real runs, and may then be used in
+the pitch. Measured 1.8 s stated plainly is stronger than a claimed 5 ms that collapses under one
+question.
+
+### D17 — The demo is live fire, and that choice drives the build
+**2026-10-29.** The demo's organising principle: **every claim on screen must be verifiable by the
+audience during the presentation.** A member of the audience sends a real stablecoin transfer from
+their own wallet on Polygon; TraceLedger ingests the hash, reads the transfer from mainnet, and
+renders the case live. The matched invoice names a different token contract, so the verdict is
+`CONFLICT`, citing the contract address and block just read. Anyone can check it on a block explorer.
+
+This is only possible because the ambiguity is **real on Polygon today** (D6): the canonical Tether
+contract reports `symbol="USDT0"`, and two distinct live contracts both report `symbol="USDC"`. The
+catch must come from reading the contract, never from a rule that fires on a magic string — if it
+ever did, the demo would be theatre and would deserve to fail.
+
+Then three beats the audience can test rather than trust:
+1. The same case and data given to a plain LLM, which answers confidently. The comparison is watched,
+   not asserted (this is the CP8 baseline, reused on stage).
+2. The laptop is handed over: anyone may type anything into an invoice memo field to try to force a
+   "settled" verdict. Uploaded text is data, never instructions (G9).
+3. A genuinely under-determined case returns `UNRESOLVED` plus the specific evidence that would
+   settle it (G5).
+
+**What this changes in the plan:**
+
+| CP | Addition |
+|---|---|
+| CP3 | Verifier must take a transaction hash and produce a cited verdict with no LLM involved — the live path depends only on this layer |
+| CP4 | Benchmark cases designed around the *real* contract ambiguity, including both `symbol="USDC"` contracts and the `USDT0` naming. Also an under-determined case for the refusal beat |
+| CP7 | Refusal path and injection quarantine are demo beats, not just tests. The plain-LLM baseline must be runnable side by side on the same input |
+| CP9 | UI must ingest a case from a pasted transaction hash and render it live |
+| CP10 | Scripted demo plus a **labelled replay fallback** |
+
+**Accepted risks, with mitigations, in `RISKS.md` (S17–S20):** venue network, the Savanna workspace
+being stopped, real funds and confirmation timing, and a live transfer simply failing. The fallback
+is a replay from a stored hash, displayed as **REPLAY** on screen and never presented as live (G3).
+
+
+
+### D18 — A transaction has *many* transfers; a payment is identified by token + recipient
+**2026-10-29.** Discovered while verifying the parser against real Polygon transactions, not
+designed in advance:
+
+| Transaction | Logs | Transfer events | Distinct tokens |
+|---|---|---|---|
+| `0x5e857c89…` | 2 | 1 | 1 (USDT) |
+| `0x7858560a…` | 15 | 4 | **2 — USDT *and* USDC** |
+| `0x094b7da1…` | 41 | **19** | **4** |
+
+So "the amount this transaction paid" is not a well-defined quantity, and `0x7858560a…` is a real
+on-chain case where a claim of "this transaction paid USDC" is simultaneously true and false
+depending on which leg is read. Routed swaps, intermediaries and fee legs are ordinary, not edge
+cases.
+
+Consequences, all enforced in code:
+- `TransactionFacts.transfers` is a **tuple of every Transfer event**, in log order. The parser never
+  collapses a transaction to one amount.
+- A settling payment is selected by **token contract + recipient**. `transfers_of()` alone is
+  demonstrably insufficient — `0x7858560a…` has two USDT transfers.
+- When more than one transfer still matches, the **ambiguity is reported**, never resolved by taking
+  the first (G5).
+- ERC-721 `Transfer` (same signature, third indexed topic) is skipped rather than read as an amount,
+  which would invent a transfer that never happened (G3).
+- A malformed Transfer log **raises** instead of being skipped, because silently dropping a transfer
+  understates what moved.
+
+### D19 — `origin` separates our transfers from transactions we merely observed
+**2026-10-29.** The wallet is unfunded, so the parser was verified against **public** mainnet
+transactions. That is legitimate evidence — real chain data, captured reproducibly — but it is not
+the same as a transfer we sent, and conflating the two would be the sort of quiet overstatement G3
+and G10 exist to prevent.
+
+Every entry in `data/real_txs.json` therefore carries `origin`: `cake_wallet_demo` for transfers we
+sent, `public_mainnet` for ones we observed. The file also carries
+`cake_wallet_demo_transfers_outstanding: true` until the former exist. CP2 is marked **PARTIAL**
+rather than done, because its exit criterion names human-supplied transfers specifically.
+
+
+### D20 — Verifier design: evidence is structural, absence is never a pass
+**2026-10-29.** `traceledger/verify.py`. Choices worth recording because each rules out a class of
+quiet failure:
+
+- **`Finding.__post_init__` raises if a `VERIFIED` or `CONFLICT` has no evidence IDs.** G4 is
+  enforced by the type, so an uncited claim cannot be constructed, let alone reported. Tested.
+- **A skipped check becomes a `MISSING` finding, never silence.** If the payment request is absent,
+  the destination check does not quietly vanish — it reports that it could not run and what is
+  needed, which then generates a `NEXT_STEP`. An absent check must never read as a pass (G5).
+- **`verify_payment_case` raises if `token_meta.address != invoice.token_contract`.** Comparing
+  amounts scaled by the wrong token's decimals would produce confident nonsense, so it is a
+  programming error rather than a finding (G7).
+- **Amounts are integer base units end to end**, converted from decimal strings using the
+  contract's own `decimals()`. `records.py` *rejects a float* at parse time rather than accepting
+  and rounding it. Excess precision is a `CONFLICT`, never a silent truncation (G8).
+- **Ambiguity is reported, not resolved.** Where several transfers of the same token reach the same
+  recipient, `check_transfer_ambiguity` emits `MISSING` listing every candidate's log index and
+  value. Taking the first match would be arbitrary and confident (D18, G5).
+- **Wording is enforced by test.** `destination.approval` says "risk indicator, not a verdict about
+  intent"; tests assert that no finding summary contains "fraud", "scam", "theft" or "stolen" (G6),
+  and that the confirmation line avoids "final" and "guaranteed" (P10).
+- **Serialisation is float-free.** `TransferEvent.value` and every base-unit figure serialise as
+  **strings**, so no JSON consumer can turn a 6-decimal amount into a float. Tested by walking the
+  serialised structure for any `float`.
+- **`check_confirmations` defaults to 12** and reports `MISSING` below the threshold rather than
+  `VERIFIED`. Depth is a parameter so the benchmark can vary it.
+
+
+### D21 — Failed transactions need the receipt, not the logs
+**2026-10-29.** Found while harvesting real transactions for the benchmark. The first harvest
+returned **zero** reverted transactions, which was not bad luck: `eth_getLogs` can only return
+transactions that *emitted* events, and a reverted transfer emits none. Failed payments are
+structurally invisible to log scanning.
+
+This matters because "the ledger says paid but nothing moved" is one of the three MVP exception
+types. A reconciler built on log scanning would never see it — the transaction simply would not
+appear, which reads as "no payment found" rather than "the payment failed".
+
+So `scripts/harvest_txs.py` additionally walks block transaction lists and checks receipt
+`status`, and the verifier checks `status` before anything else. Verified against a real reverted
+Polygon transaction (`0xe00f5243…`, block 96371332, gasUsed 96064, zero Transfer logs): the sender
+paid gas and moved nothing.
+
+### D22 — A finding must say *what* is confirmed
+**2026-10-29.** Testing the reverted transaction produced this on screen:
+
+```
+CONFLICT   Transaction reverted (status 0); no tokens were transferred by it.
+VERIFIED   Confirmed on-chain at 52 confirmations (threshold 12).
+```
+
+Both lines are true — the *failure* is confirmed — but "Confirmed on-chain" beside a failed payment
+invites exactly the wrong reading, and on a demo screen a judge would see "VERIFIED confirmed"
+next to a payment that never happened.
+
+`check_confirmations` now names the outcome: *"The FAILURE of this transaction is confirmed
+on-chain at N confirmations"*, with `detail.confirms_outcome` set to `success` or `failure`. Every
+confirmation line also carries *"Confirmed is not the same as final: issuers can freeze or
+blacklist balances"* (P10).
+
+A test that had banned the substring "final" outright was tightened rather than deleted: it now
+asserts the summary never *claims* finality (`"is final"`, `"irreversible"`, `"cannot be
+reversed"`, `"guaranteed"`) while requiring the disclaimer to be present. Banning the word was the
+wrong test; banning the claim is the right one.
+
+### D23 — Two further failure modes a naive checker passes
+**2026-10-29.** Added because both look like successful payments:
+
+- **`payment.direction`** — the party expected to *receive* appears only as a *sender* of that
+  token. The money left them. Returns no finding when the party is uninvolved, so ordinary cases
+  stay quiet.
+- **`payment.zero_value`** — a succeeded transaction whose matching transfers all move **zero**
+  base units. A zero-value Transfer is a real event: token matches, destination matches, status is
+  success, and nothing was received. `test_zero_value_still_looks_like_a_transfer_to_a_naive_check`
+  asserts that `check_asset` and `check_destination` both return VERIFIED on it, which is why the
+  dedicated check has to exist.
+
+
+### D24 — Benchmark: real chain facts, synthetic business records, labels in a separate file
+**2026-10-29.** `benchmark/` holds three files with deliberately different trust levels:
+
+| File | Contents | Read by a system under test? |
+|---|---|---|
+| `cases.json` | 25 cases, inputs only | yes |
+| `ground_truth.json` | expected outcome, issue types, required citations | **never** |
+| `chain_facts.json` | 8 **real** Polygon transactions, captured | yes (as evidence) |
+
+**Chain facts are real; only business records are synthetic** (G3, P4). A benchmark whose on-chain
+data was invented to suit the cases proves nothing, so every `chain_evidence` entry carries
+`origin: "public_mainnet"` and `simulated: false`, while every business record carries
+`simulated: true`. The captured transactions cover each shape that matters: single transfer,
+multi-transfer, two tokens in one transaction, 19 transfers across 4 tokens, two reverted
+transactions, a **genuine zero-value transfer**, and a 9-transfer transaction with real settlement
+ambiguity.
+
+**Hygiene is enforced by tests, not by intention** (`tests/test_benchmark.py`, 30 tests):
+- **No label leakage.** The inputs file is walked recursively for any of 13 label-ish keys, and
+  asserted not to contain the outcome words. The two files are asserted to be disjoint.
+- **No near-duplicate templates.** Each case is reduced to a structural signature (record counts,
+  tokens, amounts, transaction hashes) and no two may match. **This test caught four real
+  collisions** — `C11~C12`, `C06~C14`, `C14~C15`, then `C02~C11` — which were fixed by giving the
+  cases genuinely different evidence, not by renaming fields. `C02~C11` was the substantive one:
+  C11's "unresolved" outcome came only from a run-time confirmation threshold, so its inputs were
+  identical to a clean control. It now uses a different transaction entirely.
+- **Degenerate scoring is blocked.** 4 `no_conflict` controls mean a system that always answers
+  CONFLICT cannot score well, and 4 `unresolved` cases mean over-answering is detectable (G5).
+  No outcome may exceed 18 of 25.
+- **Records must parse under the production model**, and no amount may be a JSON float (G8).
+
+Labels are described in the file itself as *"preliminary labels over 25 synthetic business-record
+scenarios; not evidence of production performance"* (P12).
+
+Cases are written as situations an operator would recognise — each has a `title` and an
+`operator_note` of at least 20 characters explaining why the case landed on someone's desk —
+rather than as abstract test vectors.
+
+
+### D25 — CP4 ★ realism review deferred; recorded as a limitation, not a pass
+**2026-10-29.** The human reviewed the 25 cases but stated they do not know web3 or crypto and
+asked the model to proceed on its own judgement. The gate therefore cannot be ticked as "human
+reviews realism" in any meaningful sense: the cases were authored and reviewed by the same party.
+
+Recorded as RISKS.md P15 rather than marked passed. What this does and does not threaten:
+- **Not at issue:** the chain side. Transactions are real and independently verifiable, so shapes
+  like reverted transfers, zero-value transfers and multi-token transactions are real by
+  construction.
+- **At issue:** whether the *business records* and operator framing resemble what an operations
+  team actually sees — invoice/ledger/approval structures, and whether these are the cases that
+  genuinely land on someone's desk.
+
+Two judgement calls made in the human's place, stated so they can be overridden:
+- **C13 (paid to a different but approved address) kept as a conflict.** The instruction said
+  address A and the money went to address B; approval lowers severity without making it a
+  non-event. It is also the case that proves `payment.destination` and `destination.approval`
+  stay independent.
+- **C07 ("payment in a token nobody mentioned") kept, and flagged as the weakest of the 25.** The
+  chain data is a real 19-transfer swap, but the business story is thin. Flagged rather than
+  quietly counted as a strong case.
+
+
+### D26 — The rules-only baseline is built to be fair, and its wins are reported
+**2026-10-29.** A baseline written to lose makes every number meaningless. So
+`traceledger/baselines/rules_only.py` implements the conventional approach as a competent system
+and documents why each choice is one a real tool makes: assets matched by **ticker symbol**
+(symbols are what ledgers and ERPs store), amounts compared at **2dp as floats** (display
+currency precision), payments found by **scanning Transfer events** (the standard indexing
+approach), duplicates on exact identifier match, and it **always answers** because operators want
+a status.
+
+It is explicitly *our* implementation of a conventional approach, **not any vendor's product**, so
+results speak to the approach and not to a competitor (P2).
+
+**Where the baseline wins, and it is recorded:** 0% false positives on clean cases (4/4 correct),
+and correct duplicate detection. It is not weak everywhere.
+
+**Its failures are specific and reproducible**, which is the useful output:
+
+| Case | Why the conventional approach misses it |
+|---|---|
+| C05 bridged vs native USDC | Both contracts report `symbol="USDC"`; symbol matching cannot distinguish them |
+| C19 short by one base unit | 0.000001 vanishes when amounts are rounded to 2dp |
+| C10 zero-value transfer | Expected 0.00, delivered 0.00 — the rounded comparison matches |
+| C06 record disagreement | Records are never compared against each other |
+| C11, C15, C23, C24 | The system cannot abstain, so it answers "fine" on insufficient evidence |
+
+**The subtler result:** on C04, C08, C09 and C25 the baseline gets the *outcome* right but names
+the wrong issue — it reports `unmatched_payment` where the truth is a wrong asset or a reverted
+transaction. Outcome accuracy 68% but issue identification only 41%. Telling an operations team
+"no payment found" when a payment exists but reverted, or arrived in the wrong token, sends them
+hunting for the wrong thing. That gap is why issue identification is scored separately.
+
+### D27 — A benchmark label was wrong, and the system caught it
+**2026-10-29.** `C07` was labelled `wrong_asset` on the premise that the invoiced token was absent
+from a 19-transfer, 4-token transaction. The verifier reported the asset check as VERIFIED, which
+looked like a system failure. It was not: the transaction genuinely contains USDT
+(`0xc2132d05…`), verified against the captured facts, so **the label was wrong and the verifier
+was right**.
+
+The case was rebuilt to invoice native USDC, which is genuinely absent from that transaction, and
+the ground-truth note now lists all four token contracts so the premise is checkable rather than
+assumed.
+
+Recorded because it cuts both ways: it is evidence the benchmark can catch a real error, and
+evidence that labels authored alongside the system can be wrong (P16).
+
+
+### D28 — Two CP4 benchmarks were built in parallel; both kept pending a decision
+**2026-10-29.** A teammate (GitHub @nirmitjain2110) merged PRs #1-#3 adding a second,
+independent CP4 benchmark while this session was building one. Merged rather than overwritten;
+nothing discarded.
+
+This is a **coordination** problem as much as a technical one: two people built the same checkpoint
+at the same time. Before starting CP6, agree who owns it.
+
+| | `benchmark/` (this session) | `data/benchmark/` (other session) |
+|---|---|---|
+| Cases | 25, one inputs file + one labels file | 25, one file per case + per-case ground truth |
+| Chain data | **real** Polygon transactions, verifiable on a block explorer | **fabricated** hashes (`0xa1000…00a1`), labelled `simulated: true` |
+| Scenario grounding | operator notes written by the model | **FinCEN, TRM Labs, Chainalysis, OFAC, Circle, SEC** typologies cited per case |
+| Categories | 15 issue types | 6 named categories incl. **sanctions/frozen assets** and **insufficient evidence** |
+| Shared root cause | not covered | **D4 links to A2** — exactly what CP6's graph layer needs |
+| Dataset tests | 30 (label leakage, near-duplicate signatures, float checks, records parse) | 1 function, ~55 assertions (Draft-7 schema, base-unit strings, category coverage, D4→A2 link) |
+| Results generated | yes, `scripts/run_benchmark.py` → `BENCHMARK_RESULTS.md` | not yet scored |
+
+Each is stronger exactly where the other is weak. The teammate's scenario design directly
+addresses P15, the limitation I had flagged as material: its cases are grounded in published
+typologies rather than invented by whoever wrote the system. Mine has chain data a judge can
+verify, and tests for the failure modes a self-authored benchmark is prone to.
+
+**What must not happen:** running both and quoting whichever scores better. That is precisely the
+benchmark-hygiene failure G10 and G11 exist to prevent. Until this is resolved,
+`BENCHMARK_RESULTS.md` is explicit that it covers `benchmark/` only.
+
+**Recommended resolution:** keep the teammate's category structure, typology citations and
+`tricky_reason` fields, and re-point its cases at **real** transactions — fabricated hashes cannot
+be checked on a block explorer and cannot support the live-fire demo (D17). That keeps the better
+scenario design and the verifiable evidence, and discards neither contribution.
