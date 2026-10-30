@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: traceledger-backend
+    name: traceledger
     runtime: python
     region: oregon
     plan: free
@@ -16,8 +16,7 @@ services:
         value: "https://polygon-bor-rpc.publicnode.com"
       - key: TL_CHAIN_NAME
         value: "Polygon PoS"
-      - key: TL_LLM_PROVIDER
-        value: "stub"
       - key: TL_ENABLE_TIGERGRAPH
         value: "false"
-
+      - key: TL_LLM_PROVIDER
+        value: "stub"

@@ -1,100 +1,72 @@
-# TraceLedger — Production Deployment Guide
+# TraceLedger — Render Full-Stack Deployment Guide
 
-TraceLedger is configured for decoupled cloud deployment:
-- **Backend (Python / Flask / Gunicorn)** on **Render** (or Railway / Fly.io)
-- **Frontend (Tracing Vellum Parallax Client)** on **Vercel**
+TraceLedger can be deployed entirely as a **unified full-stack application on Render**.
+
+Deploying entirely on Render gives you:
+- **1 Single Service & 1 URL** for both the frontend UI and backend API.
+- **Zero CORS issues or proxy rewrites**: HTML, CSS, assets, and APIs are served from the same origin.
+- **Persistent Evidence Engine**: Live Polygon PoS (Chain 137) node calls, SQLite append-only audit trail, and human review actions all run in one unified environment.
+- **Full Headless API Access**: External tools can still call `/api/*` anytime.
 
 ---
 
-## 1. Backend Deployment (Render)
+## 1. Quick Deploy on Render (Recommended)
 
-### Option A: Blueprints (Automated via `render.yaml`)
+### Option A: 1-Click Blueprint (Automated via `render.yaml`)
 1. Push your repository to GitHub.
 2. In the [Render Dashboard](https://dashboard.render.com), click **New +** &rarr; **Blueprint**.
-3. Connect your GitHub repository.
-4. Render automatically parses `render.yaml` and provisions:
-   - **Service Name**: `traceledger-backend`
-   - **Runtime**: Python 3.11+
+3. Select your GitHub repository.
+4. Render will read [`render.yaml`](render.yaml) automatically and configure:
+   - **Service Name**: `traceledger`
+   - **Runtime**: `Python`
+   - **Build Command**: `pip install -r requirements.txt`
+   - **Start Command**: `gunicorn wsgi:app --bind 0.0.0.0:$PORT`
+   - **Health Check**: `/healthz`
+5. Click **Apply**. Within ~2 minutes, your app is live at `https://traceledger.onrender.com`!
+
+### Option B: Manual Web Service Setup
+If creating the service manually:
+1. In Render Dashboard, click **New +** &rarr; **Web Service**.
+2. Connect your repo and set:
+   - **Name**: `traceledger`
+   - **Language**: `Python 3`
+   - **Region**: `Oregon (US West)` or nearest
+   - **Branch**: `main` (or your active branch)
    - **Build Command**: `pip install -r requirements.txt`
    - **Start Command**: `gunicorn wsgi:app --bind 0.0.0.0:$PORT`
    - **Health Check Path**: `/healthz`
-
-### Option B: Manual Web Service
-If you prefer setting up manually in Render:
-- **Type**: Web Service
-- **Root Directory**: `.` (leave blank)
-- **Build Command**: `pip install -r requirements.txt`
-- **Start Command**: `gunicorn wsgi:app --bind 0.0.0.0:$PORT`
-- **Environment Variables**:
-  | Key | Recommended Value | Notes |
-  |---|---|---|
-  | `TL_CHAIN_ID` | `137` | Polygon PoS Mainnet |
-  | `TL_RPC_URL` | `https://polygon-bor-rpc.publicnode.com` | Public or Alchemy/Infura RPC |
-  | `TL_CHAIN_NAME` | `Polygon PoS` | UI display label |
-  | `TL_ENABLE_TIGERGRAPH` | `false` | `false` for SQLite graph engine; `true` for TG Savanna |
-  | `TL_LLM_PROVIDER` | `stub` | `stub`, `google`, `anthropic`, or `openai` |
-
-Once deployed, copy your Render service URL (e.g., `https://traceledger-backend.onrender.com`).
+3. Add the following **Environment Variables**:
+   | Key | Value | Purpose |
+   |---|---|---|
+   | `TL_CHAIN_ID` | `137` | Polygon PoS Mainnet |
+   | `TL_RPC_URL` | `https://polygon-bor-rpc.publicnode.com` | Public Bor RPC (or your Alchemy/Infura URL) |
+   | `TL_CHAIN_NAME` | `Polygon PoS` | UI display label |
+   | `TL_ENABLE_TIGERGRAPH` | `false` | `false` uses local SQLite graph; `true` for TG Savanna |
+   | `TL_LLM_PROVIDER` | `stub` | `stub`, `google`, `anthropic`, or `openai` |
+4. Click **Create Web Service**.
 
 ---
 
-## 2. Frontend Deployment (Vercel)
+## 2. What Gets Served on Render
 
-### Option A: Deploying from Root Repository
-1. In the [Vercel Dashboard](https://vercel.com/new), click **Add New Project** and import your GitHub repository.
-2. The root `vercel.json` automatically sets:
-   - **Output Directory**: `frontend`
-   - **Framework Preset**: Other
-3. Update the backend proxy URL:
-   - In `vercel.json` and `frontend/vercel.json`, replace:
-     ```json
-     "destination": "https://traceledger-backend.onrender.com/api/:path*"
-     ```
-     with your actual Render URL from Step 1.
-4. Click **Deploy**.
-
-### Option B: Root Directory Set to `frontend`
-If you configure **Root Directory** as `frontend` in Vercel project settings:
-- Vercel will deploy `frontend/index.html` and `frontend/case.html` with zero build configuration.
-- The `frontend/vercel.json` file handles all `/api/*` proxies.
+Once deployed to Render, your single URL provides everything:
+- **`https://<your-app>.onrender.com/`**: The complete Tracing Vellum Parallax landing page, live case intake form with instant USDC/USDT switch, active cases docket, and Act 6 benchmark terminal.
+- **`https://<your-app>.onrender.com/case/<case_id>`**: Full evidence graph, discrepancy mapping, and human review form.
+- **`https://<your-app>.onrender.com/audit`**: Append-only audit trail.
+- **`https://<your-app>.onrender.com/landing`**: Dedicated 3D parallax presentation view.
+- **`https://<your-app>.onrender.com/healthz`**: Automated health check endpoint.
+- **`https://<your-app>.onrender.com/api/*`**: Headless JSON REST endpoints (`/api/status`, `/api/cases`, `/api/case/new`, etc.).
 
 ---
 
-## 3. Dynamic API Configuration in Browser
+## 3. Local Verification
 
-The frontend includes an auto-detection and fallback mechanism:
-- By default, all requests route through `/api/*` (proxied by Vercel edge rewrite).
-- If testing locally or cross-cloud, click the **API Status Pill** in the top navigation or the **API link** in the footer to enter any custom backend URL (e.g. `http://localhost:5001` or `https://custom-domain.onrender.com/api`).
-- The chosen endpoint is persisted in `localStorage`.
+To run and test the identical setup locally:
 
----
+```bash
+# Start the production WSGI application
+python wsgi.py
 
-## 4. Local Full-Stack Verification
-
-To test the decoupled setup locally before deploying:
-
-1. **Start Backend**:
-   ```bash
-   python wsgi.py
-   # Serves on http://127.0.0.1:5001
-   ```
-
-2. **Verify Health Endpoint**:
-   ```bash
-   curl http://127.0.0.1:5001/healthz
-   # Response: {"cases": 18, "chain_id": 137, "ok": true}
-   ```
-
-3. **Verify API with CORS**:
-   ```bash
-   curl -I http://127.0.0.1:5001/api/status
-   # Confirms Access-Control-Allow-Origin: *
-   ```
-
-4. **Serve Frontend**:
-   ```bash
-   cd frontend
-   python -m http.server 3000
-   # Open http://localhost:3000 in your browser
-   ```
-
+# Open in browser
+http://127.0.0.1:5001/
+```
