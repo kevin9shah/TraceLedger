@@ -1,118 +1,418 @@
 {% extends "base.html" %}
 
+{% block title %}TraceLedger — Stablecoin Forensic Audit Suite{% endblock %}
+
 {% block content %}
-<!-- Hero Section with Pure CSS Parallax Vellum Layers -->
-<section class="parallax-viewport" style="margin-bottom: var(--space-2xl);">
-  <div class="vellum-card parallax-layer-front" style="padding: 2.5rem 2rem; position: relative; overflow: hidden;">
-    <div style="max-width: 760px;">
-      <span class="badge badge-replay" style="margin-bottom: 0.75rem;">DAYLIGHT FORENSIC SUITE • POLYGON MAINNET (CHAIN 137)</span>
-      <h1 style="font-size: 2.75rem; margin-bottom: 0.5rem; letter-spacing: -0.02em;">Every conclusion is a path.</h1>
-      <p style="font-size: 1.15rem; color: var(--ink-secondary); margin-bottom: 1.75rem;">
-        Show what is proven, what is contradicted, and what is missing.
-        TraceLedger isolates stablecoin settlement exceptions by cross-examining raw on-chain events against business records.
+<style>
+  /* Standalone & Base Responsive Layout for Landing */
+  .landing-hero-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+    align-items: center;
+    margin-top: var(--space-md);
+    margin-bottom: var(--space-2xl);
+  }
+
+  @media (min-width: 992px) {
+    .landing-hero-grid {
+      grid-template-columns: 5fr 7fr;
+      gap: var(--space-2xl);
+    }
+  }
+
+  .landing-headline {
+    font-family: var(--font-serif);
+    font-size: 2.75rem;
+    line-height: 1.08;
+    letter-spacing: -0.025em;
+    color: var(--ink-title);
+    margin-bottom: var(--space-md);
+    font-weight: 700;
+  }
+
+  @media (max-width: 640px) {
+    .landing-headline {
+      font-size: 2.15rem;
+    }
+  }
+</style>
+
+<!-- Top Dossier Archival Ribbon -->
+<div class="archival-ribbon" style="margin-bottom: var(--space-lg);">
+  <div style="display: flex; align-items: center; gap: var(--space-sm); flex-wrap: wrap;">
+    <span class="ribbon-tag">REG: FORENSIC-884</span>
+    <span>DEPT. OF ASSET RECONCILIATION &amp; DISCREPANCY MAPPING</span>
+  </div>
+  <div style="display: flex; align-items: center; gap: var(--space-lg); flex-wrap: wrap;">
+    <div class="ribbon-status">
+      <span class="status-dot"></span>
+      <span>INDEX STATUS: APPEND-ONLY AUDIT TRAIL</span>
+    </div>
+    <span style="display: inline-block;">PRECISION LEVEL: COURT-GRADE</span>
+  </div>
+</div>
+
+<!-- Main Split Hero Section with Pure CSS Parallax Dossier -->
+<section class="landing-hero-grid">
+
+  <!-- Left Column: Authoritative Editorial Typography & Direct CTAs -->
+  <div style="z-index: 10;">
+    <!-- Eyebrow with forensic badge -->
+    <div style="display: flex; align-items: center; gap: var(--space-xs); margin-bottom: var(--space-sm);">
+      <span style="color: var(--state-verified); font-weight: 700; font-size: 1rem;">&#8857;</span>
+      <span class="badge"
+        style="background: var(--bg-surface-low); color: var(--ink-secondary); border-color: var(--line-subtle); letter-spacing: 0.08em; font-size: 0.7rem;">
+        ON-CHAIN FORENSICS &amp; RECONCILIATION / DOSSIER N&ordm; 084
+      </span>
+    </div>
+
+    <!-- Main Serif Headline -->
+    <h1 class="landing-headline">
+      Every conclusion is a path.
+    </h1>
+
+    <!-- Crisp Editorial Subhead -->
+    <p
+      style="font-size: 1.125rem; color: var(--ink-secondary); line-height: 1.6; margin-bottom: var(--space-xl); max-width: 540px;">
+      Show what is proven, what is contradicted, and what is missing. Reconstruct transactional journeys with absolute
+      daylight clarity, moving beyond obscured ledgers to transparent court-admissible dossiers.
+    </p>
+
+    <!-- Interaction CTAs (Zero-JS semantic buttons wired to real routes) -->
+    <div
+      style="display: flex; gap: var(--space-md); flex-wrap: wrap; align-items: center; margin-bottom: var(--space-lg);">
+      <!-- Direct Demo Case Opener -->
+      <form method="post" action="{{ url_for('new_case') }}" style="margin: 0; padding: 0;">
+        <input type="hidden" name="tx_hash" value="0x3e1b6243f0f74ef16ab02a6f62a92b30763ee8556d684cf908459d33cb63fd4a">
+        <input type="hidden" name="invoice_token" value="0x3c499c542cef5e3811e1192ce70d8cc03d5c3359">
+        <input type="hidden" name="amount" value="0.10">
+        <input type="hidden" name="destination" value="0xdad4d0ee4260c1a9a25bb61099c9e518b5033e8e">
+        <input type="hidden" name="title" value="Demo: Invoiced USDC vs Sent USDT0 (Real Mainnet Transfer)">
+        <input type="hidden" name="counterparty" value="Meridian Capital Partners">
+        <input type="hidden" name="memo"
+          value="Demo walkthrough: invoice names native USDC; mainnet delivered Tether (USDT0).">
+        <button type="submit" class="btn btn-primary"
+          style="padding: 0.65rem 1.4rem; font-size: 0.9375rem; border-radius: var(--radius-max);"
+          title="Load verified live mainnet demo case">
+          &#9654; Load demo case
+        </button>
+      </form>
+
+      <!-- Paste Hash Link pointing to the ingest form below -->
+      <a href="#ingest-form" class="btn btn-secondary"
+        style="padding: 0.65rem 1.4rem; font-size: 0.9375rem; border-radius: var(--radius-max);">
+        &#9000; Paste transaction hash
+      </a>
+
+      <a href="#cases" class="btn btn-secondary"
+        style="padding: 0.65rem 1.2rem; font-size: 0.9375rem; border-radius: var(--radius-max); border-style: dashed;">
+        &#9776; Case List ({{ cases|length }})
+      </a>
+    </div>
+
+    <!-- Quick Reference Hash helper -->
+    <div class="text-small text-secondary"
+      style="display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; margin-bottom: var(--space-xl);">
+      <span style="font-weight: 500;">Quick reference:</span>
+      <code class="text-mono"
+        style="background: var(--bg-surface-low); padding: 2px 6px; border-radius: 4px; border: 1px solid var(--line-subtle); color: var(--ink-primary);">
+        0x3e1b6243f0f74ef16ab02a6f62a92b30763ee8556d684cf908459d33cb63fd4a
+      </code>
+      <span class="text-muted">&mdash; USDC payout reconciliation</span>
+    </div>
+
+    <!-- Mini Forensic Metric Block -->
+    <div class="grid grid-stats" style="border-top: 1px solid var(--line-subtle); padding-top: var(--space-md);">
+      <div class="stat-box">
+        <div class="stat-val" style="color: var(--ink-title);">100%</div>
+        <div class="stat-lbl">Deterministic</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-val" style="color: var(--ink-title);">0.00ms</div>
+        <div class="stat-lbl">Heuristic Guess</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-val" style="color: var(--ink-title);">RFC-8271</div>
+        <div class="stat-lbl">Audit Protocol</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Column: Drafting Vellum Composition & 3D Interactive Parallax Stack -->
+  <div class="dossier-stage-container" aria-label="Interactive 3D Vellum Dossier Stack"
+    style="min-height: 620px; height: 620px; position: relative;">
+
+    <!-- Layer 4: Foundation Underlay (Fixed to Background, Pointer-Events None, Zero Obstruction) -->
+    <div class="layer-foundation"
+      style="position: absolute; width: 95%; height: 94%; top: -8px; left: 10px; z-index: 1 !important; pointer-events: none !important; user-select: none !important; transform: rotate(-1.8deg); background: rgba(236, 232, 223, 0.45); backdrop-filter: none !important;">
+      <div
+        style="display: flex; justify-content: space-between; align-items: center; font-family: var(--font-mono); font-size: 0.6875rem; color: var(--ink-secondary);">
+        <span style="font-weight: 600; color: var(--ink-title);">&#9638; REGISTRATION MATRIX: 401-AXIS</span>
+        <span>INDEX SHEET REF: TL-NY-2024-09</span>
+      </div>
+
+      <!-- Technical Grid Watermark Line Art -->
+      <div style="width: 100%; height: 60%; opacity: 0.18; margin: 0.5rem 0;">
+        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <line x1="10%" y1="0" x2="10%" y2="100%" stroke="#16213E" stroke-width="0.5" stroke-dasharray="4 4" />
+          <line x1="50%" y1="0" x2="50%" y2="100%" stroke="#16213E" stroke-width="0.5" stroke-dasharray="4 4" />
+          <line x1="90%" y1="0" x2="90%" y2="100%" stroke="#16213E" stroke-width="0.5" stroke-dasharray="4 4" />
+          <line x1="0" y1="25%" x2="100%" y2="25%" stroke="#16213E" stroke-width="0.5" stroke-dasharray="4 4" />
+          <line x1="0" y1="75%" x2="100%" y2="75%" stroke="#16213E" stroke-width="0.5" stroke-dasharray="4 4" />
+        </svg>
+      </div>
+
+      <div
+        style="display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 0.6875rem; color: var(--ink-secondary);">
+        <span>LEGAL HOLD DOCKET: ACTIVE</span>
+        <span>HASH ROOT: c894...b2f1</span>
+      </div>
+    </div>
+
+    <!-- Layer 3: Deep Layer - On-Chain Settlement Ledger Base -->
+    <div class="dossier-layer layer-settlement"
+      style="position: absolute; top: 2rem; right: 1.5rem; width: 85%; z-index: 10; transform: rotate(1.4deg);">
+      <div
+        style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.35rem; border-bottom: 1px solid var(--line-subtle);">
+        <div style="display: flex; align-items: center; gap: 0.4rem;">
+          <span style="width: 8px; height: 8px; border-radius: 50%; background: var(--ink-secondary);"></span>
+          <span
+            style="font-family: var(--font-sans); font-size: 0.75rem; font-weight: 700; color: var(--ink-title); text-transform: uppercase;">POLYGON
+            SETTLEMENT BASE</span>
+        </div>
+        <span class="text-mono" style="font-size: 0.6875rem; color: var(--ink-secondary);">BLOCK #96,374,114</span>
+      </div>
+
+      <div class="grid grid-2col text-mono"
+        style="font-size: 0.6875rem; color: var(--ink-secondary); margin-top: 0.5rem; gap: 0.25rem;">
+        <div>TXID: <span class="font-bold" style="color: var(--ink-title);">0x3e1b...fd4a</span></div>
+        <div style="text-align: right;">GAS USED: <span class="font-bold" style="color: var(--ink-title);">142,829
+            GWEI</span></div>
+        <div>ROUTER: <span style="color: var(--ink-title);">DisbursementVault.sol</span></div>
+        <div style="text-align: right;">SETTLED: <span style="color: var(--ink-title);">2026-10-30 02:53:21 UTC</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Layer 2: Mid-Depth Layer - Treasury Route & Multisig Quorum -->
+    <div class="dossier-layer layer-multisig"
+      style="position: absolute; top: 9.75rem; left: 1.5rem; width: 86%; z-index: 20; transform: rotate(-0.8deg);">
+      <div
+        style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.35rem; border-bottom: 1px solid var(--line-subtle);">
+        <div style="display: flex; align-items: center; gap: 0.4rem;">
+          <span style="width: 8px; height: 8px; border-radius: 50%; background: var(--state-candidate);"></span>
+          <span
+            style="font-family: var(--font-sans); font-size: 0.75rem; font-weight: 700; color: var(--ink-title); text-transform: uppercase;">TREASURY
+            MULTISIG DISBURSEMENT</span>
+        </div>
+        <span class="text-mono" style="font-size: 0.6875rem; color: var(--ink-secondary);">SIGNATURE QUORUM: 3 OF
+          4</span>
+      </div>
+
+      <div
+        style="display: flex; justify-content: space-between; align-items: center; font-family: var(--font-mono); font-size: 0.6875rem; color: var(--ink-secondary); margin-top: 0.5rem; flex-wrap: wrap; gap: 0.25rem;">
+        <div style="display: flex; align-items: center; gap: 0.25rem;">
+          <span style="color: var(--state-verified); font-weight: 700;">&#10003;</span>
+          <span>Signer Alpha: <span style="color: var(--ink-title);">0x4b1...81a</span></span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.25rem;">
+          <span style="color: var(--state-verified); font-weight: 700;">&#10003;</span>
+          <span>Signer Beta: <span style="color: var(--ink-title);">0x92f...73c</span></span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.25rem;">
+          <span style="color: var(--ink-muted);">&#9200;</span>
+          <span>Signer Delta: <em style="color: var(--ink-muted);">Pending</em></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Layer 1: Foreground Top Vellum Card - Vendor Commercial Invoice -->
+    <div class="dossier-layer layer-invoice"
+      style="position: absolute; top: 17.5rem; left: 2.25rem; width: 88%; z-index: 30; transform: rotate(0.4deg);">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
+        <div>
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <span class="badge"
+              style="background: var(--bg-surface-low); color: var(--ink-title); font-size: 0.65rem; font-weight: 700;">PRIMARY
+              EXHIBIT A-1</span>
+            <span class="text-mono text-muted" style="font-size: 0.6875rem;">DOC-ID: INV-2024-8849</span>
+          </div>
+          <h3
+            style="font-family: var(--font-serif); font-size: 1.25rem; margin-top: 0.25rem; margin-bottom: 0.15rem; color: var(--ink-title);">
+            Meridian Capital Partners
+          </h3>
+          <span style="font-size: 0.8125rem; color: var(--ink-secondary);">Advisory &amp; Liquidity Provision
+            Settlement</span>
+        </div>
+
+        <div
+          style="background: var(--bg-surface-low); border: 1px solid var(--line-subtle); padding: 0.4rem 0.75rem; border-radius: var(--radius-max); text-align: right;">
+          <span class="text-mono"
+            style="font-size: 0.625rem; text-transform: uppercase; display: block; color: var(--ink-muted);">SUBMITTED
+            AMOUNT</span>
+          <span
+            style="font-family: var(--font-serif); font-size: 1.25rem; font-weight: 700; color: var(--ink-title);">$425,000.00</span>
+          <span class="text-mono"
+            style="font-size: 0.6875rem; display: block; color: var(--state-verified); font-weight: 600;">CURRENCY:
+            USDC</span>
+        </div>
+      </div>
+
+      <!-- Ledger Table Summary -->
+      <div
+        style="background: var(--bg-surface-low); border-radius: 4px; padding: 0.5rem 0.75rem; font-family: var(--font-mono); font-size: 0.6875rem; display: flex; flex-direction: column; gap: 0.25rem;">
+        <div style="display: flex; justify-content: space-between; color: var(--ink-secondary);">
+          <span>DUE DATE: OCT 18, 2024</span>
+          <span>SETTLEMENT METHOD: ERC-20 MULTISIG</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; color: var(--ink-title); font-weight: 600;">
+          <span>COUNTERPARTY INVOICE STATUS</span>
+          <span style="color: var(--state-verified);">&#10003; VERIFIED SIGNATURE ON FILE</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SVG FORENSIC THREAD: Path connecting cleanly across layers -->
+    <svg style="position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 35;"
+      viewBox="0 0 560 560" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="thread-shadow" x="-20%" y="-20%" width="140%" height="140%">
+          <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#16213e" flood-opacity="0.12" />
+        </filter>
+      </defs>
+      <!-- Segment 1: Origin to Treasury (Solid Verified Path) -->
+      <path d="M 95 85 C 115 135, 145 165, 165 215" fill="none" stroke="#1F7A5C" stroke-width="2.5"
+        filter="url(#thread-shadow)" />
+      <!-- Segment 2: Treasury to Intermediate Node (Asserted Path) -->
+      <path d="M 165 215 C 185 255, 230 285, 270 325" fill="none" stroke="#C99A2E" stroke-width="2"
+        stroke-dasharray="6 2" filter="url(#thread-shadow)" />
+      <!-- Segment 3: The Broken/Missing Evidentiary Path (Dashed Warm Grey) -->
+      <path d="M 270 325 C 310 365, 350 395, 395 440" fill="none" stroke="#9A948A" stroke-width="2.5"
+        stroke-dasharray="5 5" />
+      <!-- Segment 4: Mismatch to Final Wallet Node (Contradicted Path) -->
+      <path d="M 395 440 C 425 470, 465 510, 495 550" fill="none" stroke="#D9482B" stroke-width="2"
+        filter="url(#thread-shadow)" />
+    </svg>
+
+    <!-- Interactive Node Pins -->
+    <!-- Node 1: Origin Invoice (Verified Viridian) -->
+    <div class="node-pin" style="top: 5.25rem; left: 5rem; z-index: 40;" title="Origin Invoice Attestation">
+      <div class="node-pin-dot" style="background: var(--state-verified);"></div>
+      <div class="node-pin-label" style="top: -24px; left: -30px; color: var(--state-verified);">
+        ORIGIN: $425,000.00
+      </div>
+    </div>
+
+    <!-- Node 2: Multisig Execution (Asserted Ochre) -->
+    <div class="node-pin" style="top: 13.25rem; left: 9.5rem; z-index: 40;" title="Treasury Route">
+      <div class="node-pin-dot" style="background: var(--state-candidate);"></div>
+      <div class="node-pin-label" style="top: -24px; left: -26px; color: var(--state-candidate);">
+        MULTISIG RELEASE
+      </div>
+    </div>
+
+    <!-- Callout Badge: Missing Evidence Callout Box -->
+    <div class="callout-missing-evidence" style="top: 20rem; right: 1.5rem; z-index: 42;">
+      <div style="display: flex; align-items: center; gap: 0.35rem; color: #7C766C; margin-bottom: 0.25rem;">
+        <span style="font-weight: 700; font-size: 0.9rem;">&#9888;</span>
+        <span
+          style="font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700; text-transform: uppercase; color: var(--ink-title);">MISSING
+          EVIDENCE</span>
+      </div>
+      <p
+        style="font-family: var(--font-mono); font-size: 0.65rem; color: var(--ink-secondary); line-height: 1.35; margin: 0;">
+        Unsigned counterparty attestation missing between Route &amp; Clearinghouse.
       </p>
+    </div>
 
-      <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center; margin-bottom: 1.5rem;">
-        <!-- Real Form Submission for Loading Demo Case -->
-        <form method="post" action="{{ url_for('new_case') }}" style="margin: 0; padding: 0;">
-          <input type="hidden" name="tx_hash" value="0x3e1b6243f0f74ef16ab02a6f62a92b30763ee8556d684cf908459d33cb63fd4a">
-          <input type="hidden" name="invoice_token" value="0x3c499c542cef5e3811e1192ce70d8cc03d5c3359">
-          <input type="hidden" name="amount" value="0.10">
-          <input type="hidden" name="destination" value="0xdad4d0ee4260c1a9a25bb61099c9e518b5033e8e">
-          <input type="hidden" name="title" value="Demo: Invoiced USDC vs Sent USDT0 (Real Mainnet Transfer)">
-          <input type="hidden" name="counterparty" value="Meridian Freight Corp">
-          <input type="hidden" name="memo" value="Demo walkthrough: invoice names native USDC; mainnet delivered Tether (USDT0).">
-          <button type="submit" class="btn btn-primary" title="Load live mainnet verification demo">
-            ▶ Load demo case
-          </button>
-        </form>
-
-        <a href="#ingest-form" class="btn btn-secondary">
-          ⌨ Paste a transaction hash
-        </a>
-
-        <a href="#results" class="btn btn-secondary" style="border-style: dashed;">
-          📊 Real Benchmark Results
-        </a>
-      </div>
-
-      <!-- Quick Reference Hash helper (plain copy guidance, zero script) -->
-      <div class="text-small text-secondary" style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
-        <span>Real Polygon transfer for quick testing:</span>
-        <code class="text-mono" style="background: var(--bg-surface-low); padding: 2px 6px; border-radius: 4px; border: 1px solid var(--line-subtle);">
-          0x3e1b6243f0f74ef16ab02a6f62a92b30763ee8556d684cf908459d33cb63fd4a
-        </code>
+    <!-- Node 3: Contradicted Amount (Vermilion) -->
+    <div class="node-pin" style="top: 30.5rem; left: 62%; z-index: 40;" title="Contradicted Amount">
+      <div class="node-pin-dot" style="background: var(--state-conflict);"></div>
+      <div class="node-pin-label"
+        style="bottom: -24px; left: -40px; color: var(--state-conflict); border-color: rgba(217, 72, 43, 0.3);">
+        DISCREPANCY: -$25,000.00
       </div>
     </div>
+
+    <!-- Node 4: Destination Wallet (Verified Viridian) -->
+    <div class="node-pin" style="top: 34.25rem; left: 76%; z-index: 40;" title="Destination Wallet">
+      <div class="node-pin-dot" style="background: var(--state-verified);"></div>
+      <div class="node-pin-label" style="bottom: -24px; left: -34px; color: var(--state-verified);">
+        DESTINATION: $400,000.00
+      </div>
+    </div>
+
   </div>
 </section>
 
-<!-- Legend of the 4 Edge States -->
-<section class="vellum-card-solid" style="margin-bottom: var(--space-xl);">
-  <h3>Evidence Thread States</h3>
-  <p class="text-small text-secondary">
-    TraceLedger models settlement as an unbroken causal thread. Every state pairs a visible glyph, color, and label:
+<!-- Section: Forensic Edge Taxonomy & Verification States -->
+<section id="taxonomy"
+  style="margin-top: var(--space-xl); padding-top: var(--space-lg); border-top: 1px solid var(--line-subtle); margin-bottom: var(--space-2xl);">
+  <div
+    style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-sm);">
+    <div>
+      <span class="badge"
+        style="background: var(--bg-surface-low); color: var(--ink-secondary); margin-bottom: 0.35rem;">STANDARDS
+        REFERENCE</span>
+      <h2 style="font-size: 1.5rem; margin: 0;">Forensic Edge Taxonomy &amp; Verification States</h2>
+    </div>
+    <span class="text-mono text-muted text-small">STANDARD CODESET V2.4</span>
+  </div>
+
+  <p class="text-secondary text-small" style="max-width: 680px; margin-top: 0.5rem; margin-bottom: 0;">
+    TraceLedger models stablecoin payouts as an unbroken causal thread. Every state pairs a visible glyph, color token,
+    and explicit label:
   </p>
-  <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--space-md);">
-    <div style="display:flex; align-items:center; gap:0.6rem; padding:0.5rem; border:1px solid var(--state-verified); background:var(--state-verified-bg); border-radius:4px;">
-      <span style="font-weight:700; color:var(--state-verified);">✓</span>
-      <div>
-        <strong style="color:var(--state-verified); font-size:0.85rem;">Verified Fact</strong>
-        <div class="text-small text-secondary">Proved by deterministic chain bytecode</div>
-      </div>
-    </div>
-    <div style="display:flex; align-items:center; gap:0.6rem; padding:0.5rem; border:1px solid var(--state-conflict); background:var(--state-conflict-bg); border-radius:4px;">
-      <span style="font-weight:700; color:var(--state-conflict);">⚠</span>
-      <div>
-        <strong style="color:var(--state-conflict); font-size:0.85rem;">Conflict</strong>
-        <div class="text-small text-secondary">Direct contradiction in records vs chain</div>
-      </div>
-    </div>
-    <div style="display:flex; align-items:center; gap:0.6rem; padding:0.5rem; border:1px solid var(--state-candidate); background:var(--state-candidate-bg); border-radius:4px;">
-      <span style="font-weight:700; color:var(--state-candidate);">◬</span>
-      <div>
-        <strong style="color:var(--state-candidate); font-size:0.85rem;">Candidate / Asserted</strong>
-        <div class="text-small text-secondary">Unproven hypothesis awaiting evidence</div>
-      </div>
-    </div>
-    <div style="display:flex; align-items:center; gap:0.6rem; padding:0.5rem; border:1px dashed var(--state-missing); background:var(--state-missing-bg); border-radius:4px;">
-      <span style="font-weight:700; color:var(--state-missing);">◌</span>
-      <div>
-        <strong style="color:var(--state-missing); font-size:0.85rem;">Missing Evidence</strong>
-        <div class="text-small text-secondary">Dashed segment; check cannot execute</div>
-      </div>
-    </div>
-  </div>
-</section>
 
-<!-- How It Works Section -->
-<section class="vellum-card" style="margin-bottom: var(--space-xl);">
-  <h2>How It Works: 5-Step Evidence Protocol</h2>
-  <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-md); margin-top: 1rem;">
-    <div class="stat-box">
-      <div class="stat-lbl">Stage 1</div>
-      <div style="font-weight:600; font-size:0.95rem; margin:0.25rem 0;">Deterministic Proof</div>
-      <p class="text-small text-secondary" style="margin:0;">Exact integer base-unit math. Zero float drift. Contract metadata verified on-chain.</p>
+  <div class="taxonomy-grid">
+    <!-- Card 1: Proven / Verified -->
+    <div class="taxonomy-card">
+      <div class="taxonomy-indicator">
+        <span class="taxonomy-dot" style="background: var(--state-verified);"></span>
+        <span class="taxonomy-line" style="background: var(--state-verified);"></span>
+        <span class="taxonomy-title" style="color: var(--state-verified);">&#10003; Proven / Verified</span>
+      </div>
+      <p class="taxonomy-desc">
+        Verified by cryptographic proof, bytecode examination, and on-chain consensus confirmation.
+      </p>
     </div>
-    <div class="stat-box">
-      <div class="stat-lbl">Stage 2</div>
-      <div style="font-weight:600; font-size:0.95rem; margin:0.25rem 0;">Evidence Linking</div>
-      <p class="text-small text-secondary" style="margin:0;">Inspects multi-transfer event logs, receipt status, and destination whitelist matches.</p>
+
+    <!-- Card 2: Contradicted -->
+    <div class="taxonomy-card">
+      <div class="taxonomy-indicator">
+        <span class="taxonomy-dot" style="background: var(--state-conflict);"></span>
+        <span class="taxonomy-line" style="background: var(--state-conflict);"></span>
+        <span class="taxonomy-title" style="color: var(--state-conflict);">&#9888; Contradicted</span>
+      </div>
+      <p class="taxonomy-desc">
+        Direct conflict detected between internal accounting records and on-chain token event parameters.
+      </p>
     </div>
-    <div class="stat-box">
-      <div class="stat-lbl">Stage 3</div>
-      <div style="font-weight:600; font-size:0.95rem; margin:0.25rem 0;">Root Cause Clusters</div>
-      <p class="text-small text-secondary" style="margin:0;">Graph & SQL traversals group multiple payment exceptions to shared import batch errors.</p>
+
+    <!-- Card 3: Asserted / Candidate -->
+    <div class="taxonomy-card">
+      <div class="taxonomy-indicator">
+        <span class="taxonomy-dot" style="background: var(--state-candidate);"></span>
+        <span class="taxonomy-line"
+          style="background: var(--state-candidate); border-top: 1px dotted var(--state-candidate);"></span>
+        <span class="taxonomy-title" style="color: var(--state-candidate);">&#9737; Asserted / Candidate</span>
+      </div>
+      <p class="taxonomy-desc">
+        Pending dual-custody approval, secondary multisig signature, or unverified business record link.
+      </p>
     </div>
-    <div class="stat-box">
-      <div class="stat-lbl">Stage 4</div>
-      <div style="font-weight:600; font-size:0.95rem; margin:0.25rem 0;">Constrained Brief</div>
-      <p class="text-small text-secondary" style="margin:0;">LLM generates hypotheses strictly checked by an independent validator before display.</p>
-    </div>
-    <div class="stat-box">
-      <div class="stat-lbl">Stage 5</div>
-      <div style="font-weight:600; font-size:0.95rem; margin:0.25rem 0;">Human Audit Sign-Off</div>
-      <p class="text-small text-secondary" style="margin:0;">Human records decision with rationale into an append-only SQLite log (not tamper-proof).</p>
+
+    <!-- Card 4: Missing Evidence -->
+    <div class="taxonomy-card">
+      <div class="taxonomy-indicator">
+        <span class="taxonomy-dot" style="background: var(--state-missing);"></span>
+        <span class="taxonomy-line" style="border-top: 2px dashed var(--state-missing);"></span>
+        <span class="taxonomy-title" style="color: var(--ink-secondary);">&#9676; Missing</span>
+      </div>
+      <p class="taxonomy-desc">
+        Missing evidence in the audit trail; critical intermediate hops or counterparty attestations unlocated.
+      </p>
     </div>
   </div>
 </section>
@@ -121,7 +421,8 @@
 <section id="ingest-form" class="vellum-card-solid" style="margin-bottom: var(--space-xl);">
   <h2>Open a case from a transaction hash</h2>
   <p class="text-secondary text-small">
-    Reads the transaction from {{ chain_name }} (Chain ID: {{ chain_id }}) and deterministically compares it against the invoice parameters.
+    Reads the transaction from {{ chain_name }} (Chain ID: {{ chain_id }}) and deterministically compares it against the
+    invoice parameters.
     No private keys used; read-only node calls only.
   </p>
 
@@ -129,11 +430,48 @@
     <label for="tx_hash">Polygon Transaction Hash (Required)</label>
     <input type="text" id="tx_hash" name="tx_hash" required placeholder="0x…" autocomplete="off">
 
-    <label for="invoice_token">Invoiced Token Contract Address (Required)</label>
-    <input type="text" id="invoice_token" name="invoice_token" required placeholder="0x…" autocomplete="off">
-    <p class="text-small text-muted" style="margin-top: 0.25rem;">
-      Must be the contract address (e.g. <code>0x3c499c542cef5e3811e1192ce70d8cc03d5c3359</code> for native USDC, or <code>0xc2132d05d31c914a87c6611c10748aeb04b58e8f</code> for Tether). Matching on tickers is unsafe on Polygon because Tether reports 'USDT0' and two live contracts both report 'USDC'.
-    </p>
+    <label style="margin-top: var(--space-md); margin-bottom: 0.5rem; display: block;">Invoiced Token Contract (Standard
+      Polygon Stablecoin)</label>
+    <div class="token-switch-container">
+      <label class="token-switch-option">
+        <input type="radio" name="invoice_token" value="0x3c499c542cef5e3811e1192ce70d8cc03d5c3359" checked>
+        <div class="token-switch-card">
+          <div class="token-switch-header">
+            <span class="token-badge badge-usdc">USDC</span>
+            <span class="token-title">USD Coin (Native)</span>
+            <span class="token-check-glyph">&#10003;</span>
+          </div>
+          <span class="token-hash text-mono">0x3c499c542cef5e3811e1192ce70d8cc03d5c3359</span>
+        </div>
+      </label>
+      <label class="token-switch-option">
+        <input type="radio" name="invoice_token" value="0xc2132d05d31c914a87c6611c10748aeb04b58e8f">
+        <div class="token-switch-card">
+          <div class="token-switch-header">
+            <span class="token-badge badge-usdt">USDT</span>
+            <span class="token-title">Tether USD (USDT0)</span>
+            <span class="token-check-glyph">&#10003;</span>
+          </div>
+          <span class="token-hash text-mono">0xc2132d05d31c914a87c6611c10748aeb04b58e8f</span>
+        </div>
+      </label>
+    </div>
+
+    <details style="margin-top: 0.6rem; margin-bottom: var(--space-md); font-size: 0.8125rem;">
+      <summary class="text-secondary" style="cursor: pointer; user-select: none;">&#9656; Custom or bridged token
+        contract (USDC.e, DAI, or custom ERC-20)</summary>
+      <div
+        style="margin-top: 0.5rem; padding: 0.75rem; background: var(--bg-surface-low); border: 1px solid var(--line-subtle); border-radius: var(--radius-max);">
+        <label for="invoice_token_custom" class="text-small" style="font-weight: 600;">Custom Token Contract
+          Address</label>
+        <input type="text" id="invoice_token_custom" name="invoice_token_custom"
+          placeholder="0x… (leave blank to use selected USDC / USDT above)" autocomplete="off">
+        <span class="text-small text-muted" style="display: block; margin-top: 0.25rem;">
+          Polygon USDC.e: <code class="text-mono">0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174</code> &bull; DAI: <code
+            class="text-mono">0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063</code>
+        </span>
+      </div>
+    </details>
 
     <div class="grid grid-2col" style="gap: var(--space-md);">
       <div>
@@ -153,7 +491,8 @@
       </div>
       <div>
         <label for="counterparty">Counterparty Name (Optional)</label>
-        <input type="text" id="counterparty" name="counterparty" placeholder="e.g. Acme Logistics" autocomplete="off">
+        <input type="text" id="counterparty" name="counterparty" placeholder="e.g. Meridian Capital Partners"
+          autocomplete="off">
       </div>
     </div>
 
@@ -161,7 +500,8 @@
     <input type="text" id="title" name="title" placeholder="e.g. October Vendor Settlement" autocomplete="off">
 
     <label for="memo">Invoice Memo / Reference Note (Optional)</label>
-    <textarea id="memo" name="memo" placeholder="Free text from the business record. Treated as untrusted data, never instructions."></textarea>
+    <textarea id="memo" name="memo"
+      placeholder="Free text from the business record. Treated as untrusted data, never instructions."></textarea>
 
     <button type="submit" class="btn btn-primary" style="margin-top: 1rem;">
       Verify and Open Case
@@ -171,8 +511,9 @@
 
 <!-- Active Cases Section (Conflicts First) -->
 <section id="cases" class="vellum-card" style="margin-bottom: var(--space-xl);">
-  <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; margin-bottom: 0.75rem;">
-    <h2>Investigation Cases</h2>
+  <div
+    style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; margin-bottom: 0.75rem;">
+    <h2>Active Investigation Cases</h2>
     <span class="text-small text-muted">{{ cases | length }} case(s) on file</span>
   </div>
 
@@ -199,18 +540,18 @@
           <td>{{ c.title }}</td>
           <td>
             {% if c.state == 'conflict' or 'conflict' in c.state|lower %}
-              <span class="badge badge-conflict">⚠ CONFLICT</span>
+            <span class="badge badge-conflict">&#9888; CONFLICT</span>
             {% elif c.state == 'unresolved' or 'unresolved' in c.state|lower %}
-              <span class="badge badge-unresolved">◬ UNRESOLVED</span>
+            <span class="badge badge-unresolved">&#9708; UNRESOLVED</span>
             {% else %}
-              <span class="badge badge-verified">✓ {{ c.state | upper }}</span>
+            <span class="badge badge-verified">&#10003; {{ c.state | upper }}</span>
             {% endif %}
           </td>
           <td class="text-mono text-small">
             {% if c.tx_hash %}
-              {{ c.tx_hash[:10] }}…{{ c.tx_hash[-6:] }}
+            {{ c.tx_hash[:10] }}…{{ c.tx_hash[-8:] }}
             {% else %}
-              <span class="text-muted">—</span>
+            (no hash)
             {% endif %}
           </td>
           <td class="text-small text-muted">{{ c.created_at | ts }}</td>
@@ -220,48 +561,127 @@
     </table>
   </div>
   {% else %}
-  <p class="text-muted" style="padding: 1rem 0;">No active cases in store. Load a demo case or open one using the ingest form above.</p>
+  <div style="text-align: center; padding: 2rem;">
+    <p class="text-muted">No cases opened yet. Load the demo case or paste a hash above.</p>
+  </div>
   {% endif %}
 </section>
 
-<!-- Recent Audit Activity -->
-{% if audit %}
-<section class="vellum-card" style="margin-bottom: var(--space-xl);">
-  <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; margin-bottom: 0.75rem;">
-    <h3>Recent Decisions Log</h3>
-    <a href="{{ url_for('audit') }}" class="text-small">View Full Audit Trail &rarr;</a>
-  </div>
-  <p class="text-small text-muted">
-    Append-only log stored in SQLite. Decisions are permanent entries; not tamper-proof.
+<!-- Section: How It Works (The 5-Stage Evidentiary Protocol) -->
+<section id="how-it-works"
+  style="margin-top: var(--space-2xl); padding-top: var(--space-xl); border-top: 1px solid var(--line-subtle); margin-bottom: var(--space-2xl);">
+  <span class="badge"
+    style="background: var(--bg-surface-low); color: var(--ink-secondary); margin-bottom: 0.35rem;">FORENSIC
+    ARCHITECTURE</span>
+  <h2 style="font-size: 1.5rem; margin-bottom: 0.5rem;">The 5-Stage Evidentiary Protocol</h2>
+  <p class="text-secondary text-small" style="max-width: 720px; margin-bottom: var(--space-md);">
+    TraceLedger replaces flat reconciliation with a multi-hop proof graph. Every layer can only refine and substantiate
+    the findings above it, never override deterministic facts:
   </p>
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th>Timestamp</th>
-          <th>Case ID</th>
-          <th>Decision</th>
-          <th>Reviewer</th>
-          <th>Rationale</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for a in audit %}
-        <tr>
-          <td class="text-small text-muted">{{ a.at | ts }}</td>
-          <td><a href="{{ url_for('case_detail', case_id=a.case_id) }}" class="text-mono">{{ a.case_id }}</a></td>
-          <td><strong>{{ a.action | replace('_', ' ') | upper }}</strong></td>
-          <td>{{ a.actor }}</td>
-          <td class="text-small">{{ a.rationale }}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+
+  <div class="protocol-grid">
+    <div class="protocol-step">
+      <span class="protocol-badge">Stage 1</span>
+      <div class="protocol-heading">Deterministic Verification</div>
+      <p class="protocol-body">
+        Fetches transaction status, integer transfer amounts, and contract decimals directly from live RPC node
+        bytecode. Zero LLM involvement.
+      </p>
+    </div>
+
+    <div class="protocol-step">
+      <span class="protocol-badge">Stage 2</span>
+      <div class="protocol-heading">Evidence Graph Linking</div>
+      <p class="protocol-body">
+        Constructs a Directed Acyclic Graph (DAG) in TigerGraph linking invoices, payment requests, approved address
+        history, and ledger entries.
+      </p>
+    </div>
+
+    <div class="protocol-step">
+      <span class="protocol-badge">Stage 3</span>
+      <div class="protocol-heading">Multi-Hop Query Traversal</div>
+      <p class="protocol-body">
+        Runs pre-installed GSQL queries to isolate high-risk patterns: destination address reuse, recent changes before
+        payment, and shared root causes.
+      </p>
+    </div>
+
+    <div class="protocol-step">
+      <span class="protocol-badge">Stage 4</span>
+      <div class="protocol-heading">Constrained Narrative Layer</div>
+      <p class="protocol-body">
+        A hosted language model analyzes hypotheses strictly gated by an independent validator: every claim must cite
+        real node IDs.
+      </p>
+    </div>
+
+    <div class="protocol-step">
+      <span class="protocol-badge">Stage 5</span>
+      <div class="protocol-heading">Human Review Sign-Off</div>
+      <p class="protocol-body">
+        An operations reviewer commits a determination (Confirm, Reject, Request Evidence, or Unresolved) with rationale
+        into an append-only SQLite log (not tamper-proof).
+      </p>
+    </div>
   </div>
 </section>
-{% endif %}
 
-<!-- Real Run Benchmark & Graph Comparison Panel (DATA INTEGRITY COMPLIANT) -->
-{% include "partials/act6_panel.html" %}
+<!-- Section: Real Benchmark Results (From Act 6 Capture) -->
+<section id="benchmarks"
+  style="margin-top: var(--space-2xl); padding-top: var(--space-xl); border-top: 1px solid var(--line-subtle); margin-bottom: var(--space-2xl);">
+  <div
+    style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: var(--space-sm); margin-bottom: 0.5rem;">
+    <div>
+      <span class="badge"
+        style="background: var(--bg-surface-low); color: var(--ink-secondary); margin-bottom: 0.35rem;">VERIFIED RUN
+        EVIDENCE</span>
+      <h2 style="font-size: 1.5rem; margin: 0;">Results from a real run</h2>
+    </div>
+    <span class="text-mono text-muted text-small">Output of scripts/demo.py, Act 6. Captured 2026-10-30.</span>
+  </div>
 
+  <p class="notice-banner" style="margin-bottom: var(--space-md);">
+    <strong>Preliminary, 25 synthetic cases. Not evidence of production performance.</strong>
+    TraceLedger scores 100% on its internal test suite because cases were written knowing which checks exist; the
+    benchmark records this as circular. The comparison of failure modes (false-resolution rate: rules 32%, plain LLM
+    24%, TraceLedger 0%) is the meaningful measurement.
+  </p>
+
+  <!-- Read-only Captured Terminal Output -->
+  <div class="readonly-act6-panel">
+    <pre>{% include "partials/act6_output.txt" %}</pre>
+  </div>
+</section>
+
+<!-- Section: Dossier Standards & Legal Hold Protocol -->
+<section id="dossier-standards"
+  style="margin-top: var(--space-2xl); padding-top: var(--space-xl); border-top: 1px solid var(--line-subtle);">
+  <div class="vellum-card-solid">
+    <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem;">Dossier Standards &amp; Evidentiary Restraint</h3>
+    <p class="text-secondary text-small" style="line-height: 1.6; margin-bottom: 1rem;">
+      TraceLedger enforces strict vocabulary and architectural guardrails to ensure reports remain objective evidence
+      for a human investigator rather than automated accusations:
+    </p>
+    <ul class="text-secondary text-small" style="margin: 0 0 1.25rem 1.25rem; line-height: 1.7;">
+      <li><strong>Risk indicator, not a verdict about intent:</strong> The system flags discrepancies and
+        contradictions; it never claims to detect fraud or criminal behavior.</li>
+      <li><strong>Read-only architecture:</strong> TraceLedger never holds private keys, never signs transactions, never
+        moves funds, and never edits accounting ledgers.</li>
+      <li><strong>Insufficient evidence is a first-class outcome:</strong> When records are ambiguous or incomplete, the
+        system abstains as <code>UNRESOLVED</code> and lists the exact missing exhibits that would settle it.</li>
+      <li><strong>Untrusted inputs are quarantined:</strong> Business memos, invoice free text, and external data are
+        escaped and treated strictly as data, never as LLM execution instructions.</li>
+    </ul>
+
+    <div style="display: flex; gap: var(--space-md); flex-wrap: wrap;">
+      <a href="#ingest-form" class="btn btn-primary">
+        Open a New Case &rarr;
+      </a>
+      <a href="{{ url_for('audit') }}" class="btn btn-secondary">
+        Inspect Append-Only Audit Trail
+      </a>
+    </div>
+  </div>
+</section>
 {% endblock %}

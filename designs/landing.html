@@ -1,810 +1,997 @@
 <!DOCTYPE html>
-
-<html lang="en" style="">
-
-<head></head>
-
-<body class="bg-surface font-body-md text-on-surface antialiased"><svg aria-hidden="true" class="inline-defs-container"
-        style="position:absolute;width:0;height:0;overflow:hidden"></svg>
-    <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <meta content="web_standard" name="shell-type" />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
-        rel="stylesheet" />
-    <link href="https://fonts.googleapis.com" rel="preconnect" />
-    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&amp;family=JetBrains+Mono:wght@400..600&amp;family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&amp;display=swap"
-        rel="stylesheet" />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-        rel="stylesheet" />
-    <style>
-        @layer base {
-
-            html,
-            body {
-                margin: 0;
-                padding: 0;
-                font-family: 'Instrument Sans', -apple-system, sans-serif !important;
-            }
-
-            body {
-                overscroll-behavior: none;
-            }
-
-            main>:first-child {
-                margin-top: 0 !important;
-            }
-
-            main>:last-child {
-                margin-bottom: 0 !important;
-            }
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>TraceLedger — Stablecoin Forensic Audit Suite</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=JetBrains+Mono:wght@400..600&family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+  
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "on-tertiary-container": "#1F7A5C",
+            "primary-fixed": "#dae1ff",
+            "secondary-container": "#d5e0f7",
+            "inverse-on-surface": "#f4f0e7",
+            "error": "#D9482B",
+            "surface-bright": "#fdf9f0",
+            "surface-container-lowest": "#ffffff",
+            "secondary": "#545f72",
+            "surface-container": "#f1ede5",
+            "surface-container-highest": "#e6e2d9",
+            "surface": "#fdf9f0",
+            "surface-container-low": "#f7f3ea",
+            "primary": "#010a27",
+            "outline": "#76767e",
+            "surface-container-high": "#ece8df",
+            "on-primary": "#ffffff",
+            "primary-container": "#16213e"
+          },
+          fontFamily: {
+            sans: ["Instrument Sans", "sans-serif"],
+            serif: ["Newsreader", "serif"],
+            mono: ["JetBrains Mono", "monospace"]
+          }
         }
+      }
+    };
+  </script>
+  
+  <style>
+    /* Architectural Drafting Grid Background */
+    .blueprint-bg {
+      background-color: #fdf9f0;
+      background-image: 
+        radial-gradient(rgba(22, 33, 62, 0.12) 1px, transparent 1px),
+        linear-gradient(to right, rgba(22, 33, 62, 0.035) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(22, 33, 62, 0.035) 1px, transparent 1px);
+      background-size: 24px 24px, 96px 96px, 96px 96px;
+      background-attachment: fixed;
+    }
 
-        ::-webkit-scrollbar {
-            display: none;
+    /* 3D Parallax Scene Stage */
+    .parallax-stage {
+      perspective: 1200px;
+      transform-style: preserve-3d;
+      transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1);
+    }
+
+    .parallax-card {
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+      will-change: transform;
+    }
+
+    /* Floating Keyframe Animations for Natural Micro-Movement */
+    @keyframes subtleFloat1 {
+      0% { transform: translateY(0px) rotate(1.4deg); }
+      100% { transform: translateY(-8px) rotate(1.0deg); }
+    }
+    @keyframes subtleFloat2 {
+      0% { transform: translateY(0px) rotate(-0.8deg); }
+      100% { transform: translateY(-10px) rotate(-0.3deg); }
+    }
+    @keyframes subtleFloat3 {
+      0% { transform: translateY(0px) rotate(0.4deg); }
+      100% { transform: translateY(-12px) rotate(0.1deg); }
+    }
+
+    .float-layer-1 { animation: subtleFloat1 7s ease-in-out infinite alternate; }
+    .float-layer-2 { animation: subtleFloat2 8s ease-in-out infinite alternate; }
+    .float-layer-3 { animation: subtleFloat3 9s ease-in-out infinite alternate; }
+
+    /* Frosted Vellum Elevation on Hover */
+    .parallax-card:hover {
+      box-shadow: 0 20px 40px rgba(22, 33, 62, 0.12);
+      transform: translateY(-4px) scale(1.01);
+    }
+
+    /* Strict Depth Stacking for Vellum Layers */
+    .layer-underlay-docket {
+      position: absolute;
+      width: 95%;
+      height: 94%;
+      top: -8px;
+      left: 10px;
+      z-index: 1 !important;
+      pointer-events: none !important;
+      user-select: none !important;
+      transform: rotate(-1.8deg);
+      background: rgba(236, 232, 223, 0.55);
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+    }
+
+    .layer-settlement-card {
+      position: absolute;
+      top: 2rem;
+      right: 1.5rem;
+      width: 85%;
+      z-index: 10;
+      transform: rotate(1.4deg);
+    }
+    .layer-settlement-card:hover {
+      z-index: 25;
+    }
+
+    .layer-multisig-card {
+      position: absolute;
+      top: 9.75rem;
+      left: 1.5rem;
+      width: 86%;
+      z-index: 20;
+      transform: rotate(-0.8deg);
+    }
+    .layer-multisig-card:hover {
+      z-index: 28;
+    }
+
+    .layer-invoice-card {
+      position: absolute;
+      top: 17.5rem;
+      left: 2.25rem;
+      width: 88%;
+      z-index: 30;
+      transform: rotate(0.4deg);
+    }
+    .layer-invoice-card:hover {
+      z-index: 35;
+    }
+
+    /* Pulse Ring on Proven Node */
+    @keyframes pulseRing {
+      0% { transform: scale(0.95); opacity: 0.8; }
+      50% { transform: scale(1.4); opacity: 0; }
+      100% { transform: scale(0.95); opacity: 0; }
+    }
+    .pulse-effect {
+      animation: pulseRing 2.4s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+    }
+  </style>
+</head>
+
+<body class="blueprint-bg font-sans text-[#1c1c16] antialiased overflow-x-hidden selection:bg-[#dae1ff] selection:text-[#010a27]">
+
+  <!-- Top Sticky Navigation Bar with Frosted Glass -->
+  <header class="fixed top-0 w-full z-50 bg-[#fdf9f0]/90 backdrop-blur-md border-b border-[#76767e]/15 shadow-[0_1px_8px_rgba(22,33,62,0.04)]">
+    <div class="h-20 max-w-7xl mx-auto px-6 flex items-center justify-between">
+      
+      <!-- Brand Lockup -->
+      <a href="#" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 rounded-[6px] bg-[#f1ede5] border border-[#76767e]/20 flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <line x1="12" y1="2" x2="12" y2="22" stroke="#16213E" stroke-width="2.5" />
+            <line x1="4" y1="4" x2="20" y2="4" stroke="#16213E" stroke-width="2.5" stroke-linecap="round" />
+            <circle cx="12" cy="4" r="3" fill="#1F7A5C" />
+            <line x1="12" y1="10" x2="12" y2="14" stroke="#9A948A" stroke-width="2.5" stroke-dasharray="2 2" />
+            <circle cx="12" cy="18" r="3" fill="#D9482B" />
+          </svg>
+        </div>
+        <div class="flex flex-col">
+          <span class="font-serif text-xl font-bold tracking-tight text-[#010a27] leading-none">TraceLedger</span>
+          <span class="text-[10px] font-semibold text-[#545f72] tracking-widest uppercase mt-1">FORENSIC AUDIT SUITE</span>
+        </div>
+      </a>
+
+      <!-- Center Nav Links -->
+      <nav class="hidden md:flex items-center gap-6">
+        <a href="#how-it-works" class="px-3 py-1.5 text-sm font-medium text-[#545f72] hover:text-[#010a27] transition-colors rounded hover:bg-[#f1ede5]">How it works</a>
+        <a href="#taxonomy" class="px-3 py-1.5 text-sm font-medium text-[#545f72] hover:text-[#010a27] transition-colors rounded hover:bg-[#f1ede5]">Taxonomy</a>
+        <a href="#benchmarks" class="px-3 py-1.5 text-sm font-medium text-[#545f72] hover:text-[#010a27] transition-colors rounded hover:bg-[#f1ede5]">Benchmarks</a>
+        <a href="#dossier-standards" class="px-3 py-1.5 text-sm font-medium text-[#545f72] hover:text-[#010a27] transition-colors rounded hover:bg-[#f1ede5]">Dossier Standards</a>
+      </nav>
+
+      <!-- Action Buttons -->
+      <div class="flex items-center gap-3">
+        <button id="btn-top-open" class="px-5 py-2.5 rounded-[6px] bg-[#16213e] text-[#ffffff] text-sm font-semibold hover:bg-[#010a27] transition-all shadow-sm hover:shadow hover:-translate-y-0.5 tracking-wide">
+          Open a case
+        </button>
+        <div class="w-9 h-9 rounded-full bg-[#010a27] flex items-center justify-center text-[#ffffff] shadow-sm text-xs font-mono font-bold">
+          TL
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Main Content Canvas -->
+  <main class="w-full pt-20 min-h-screen">
+    
+    <!-- Hero Parallax Section -->
+    <section class="relative w-full py-12 lg:py-16 overflow-hidden">
+      <div class="max-w-7xl mx-auto px-6 flex flex-col gap-8">
+        
+        <!-- Top Dossier Meta-Bar & Alignment Stamp -->
+        <div class="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-[#76767e]/20 text-xs font-mono text-[#545f72]">
+          <div class="flex items-center gap-2">
+            <span class="px-2 py-0.5 rounded bg-[#f1ede5] text-[#010a27] font-semibold tracking-wider uppercase border border-[#76767e]/20">
+              REG: FORENSIC-884
+            </span>
+            <span>DEPT. OF ASSET RECONCILIATION &amp; DISCREPANCY MAPPING</span>
+          </div>
+          <div class="flex items-center gap-6">
+            <div class="flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-[#1F7A5C]"></span>
+              <span>INDEX STATUS: APPEND-ONLY AUDIT TRAIL</span>
+            </div>
+            <span class="hidden sm:inline">PRECISION LEVEL: COURT-GRADE</span>
+          </div>
+        </div>
+
+        <!-- Main Split Hero Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center pt-4">
+          
+          <!-- Left Column: Authoritative Editorial Copy -->
+          <div class="lg:col-span-5 flex flex-col z-10" data-parallax-speed="0.05">
+            
+            <!-- Eyebrow with forensic seal -->
+            <div class="flex items-center gap-2 mb-4">
+              <div class="w-5 h-5 rounded-full bg-[#f1ede5] border border-[#76767e]/25 flex items-center justify-center text-[#1F7A5C] text-xs font-bold">
+                &#8857;
+              </div>
+              <span class="text-xs font-semibold text-[#545f72] tracking-widest uppercase">
+                ON-CHAIN FORENSICS &amp; RECONCILIATION / DOSSIER N&ordm; 084
+              </span>
+            </div>
+
+            <!-- Main Serif Headline -->
+            <h1 class="font-serif text-4xl sm:text-5xl lg:text-[3.25rem] text-[#010a27] tracking-tight leading-[1.08] mb-5 font-bold">
+              Every conclusion is a path.
+            </h1>
+
+            <!-- Crisp Subhead -->
+            <p class="text-lg text-[#545f72] leading-relaxed mb-8">
+              Show what is proven, what is contradicted, and what is missing. Reconstruct transactional journeys with absolute daylight clarity, moving beyond obscured ledgers to transparent court-admissible dossiers.
+            </p>
+
+            <!-- Interaction CTAs -->
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mb-6">
+              <button id="btn-load-demo" class="px-6 py-3 bg-[#16213e] hover:bg-[#010a27] text-[#fdf9f0] font-semibold text-sm rounded-[6px] shadow-sm hover:shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer">
+                <span class="material-symbols-outlined text-lg">play_circle</span>
+                <span>Load demo case</span>
+              </button>
+              <button id="btn-hash-search" class="px-6 py-3 bg-[#f7f3ea] hover:bg-[#f1ede5] text-[#010a27] font-semibold text-sm rounded-[6px] border border-[#76767e]/20 shadow-sm hover:shadow transition-all flex items-center justify-center gap-2 cursor-pointer">
+                <span class="material-symbols-outlined text-lg">key</span>
+                <span>Paste transaction hash</span>
+              </button>
+            </div>
+
+            <!-- Quick Reference Hash Helper (Click to Copy with Zero Errors) -->
+            <div class="flex items-center gap-2 text-xs font-mono text-[#545f72]">
+              <span class="font-medium text-[#1c1c16]">Quick reference:</span>
+              <code 
+                class="px-2 py-0.5 bg-[#f1ede5] rounded text-[#010a27] font-semibold cursor-pointer hover:bg-[#e6e2d9] transition-colors border border-[#76767e]/20"
+                id="copyable-hash"
+                title="Click to copy hash">
+                0x8f2c...4e19
+              </code>
+              <span>&mdash; USDC payout reconciliation</span>
+            </div>
+
+            <!-- Mini Forensic Metric Block -->
+            <div class="mt-8 pt-6 border-t border-[#76767e]/20 grid grid-cols-3 gap-4">
+              <div>
+                <span class="font-serif text-2xl font-bold text-[#010a27] block leading-none">100%</span>
+                <span class="text-xs uppercase font-semibold text-[#545f72] mt-1 block">Deterministic</span>
+              </div>
+              <div>
+                <span class="font-serif text-2xl font-bold text-[#010a27] block leading-none">0.00ms</span>
+                <span class="text-xs uppercase font-semibold text-[#545f72] mt-1 block">Heuristic Guess</span>
+              </div>
+              <div>
+                <span class="font-serif text-2xl font-bold text-[#010a27] block leading-none">RFC-8271</span>
+                <span class="text-xs uppercase font-semibold text-[#545f72] mt-1 block">Audit Protocol</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Right Column: Drafting Vellum Composition & 3D Interactive Parallax Stack -->
+          <div class="lg:col-span-7 relative min-h-[620px] flex items-center justify-center p-4" id="dossier-scene">
+            <div class="parallax-stage relative w-full h-[620px] flex items-center justify-center">
+
+              <!-- Layer 4: Foundation Underlay (Permanently Locked to Background, Never Hovers Forward) -->
+              <div class="layer-underlay-docket rounded-[6px] border border-[#76767e]/20 shadow-[0_4px_16px_rgba(22,33,62,0.03)] p-6 flex flex-col justify-between">
+                <div class="flex items-center justify-between text-xs font-mono text-[#545f72]">
+                  <span class="flex items-center gap-1 font-semibold text-[#010a27]">
+                    <span class="material-symbols-outlined text-[14px]">grid_4x4</span> REGISTRATION MATRIX: 401-AXIS
+                  </span>
+                  <span>INDEX SHEET REF: TL-NY-2024-09</span>
+                </div>
+                
+                <!-- Technical Grid Watermark Line Art -->
+                <div class="w-full flex-1 my-4 opacity-20">
+                  <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                    <line stroke="#16213E" stroke-dasharray="4 4" stroke-width="0.5" x1="10%" x2="10%" y1="0" y2="100%"></line>
+                    <line stroke="#16213E" stroke-dasharray="4 4" stroke-width="0.5" x1="50%" x2="50%" y1="0" y2="100%"></line>
+                    <line stroke="#16213E" stroke-dasharray="4 4" stroke-width="0.5" x1="90%" x2="90%" y1="0" y2="100%"></line>
+                    <line stroke="#16213E" stroke-dasharray="4 4" stroke-width="0.5" x1="0" x2="100%" y1="25%" y2="25%"></line>
+                    <line stroke="#16213E" stroke-dasharray="4 4" stroke-width="0.5" x1="0" x2="100%" y1="75%" y2="75%"></line>
+                  </svg>
+                </div>
+                
+                <div class="flex justify-between text-xs font-mono text-[#545f72]">
+                  <span>LEGAL HOLD DOCKET: ACTIVE</span>
+                  <span>HASH ROOT: c894...b2f1</span>
+                </div>
+              </div>
+
+              <!-- Layer 3: Deep Layer - Settlement Base (Floats with Parallax) -->
+              <div class="parallax-card float-layer-1 layer-settlement-card rounded-[6px] bg-[#ffffff]/85 backdrop-blur-[3px] border border-[#76767e]/20 shadow-[0_6px_20px_rgba(22,33,62,0.05)] p-4 flex flex-col gap-2" data-depth="15">
+                <div class="flex items-center justify-between pb-2 border-b border-[#76767e]/15">
+                  <div class="flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-[#545f72]"></span>
+                    <span class="text-xs font-bold text-[#010a27] uppercase tracking-wide">ETHEREUM SETTLEMENT BASE</span>
+                  </div>
+                  <span class="text-xs font-mono text-[#545f72]">BLOCK #19,482,910</span>
+                </div>
+                <div class="grid grid-cols-2 gap-2 text-xs font-mono text-[#545f72]">
+                  <div>TXID: <span class="text-[#010a27] font-semibold">0x7a3e...c914</span></div>
+                  <div class="text-right">GAS USED: <span class="text-[#010a27] font-semibold">142,829 GWEI</span></div>
+                  <div>ROUTER: <span class="text-[#010a27]">DisbursementVault.sol</span></div>
+                  <div class="text-right">SETTLED: <span class="text-[#010a27]">2024-10-18 14:02:11 UTC</span></div>
+                </div>
+              </div>
+
+              <!-- Layer 2: Mid-Depth Layer - Treasury Route & Signatures -->
+              <div class="parallax-card float-layer-2 layer-multisig-card rounded-[6px] bg-[#ffffff]/90 backdrop-blur-[4px] border border-[#76767e]/20 shadow-[0_8px_26px_rgba(22,33,62,0.07)] p-4 flex flex-col gap-2" data-depth="30">
+                <div class="flex items-center justify-between pb-2 border-b border-[#76767e]/15">
+                  <div class="flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-[#C99A2E]"></span>
+                    <span class="text-xs font-bold text-[#010a27] uppercase tracking-wide">TREASURY MULTISIG DISBURSEMENT</span>
+                  </div>
+                  <span class="text-xs font-mono text-[#545f72]">SIGNATURE QUORUM: 3 OF 4</span>
+                </div>
+                <div class="flex items-center justify-between text-xs font-mono text-[#545f72] py-1">
+                  <div class="flex items-center gap-1">
+                    <span class="material-symbols-outlined text-sm text-[#1F7A5C]">done_all</span>
+                    <span>Signer Alpha: <span class="text-[#010a27]">0x4b1...81a</span></span>
+                  </div>
+                  <div class="flex items-center gap-1">
+                    <span class="material-symbols-outlined text-sm text-[#1F7A5C]">done_all</span>
+                    <span>Signer Beta: <span class="text-[#010a27]">0x92f...73c</span></span>
+                  </div>
+                  <div class="flex items-center gap-1">
+                    <span class="material-symbols-outlined text-sm text-[#545f72]">schedule</span>
+                    <span>Signer Delta: <em class="text-[#545f72] italic">Pending</em></span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Layer 1: Foreground Top Vellum Card - Primary Commercial Invoice -->
+              <div class="parallax-card float-layer-3 layer-invoice-card rounded-[6px] bg-[#ffffff]/96 backdrop-blur-md border border-[#76767e]/25 shadow-[0_12px_36px_rgba(22,33,62,0.1)] p-5 flex flex-col gap-3" data-depth="45">
+                
+                <!-- Invoice Header -->
+                <div class="flex items-start justify-between">
+                  <div>
+                    <div class="flex items-center gap-2">
+                      <span class="px-2 py-0.5 bg-[#f1ede5] rounded text-xs font-bold text-[#010a27] uppercase">PRIMARY EXHIBIT A-1</span>
+                      <span class="text-xs font-mono text-[#545f72]">DOC-ID: INV-2024-8849</span>
+                    </div>
+                    <h3 class="font-serif text-2xl font-bold text-[#010a27] mt-1.5">
+                      Meridian Capital Partners
+                    </h3>
+                    <span class="text-xs text-[#545f72]">Advisory &amp; Liquidity Provision Settlement</span>
+                  </div>
+                  
+                  <div class="px-3 py-2 rounded bg-[#f7f3ea] border border-[#76767e]/20 text-center shadow-sm">
+                    <span class="text-[10px] font-mono uppercase block text-[#545f72]">SUBMITTED AMOUNT</span>
+                    <span class="font-serif text-xl font-bold tracking-tight text-[#010a27]">$425,000.00</span>
+                    <span class="text-[10px] font-mono block text-[#1F7A5C] font-semibold">CURRENCY: USDC</span>
+                  </div>
+                </div>
+
+                <!-- Ledger Table Summary -->
+                <div class="bg-[#f7f3ea]/80 rounded p-3 flex flex-col gap-1 text-xs font-mono border border-[#76767e]/10">
+                  <div class="flex justify-between text-[#545f72]">
+                    <span>DUE DATE: OCT 18, 2024</span>
+                    <span>SETTLEMENT METHOD: ERC-20 MULTISIG</span>
+                  </div>
+                  <div class="flex justify-between text-[#010a27] font-semibold">
+                    <span>COUNTERPARTY INVOICE STATUS</span>
+                    <span class="text-[#1F7A5C] flex items-center gap-1">
+                      <span class="material-symbols-outlined text-[14px]">verified</span> VERIFIED SIGNATURE ON FILE
+                    </span>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- SVG Forensic Thread Across Depth Planes -->
+              <svg class="absolute inset-0 w-full h-full pointer-events-none z-30" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <filter id="thread-shadow" x="-20%" y="-20%" width="140%" height="140%">
+                    <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#16213e" flood-opacity="0.12"/>
+                  </filter>
+                </defs>
+                <!-- Segment 1: Origin to Treasury (Solid Verified Path) -->
+                <path d="M 95 85 C 115 135, 145 165, 165 215" fill="none" stroke="#1F7A5C" stroke-width="2.5" filter="url(#thread-shadow)"></path>
+                <!-- Segment 2: Treasury to Intermediate Node (Asserted Path) -->
+                <path d="M 165 215 C 185 255, 230 285, 270 325" fill="none" stroke="#C99A2E" stroke-width="2" stroke-dasharray="6 2" filter="url(#thread-shadow)"></path>
+                <!-- Segment 3: The Broken/Missing Evidentiary Path (Dashed Warm Grey) -->
+                <path d="M 270 325 C 310 365, 350 395, 395 440" fill="none" stroke="#9A948A" stroke-width="2.5" stroke-dasharray="5 5"></path>
+                <!-- Segment 4: Mismatch to Final Wallet Node (Contradicted Path) -->
+                <path d="M 395 440 C 425 470, 465 510, 495 550" fill="none" stroke="#D9482B" stroke-width="2" filter="url(#thread-shadow)"></path>
+              </svg>
+
+              <!-- Interactive Node Pins -->
+              <!-- Node 1: Origin Invoice (Verified - Viridian) -->
+              <div class="absolute z-40 group cursor-pointer" style="top: 5.25rem; left: 5rem;" title="Origin Invoice Attestation">
+                <div class="relative flex items-center justify-center">
+                  <span class="pulse-effect absolute w-8 h-8 rounded-full bg-[#1F7A5C]/30"></span>
+                  <span class="w-4 h-4 rounded-full bg-[#1F7A5C] shadow-sm flex items-center justify-center">
+                    <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
+                  </span>
+                </div>
+                <div class="absolute -top-7 -left-12 px-2 py-0.5 bg-white/95 backdrop-blur rounded shadow-sm text-xs font-mono font-semibold text-[#1F7A5C] border border-[#1F7A5C]/20 whitespace-nowrap">
+                  ORIGIN: $425,000.00
+                </div>
+              </div>
+
+              <!-- Node 2: Multisig Execution (Asserted - Ochre) -->
+              <div class="absolute z-40 group cursor-pointer" style="top: 13.25rem; left: 9.5rem;" title="Treasury Route">
+                <div class="w-4 h-4 rounded-full bg-[#C99A2E] shadow-sm flex items-center justify-center">
+                  <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
+                </div>
+                <div class="absolute -top-7 -left-10 px-2 py-0.5 bg-white/95 backdrop-blur rounded shadow-sm text-xs font-mono font-semibold text-[#C99A2E] border border-[#C99A2E]/20 whitespace-nowrap">
+                  MULTISIG RELEASE
+                </div>
+              </div>
+
+              <!-- Missing Evidence Callout Box -->
+              <div class="absolute z-40 p-3 bg-white/95 backdrop-blur-md rounded shadow-md border border-[#9A948A]/40 flex flex-col gap-1 max-w-[210px] pointer-events-auto" style="top: 20rem; right: 1.5rem;">
+                <div class="flex items-center gap-1.5 text-[#76767e]">
+                  <span class="material-symbols-outlined text-[15px]">search_off</span>
+                  <span class="text-xs font-bold text-[#010a27] uppercase">MISSING EVIDENCE</span>
+                </div>
+                <p class="text-[11px] font-mono text-[#545f72] leading-tight">
+                  Unsigned counterparty attestation missing between Route &amp; Clearinghouse.
+                </p>
+              </div>
+
+              <!-- Node 3: Contradicted / Discrepancy (Vermilion) -->
+              <div class="absolute z-40 group cursor-pointer" style="top: 30.5rem; left: 62%;" title="Contradicted Amount">
+                <div class="w-4 h-4 rounded-full bg-[#D9482B] shadow-sm flex items-center justify-center">
+                  <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
+                </div>
+                <div class="absolute -bottom-8 -left-20 px-2 py-0.5 bg-white/95 backdrop-blur rounded shadow-sm text-xs font-mono font-semibold text-[#D9482B] border border-[#D9482B]/30 whitespace-nowrap">
+                  DISCREPANCY: -$25,000.00
+                </div>
+              </div>
+
+              <!-- Node 4: Destination Wallet (Verified - Viridian) -->
+              <div class="absolute z-40 group cursor-pointer" style="top: 34.25rem; left: 76%;" title="Destination Wallet">
+                <div class="w-4 h-4 rounded-full bg-[#1F7A5C] shadow-sm flex items-center justify-center">
+                  <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
+                </div>
+                <div class="absolute -bottom-7 -left-14 px-2 py-0.5 bg-white/95 backdrop-blur rounded shadow-sm text-xs font-mono font-semibold text-[#1F7A5C] border border-[#1F7A5C]/20 whitespace-nowrap">
+                  DESTINATION: $400,000.00
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Section: 4-State Taxonomy Grid -->
+    <section id="taxonomy" class="max-w-7xl mx-auto px-6 py-16 border-t border-[#76767e]/20">
+      <div class="flex items-center justify-between mb-8">
+        <div>
+          <span class="text-xs font-semibold text-[#545f72] uppercase tracking-widest block mb-1">EVIDENTIARY PRINCIPLES</span>
+          <h2 class="font-serif text-3xl font-bold text-[#010a27]">Forensic Edge Taxonomy &amp; Verification States</h2>
+        </div>
+        <span class="text-xs font-mono text-[#545f72] hidden sm:inline">STANDARD CODESET V2.4</span>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        
+        <!-- State 1 -->
+        <div class="p-5 rounded-[6px] bg-[#f7f3ea]/70 hover:bg-[#ffffff] transition-all border border-[#76767e]/15 shadow-sm hover:shadow-md hover:-translate-y-1">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-[#1F7A5C]"></span>
+            <span class="w-4 h-0.5 bg-[#1F7A5C]"></span>
+            <span class="text-sm font-semibold text-[#010a27]">Proven / Verified</span>
+          </div>
+          <p class="text-xs text-[#545f72] leading-relaxed">
+            Verified by cryptographic proof, signature quorum, and bytecode-level consensus confirmation.
+          </p>
+        </div>
+
+        <!-- State 2 -->
+        <div class="p-5 rounded-[6px] bg-[#f7f3ea]/70 hover:bg-[#ffffff] transition-all border border-[#76767e]/15 shadow-sm hover:shadow-md hover:-translate-y-1">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-[#D9482B]"></span>
+            <span class="w-4 h-0.5 bg-[#D9482B]"></span>
+            <span class="text-sm font-semibold text-[#010a27]">Contradicted</span>
+          </div>
+          <p class="text-xs text-[#545f72] leading-relaxed">
+            Direct discrepancy detected between stated metadata, invoiced token address, and ledger execution.
+          </p>
+        </div>
+
+        <!-- State 3 -->
+        <div class="p-5 rounded-[6px] bg-[#f7f3ea]/70 hover:bg-[#ffffff] transition-all border border-[#76767e]/15 shadow-sm hover:shadow-md hover:-translate-y-1">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-[#C99A2E]"></span>
+            <span class="w-4 h-0.5 border-t border-dotted border-[#C99A2E]"></span>
+            <span class="text-sm font-semibold text-[#010a27]">Asserted / Candidate</span>
+          </div>
+          <p class="text-xs text-[#545f72] leading-relaxed">
+            Pending dual-custody confirmation, secondary multisig signature, or unverified business record link.
+          </p>
+        </div>
+
+        <!-- State 4 -->
+        <div class="p-5 rounded-[6px] bg-[#f7f3ea]/70 hover:bg-[#ffffff] transition-all border border-[#76767e]/15 shadow-sm hover:shadow-md hover:-translate-y-1">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-[#9A948A]"></span>
+            <span class="w-4 h-0.5 border-t border-dashed border-[#9A948A]"></span>
+            <span class="text-sm font-semibold text-[#010a27]">Missing</span>
+          </div>
+          <p class="text-xs text-[#545f72] leading-relaxed">
+            Missing evidence in audit path; critical intermediate hops or counterparty attestations unlocated.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Section: How It Works: The 5-Stage Protocol -->
+    <section id="how-it-works" class="max-w-7xl mx-auto px-6 py-16 border-t border-[#76767e]/20">
+      <div class="mb-8">
+        <span class="text-xs font-semibold text-[#545f72] uppercase tracking-widest block mb-1">SYSTEM ARCHITECTURE</span>
+        <h2 class="font-serif text-3xl font-bold text-[#010a27]">How It Works: 5-Stage Evidentiary Protocol</h2>
+        <p class="text-sm text-[#545f72] max-w-2xl mt-2">
+          Every conclusion is a traversable path in an evidence graph. Each layer may only strengthen or question the layer above it, never override deterministic facts:
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-5 gap-6">
+        
+        <div class="p-5 rounded-[6px] bg-white border border-[#76767e]/20 shadow-sm flex flex-col justify-between">
+          <div>
+            <span class="text-xs font-mono font-bold text-[#545f72] block mb-2">STAGE 01</span>
+            <h4 class="font-serif text-lg font-bold text-[#010a27] mb-2">Deterministic Verification</h4>
+            <p class="text-xs text-[#545f72] leading-relaxed">
+              Pulls raw transaction facts directly from public blockchain nodes. Token contracts, decimals, and integer amounts are validated without any LLM.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-[#76767e]/10 text-[10px] font-mono text-[#1F7A5C] font-semibold">
+            &check; BYTECODE VERIFIED
+          </div>
+        </div>
+
+        <div class="p-5 rounded-[6px] bg-white border border-[#76767e]/20 shadow-sm flex flex-col justify-between">
+          <div>
+            <span class="text-xs font-mono font-bold text-[#545f72] block mb-2">STAGE 02</span>
+            <h4 class="font-serif text-lg font-bold text-[#010a27] mb-2">Evidence Graph Linking</h4>
+            <p class="text-xs text-[#545f72] leading-relaxed">
+              Constructs a Directed Acyclic Graph (DAG) linking off-chain invoices, payment requests, vendor registries, and approved addresses to chain events.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-[#76767e]/10 text-[10px] font-mono text-[#545f72]">
+            &bull; TIGERGRAPH DAG
+          </div>
+        </div>
+
+        <div class="p-5 rounded-[6px] bg-white border border-[#76767e]/20 shadow-sm flex flex-col justify-between">
+          <div>
+            <span class="text-xs font-mono font-bold text-[#545f72] block mb-2">STAGE 03</span>
+            <h4 class="font-serif text-lg font-bold text-[#010a27] mb-2">Multi-Hop Query Traversal</h4>
+            <p class="text-xs text-[#545f72] leading-relaxed">
+              Executes pre-compiled GSQL algorithms across vertex neighborhoods to detect address reuse, change-before-payment spikes, and shared root causes.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-[#76767e]/10 text-[10px] font-mono text-[#545f72]">
+            &bull; GSQL TRAVERSALS
+          </div>
+        </div>
+
+        <div class="p-5 rounded-[6px] bg-white border border-[#76767e]/20 shadow-sm flex flex-col justify-between">
+          <div>
+            <span class="text-xs font-mono font-bold text-[#545f72] block mb-2">STAGE 04</span>
+            <h4 class="font-serif text-lg font-bold text-[#010a27] mb-2">Constrained Narrative Brief</h4>
+            <p class="text-xs text-[#545f72] leading-relaxed">
+              A hosted language model analyzes hypotheses strictly gated by an independent validator: every claim must cite real graph node IDs or be rejected.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-[#76767e]/10 text-[10px] font-mono text-[#C99A2E] font-semibold">
+            &bull; CITATION GATED
+          </div>
+        </div>
+
+        <div class="p-5 rounded-[6px] bg-white border border-[#76767e]/20 shadow-sm flex flex-col justify-between">
+          <div>
+            <span class="text-xs font-mono font-bold text-[#545f72] block mb-2">STAGE 05</span>
+            <h4 class="font-serif text-lg font-bold text-[#010a27] mb-2">Human Audit Sign-Off</h4>
+            <p class="text-xs text-[#545f72] leading-relaxed">
+              The investigator reviews the evidence path, records their final decision with rationale into an append-only SQLite log (not tamper-proof).
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-[#76767e]/10 text-[10px] font-mono text-[#010a27] font-semibold">
+            &bull; HUMAN IN THE LOOP
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Section: Benchmarks -->
+    <section id="benchmarks" class="max-w-7xl mx-auto px-6 py-16 border-t border-[#76767e]/20">
+      <div class="flex items-center justify-between mb-8">
+        <div>
+          <span class="text-xs font-semibold text-[#545f72] uppercase tracking-widest block mb-1">MEASURED EXPERIMENTS</span>
+          <h2 class="font-serif text-3xl font-bold text-[#010a27]">Benchmark Evidence: 3-Way Comparative Evaluation</h2>
+        </div>
+        <span class="text-xs font-mono text-[#545f72]">25 REAL TEST CASES</span>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        
+        <div class="p-6 rounded-[6px] bg-white border border-[#76767e]/20 shadow-sm">
+          <span class="text-xs font-mono text-[#545f72] block mb-1">SYSTEM A</span>
+          <h4 class="font-serif text-xl font-bold text-[#010a27] mb-2">Conventional Rules Baseline</h4>
+          <p class="text-xs text-[#545f72] mb-4">Matches tokens by ticker symbol, compares floats at 2dp.</p>
+          <div class="space-y-3 font-mono text-xs">
+            <div class="flex justify-between border-b border-[#76767e]/10 pb-1">
+              <span>Outcome Accuracy:</span>
+              <span class="font-bold text-[#010a27]">68%</span>
+            </div>
+            <div class="flex justify-between border-b border-[#76767e]/10 pb-1">
+              <span>False Resolution:</span>
+              <span class="font-bold text-[#D9482B]">32%</span>
+            </div>
+            <div class="flex justify-between">
+              <span>Abstained on Unknowns:</span>
+              <span class="font-bold text-[#545f72]">0%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-6 rounded-[6px] bg-white border border-[#76767e]/20 shadow-sm">
+          <span class="text-xs font-mono text-[#545f72] block mb-1">SYSTEM B</span>
+          <h4 class="font-serif text-xl font-bold text-[#010a27] mb-2">Plain LLM (Unconstrained)</h4>
+          <p class="text-xs text-[#545f72] mb-4">Given raw JSON without deterministic graph grounding.</p>
+          <div class="space-y-3 font-mono text-xs">
+            <div class="flex justify-between border-b border-[#76767e]/10 pb-1">
+              <span>Outcome Accuracy:</span>
+              <span class="font-bold text-[#010a27]">64%</span>
+            </div>
+            <div class="flex justify-between border-b border-[#76767e]/10 pb-1">
+              <span>False Resolution:</span>
+              <span class="font-bold text-[#D9482B]">24%</span>
+            </div>
+            <div class="flex justify-between">
+              <span>Abstained on Unknowns:</span>
+              <span class="font-bold text-[#545f72]">0%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-6 rounded-[6px] bg-[#f7f3ea] border border-[#1F7A5C]/40 shadow-sm relative overflow-hidden">
+          <div class="absolute top-0 right-0 bg-[#1F7A5C] text-white text-[10px] font-mono px-2 py-0.5 font-bold uppercase rounded-bl">
+            TraceLedger
+          </div>
+          <span class="text-xs font-mono text-[#1F7A5C] block mb-1">FORENSIC SUITE</span>
+          <h4 class="font-serif text-xl font-bold text-[#010a27] mb-2">Deterministic + Graph + Gated LLM</h4>
+          <p class="text-xs text-[#545f72] mb-4">Chain bytecode facts + TigerGraph DAG + citation validator.</p>
+          <div class="space-y-3 font-mono text-xs">
+            <div class="flex justify-between border-b border-[#76767e]/10 pb-1">
+              <span>Outcome Accuracy:</span>
+              <span class="font-bold text-[#1F7A5C]">100%*</span>
+            </div>
+            <div class="flex justify-between border-b border-[#76767e]/10 pb-1">
+              <span>False Resolution:</span>
+              <span class="font-bold text-[#1F7A5C]">0%</span>
+            </div>
+            <div class="flex justify-between">
+              <span>Abstained on Unknowns:</span>
+              <span class="font-bold text-[#1F7A5C]">100%</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="p-4 rounded-[6px] bg-white border border-[#76767e]/20 text-xs text-[#545f72] font-mono">
+        <span class="font-bold text-[#010a27]">* Honesty Caveat:</span> Preliminary, 25 synthetic cases. Not evidence of production performance. TraceLedger scores 100% because cases were written knowing which checks exist; the system records this as circular. The comparison of failure modes (false-resolution rate: rules 32%, plain LLM 24%, TraceLedger 0%) is the meaningful measurement.
+      </div>
+    </section>
+
+    <!-- Section: Dossier Standards & Restraint -->
+    <section id="dossier-standards" class="max-w-7xl mx-auto px-6 py-16 border-t border-[#76767e]/20">
+      <div class="p-8 rounded-[6px] bg-white border border-[#76767e]/20 shadow-sm">
+        <h3 class="font-serif text-2xl font-bold text-[#010a27] mb-3">Dossier Standards &amp; Evidentiary Restraint</h3>
+        <p class="text-sm text-[#545f72] leading-relaxed mb-6">
+          TraceLedger enforces strict vocabulary and architectural guardrails to ensure reports remain objective evidence for a human investigator rather than automated accusations:
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs text-[#545f72]">
+          <div class="space-y-2">
+            <div class="font-bold text-[#010a27] text-sm">&bull; Risk Indicator, Not a Verdict</div>
+            <p>The system flags discrepancies and contradictions; it never claims to detect fraud or criminal behavior.</p>
+          </div>
+          <div class="space-y-2">
+            <div class="font-bold text-[#010a27] text-sm">&bull; Read-Only Architecture</div>
+            <p>TraceLedger never holds private keys, never signs transactions, never moves funds, and never edits accounting ledgers.</p>
+          </div>
+          <div class="space-y-2">
+            <div class="font-bold text-[#010a27] text-sm">&bull; Unresolved is a First-Class Outcome</div>
+            <p>When records are ambiguous or incomplete, the system abstains as UNRESOLVED and lists the exact missing exhibits that would settle it.</p>
+          </div>
+          <div class="space-y-2">
+            <div class="font-bold text-[#010a27] text-sm">&bull; Quarantined Untrusted Inputs</div>
+            <p>Business memos, invoice free text, and external data are escaped and treated strictly as data, never as LLM execution instructions.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Interactive Calibration / Case Ingest Modal -->
+  <div class="fixed inset-0 z-50 bg-[#16213e]/60 backdrop-blur-sm flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300" id="forensic-loader-modal">
+    <div class="relative w-full max-w-lg rounded-[6px] bg-[#ffffff] border border-[#76767e]/25 shadow-2xl p-8 flex flex-col items-center text-center transform scale-95 transition-transform duration-300" id="forensic-loader-card">
+      
+      <!-- Close Button -->
+      <button class="absolute top-4 right-4 text-[#545f72] hover:text-[#010a27] p-1 rounded hover:bg-[#f1ede5] transition-colors" id="forensic-loader-close">
+        <span class="material-symbols-outlined text-lg">close</span>
+      </button>
+
+      <!-- Archival Inspection Badge -->
+      <div class="flex items-center gap-2 px-3 py-1 rounded bg-[#f1ede5] text-xs font-mono font-semibold text-[#010a27] tracking-wider uppercase mb-5">
+        <span class="w-2 h-2 rounded-full bg-[#1F7A5C] animate-ping"></span>
+        FORENSIC CALIBRATION ENGINE
+      </div>
+
+      <!-- Rotating Compass / DAG Inspection Loader -->
+      <div class="w-24 h-24 mb-6 flex items-center justify-center">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="96" height="96" fill="none">
+          <style>
+            @keyframes spin-slow { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+            .rotating-outer { transform-origin: 60px 60px; animation: spin-slow 10s linear infinite; }
+          </style>
+          <rect width="120" height="120" rx="8" fill="#f7f3ea" stroke="#76767e" stroke-opacity="0.3" stroke-width="1.5" />
+          <g class="rotating-outer">
+            <circle cx="60" cy="60" r="42" stroke="#16213e" stroke-opacity="0.2" stroke-width="1" stroke-dasharray="3 3" />
+            <circle cx="60" cy="60" r="32" stroke="#16213e" stroke-opacity="0.3" stroke-width="1.25" />
+            <line x1="60" y1="14" x2="60" y2="20" stroke="#16213e" stroke-width="1.5" />
+            <line x1="60" y1="100" x2="60" y2="106" stroke="#16213e" stroke-width="1.5" />
+            <line x1="14" y1="60" x2="20" y2="60" stroke="#16213e" stroke-width="1.5" />
+            <line x1="100" y1="60" x2="106" y2="60" stroke="#16213e" stroke-width="1.5" />
+          </g>
+          <!-- DAG Traversal Paths -->
+          <path d="M42 42L60 32L78 46" stroke="#1F7A5C" stroke-width="2.5" stroke-linecap="round" />
+          <path d="M78 46L66 74" stroke="#D9482B" stroke-width="2.5" stroke-linecap="round" />
+          <path d="M66 74L42 80" stroke="#9A948A" stroke-width="2" stroke-dasharray="3 3" />
+          <circle cx="42" cy="42" r="5" fill="#fdf9f0" stroke="#1F7A5C" stroke-width="2.5" />
+          <circle cx="60" cy="32" r="4" fill="#1F7A5C" />
+          <circle cx="78" cy="46" r="5" fill="#fdf9f0" stroke="#D9482B" stroke-width="2.5" />
+          <circle cx="66" cy="74" r="4" fill="#D9482B" />
+          <circle cx="42" cy="80" r="4" fill="#fdf9f0" stroke="#C99A2E" stroke-width="2" />
+        </svg>
+      </div>
+
+      <h3 class="font-serif text-lg font-bold text-[#010a27] mb-1 uppercase tracking-wide">
+        TRANSACTION TRAVERSAL &amp; VELLUM ALIGNMENT
+      </h3>
+      <p class="text-xs font-mono text-[#545f72] mb-6">
+        RECONSTRUCTING CRYPTOGRAPHIC PROOF DAG &middot; DOSSIER #084
+      </p>
+
+      <!-- Progress Tracker -->
+      <div class="w-full bg-[#f7f3ea] rounded p-4 border border-[#76767e]/20 text-left flex flex-col gap-2 mb-4">
+        <div class="w-full h-1.5 bg-[#e6e2d9] rounded-full overflow-hidden">
+          <div class="h-full bg-[#16213e] transition-all duration-300 w-1/4" id="loader-progress-bar"></div>
+        </div>
+        <div class="flex items-center justify-between text-xs font-mono">
+          <span class="text-[#010a27] font-medium" id="loader-status-text">
+            Traversing DAG Node 084... Validating PGP signatures...
+          </span>
+          <span class="text-[#545f72]" id="loader-step-count">1/4</span>
+        </div>
+        <div class="text-[11px] font-mono text-[#545f72] border-t border-[#76767e]/15 pt-2 flex justify-between">
+          <span>CURRENT HASH: <span class="text-[#010a27] font-semibold" id="loader-current-hash">0x8f2c...4e19</span></span>
+          <span class="text-[#1F7A5C] font-semibold">QUORUM MATCH 100%</span>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2 text-xs font-mono text-[#545f72]">
+        <span class="w-1.5 h-1.5 rounded-full bg-[#1F7A5C]"></span>
+        <span>RFC-8271 COMPLIANT &middot; INDEXING MERKLE RECONCILIATION</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Footer Matching Specification -->
+  <footer class="w-full bg-[#f7f3ea] border-t border-[#76767e]/20 py-12">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+        <div>
+          <div class="flex items-center gap-2 mb-3">
+            <span class="font-serif text-lg font-bold text-[#010a27]">TraceLedger</span>
+          </div>
+          <p class="text-xs text-[#545f72] leading-relaxed">
+            Forensic archival environment for ledger provenance mapping, asset tracing trees, and evidentiary investigation.
+            Read-only architecture: never moves funds and never edits ledgers.
+          </p>
+        </div>
+        <div>
+          <h5 class="text-xs font-bold text-[#010a27] uppercase tracking-wider mb-3">Verification Engine</h5>
+          <ul class="space-y-2 text-xs text-[#545f72]">
+            <li>DAG Graph Reconstruction</li>
+            <li>Chain Traversal Inspector</li>
+            <li>Vellum Cryptographic Layers</li>
+          </ul>
+        </div>
+        <div>
+          <h5 class="text-xs font-bold text-[#010a27] uppercase tracking-wider mb-3">Standards &amp; Protocol</h5>
+          <ul class="space-y-2 text-xs text-[#545f72]">
+            <li>Evidentiary Legal Grade</li>
+            <li>Attestation Indexing</li>
+            <li>Archival Corpus Auditing</li>
+          </ul>
+        </div>
+        <div>
+          <h5 class="text-xs font-bold text-[#010a27] uppercase tracking-wider mb-3">System Status</h5>
+          <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded bg-[#f1ede5] text-xs font-mono font-semibold text-[#1F7A5C] border border-[#76767e]/15">
+            <span class="w-2 h-2 rounded-full bg-[#1F7A5C]"></span>
+            NODE INTEGRITY VERIFIED
+          </div>
+        </div>
+      </div>
+
+      <div class="flex flex-col sm:flex-row items-center justify-between pt-6 border-t border-[#76767e]/15 text-xs font-mono text-[#545f72]">
+        <span>&copy; 2026 TRACELEDGER AUDIT CORP. ALL EVIDENCE RESERVED.</span>
+        <div class="flex gap-6 mt-3 sm:mt-0">
+          <span>SYS_REF: RFC-8271</span>
+          <span>JURISDICTION: FINANCIAL FORENSICS</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Parallax Scroll Controller & Interactive Logic -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Interactive Copyable Hash Helper
+      const hashCopy = document.getElementById('copyable-hash');
+      if (hashCopy) {
+        hashCopy.addEventListener('click', () => {
+          navigator.clipboard?.writeText('0x8f2ca9115b804e19');
+          const original = hashCopy.innerText;
+          hashCopy.innerText = 'COPIED!';
+          setTimeout(() => { hashCopy.innerText = original; }, 1500);
+        });
+      }
+
+      // 2. Parallax 3D Mouse Movement on Hero Dossier
+      const scene = document.getElementById('dossier-scene');
+      const stage = document.querySelector('.parallax-stage');
+      const cards = document.querySelectorAll('.parallax-card');
+
+      if (scene && stage) {
+        scene.addEventListener('mousemove', (e) => {
+          const rect = scene.getBoundingClientRect();
+          const x = (e.clientX - rect.left) / rect.width - 0.5;
+          const y = (e.clientY - rect.top) / rect.height - 0.5;
+
+          stage.style.transform = `rotateY(${x * 12}deg) rotateX(${-y * 12}deg)`;
+
+          cards.forEach((card) => {
+            const depth = parseFloat(card.getAttribute('data-depth') || 20);
+            card.style.transform = `translateZ(${depth}px) translateX(${x * depth * 0.4}px) translateY(${y * depth * 0.4}px)`;
+          });
+        });
+
+        scene.addEventListener('mouseleave', () => {
+          stage.style.transform = `rotateY(0deg) rotateX(0deg)`;
+          cards.forEach((card) => {
+            card.style.transform = '';
+          });
+        });
+      }
+
+      // 3. Scroll-Driven Multi-Layer Parallax
+      window.addEventListener('scroll', () => {
+        const scrolled = window.scrollY;
+        const parallaxEls = document.querySelectorAll('[data-parallax-speed]');
+        parallaxEls.forEach((el) => {
+          const speed = parseFloat(el.getAttribute('data-parallax-speed') || 0.1);
+          el.style.transform = `translateY(${scrolled * speed}px)`;
+        });
+      });
+
+      // 4. Interactive Calibration Modal Simulation
+      const demoBtn = document.getElementById('btn-load-demo');
+      const hashBtn = document.getElementById('btn-hash-search');
+      const topOpenBtn = document.getElementById('btn-top-open');
+      const modal = document.getElementById('forensic-loader-modal');
+      const modalClose = document.getElementById('forensic-loader-close');
+      const loaderCard = document.getElementById('forensic-loader-card');
+      const statusText = document.getElementById('loader-status-text');
+      const stepCount = document.getElementById('loader-step-count');
+      const progressBar = document.getElementById('loader-progress-bar');
+      const hashElem = document.getElementById('loader-current-hash');
+
+      const verificationSteps = [
+        { text: 'Traversing DAG Node 084... Validating PGP signatures...', progress: '25%', step: '1/4', hash: '0x8f2c...4e19' },
+        { text: 'Reconciling ERC-20 Multisig quorum with Treasury Ledger...', progress: '50%', step: '2/4', hash: '0x4b1a...81ae' },
+        { text: 'Calibrating vellum layers & pinpointing -$25,000.00 discrepancy...', progress: '75%', step: '3/4', hash: '0x7a3e...c914' },
+        { text: 'Finalizing court-grade forensic dossier & Merkle witness tree...', progress: '100%', step: '4/4', hash: '0xc894...b2f1' }
+      ];
+
+      let stepIndex = 0;
+      let stepInterval = null;
+
+      function openLoader(customHash) {
+        if (customHash && hashElem) {
+          hashElem.innerText = customHash.length > 14 ? customHash.substring(0, 6) + '...' + customHash.substring(customHash.length - 4) : customHash;
         }
-    </style>
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <script
-        id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "on-tertiary-container": "#439878", "primary-fixed": "#dae1ff", "secondary-container": "#d5e0f7", "inverse-on-surface": "#f4f0e7", "on-secondary": "#ffffff", "error": "#ba1a1a", "surface-bright": "#fdf9f0", "surface-container-lowest": "#ffffff", "error-container": "#ffdad6", "on-secondary-container": "#586377", "on-tertiary-fixed": "#002115", "secondary": "#545f72", "on-secondary-fixed": "#111c2c", "surface-container": "#f1ede5", "surface-container-highest": "#e6e2d9", "tertiary-container": "#00281b", "surface": "#fdf9f0", "secondary-fixed-dim": "#bcc7dd", "surface-container-low": "#f7f3ea", "surface-variant": "#e6e2d9", "surface-tint": "#535d7e", "on-surface-variant": "#45464d", "on-primary-fixed-variant": "#3b4665", "on-primary-container": "#7e89ab", "on-error": "#ffffff", "on-primary-fixed": "#0f1a37", "secondary-fixed": "#d8e3fa", "on-tertiary-fixed-variant": "#00513a", "inverse-surface": "#31302b", "primary": "#010a27", "outline": "#76767e", "inverse-primary": "#bbc5eb", "tertiary": "#000f08", "tertiary-fixed-dim": "#82d7b3", "on-tertiary": "#ffffff", "surface-container-high": "#ece8df", "on-primary": "#ffffff", "surface-dim": "#dddad1", "primary-fixed-dim": "#bbc5eb", "on-surface": "#1c1c16", "on-background": "#1c1c16", "background": "#fdf9f0", "on-secondary-fixed-variant": "#3c475a", "on-error-container": "#93000a", "outline-variant": "#c6c6ce", "tertiary-fixed": "#9ef4cf", "primary-container": "#16213e" }, "borderRadius": { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" }, "spacing": { "space-xs": "0.25rem", "space-sm": "0.5rem", "gutter": "1.25rem", "space-2xl": "3rem", "space-2xs": "0.125rem", "space-md": "0.75rem", "space-lg": "1.25rem", "gutter-mobile": "0.75rem", "margin-mobile": "1rem", "space-xl": "2rem", "margin": "2rem" }, "fontFamily": { "headline-xl-mobile": ["Newsreader", "serif"], "code-xs": ["JetBrains Mono", "monospace"], "headline-xl": ["Newsreader", "serif"], "code-sm": ["JetBrains Mono", "monospace"], "headline-lg": ["Newsreader", "serif"], "label-sm": ["Instrument Sans", "sans-serif"], "body-sm": ["Instrument Sans", "sans-serif"], "body-md": ["Instrument Sans", "sans-serif"], "body-lg": ["Instrument Sans", "sans-serif"], "label-md": ["Instrument Sans", "sans-serif"], "headline-sm": ["Newsreader", "serif"], "headline-md": ["Newsreader", "serif"], "sans": ["Instrument Sans", "sans-serif"], "serif": ["Newsreader", "serif"] }, "fontSize": { "headline-xl-mobile": ["2rem", { "lineHeight": "2.5rem", "letterSpacing": "-0.015em", "fontWeight": "400" }], "code-xs": ["0.6875rem", { "lineHeight": "0.875rem", "letterSpacing": "-0.01em", "fontWeight": "400" }], "headline-xl": ["2.75rem", { "lineHeight": "3.25rem", "letterSpacing": "-0.02em", "fontWeight": "400" }], "code-sm": ["0.8125rem", { "lineHeight": "1.125rem", "letterSpacing": "-0.02em", "fontWeight": "400" }], "headline-lg": ["2rem", { "lineHeight": "2.5rem", "letterSpacing": "-0.01em", "fontWeight": "500" }], "label-sm": ["0.6875rem", { "lineHeight": "0.875rem", "letterSpacing": "0.04em", "fontWeight": "600" }], "body-sm": ["0.8125rem", { "lineHeight": "1.25rem", "fontWeight": "400" }], "body-md": ["0.9375rem", { "lineHeight": "1.5rem", "fontWeight": "400" }], "body-lg": ["1.125rem", { "lineHeight": "1.75rem", "fontWeight": "400" }], "label-md": ["0.8125rem", { "lineHeight": "1rem", "letterSpacing": "0.02em", "fontWeight": "600" }], "headline-sm": ["1.25rem", { "lineHeight": "1.75rem", "fontWeight": "600" }], "headline-md": ["1.5rem", { "lineHeight": "2rem", "letterSpacing": "-0.01em", "fontWeight": "500" }] } } } }</script>
-    <header class="fixed top-0 w-full z-50 bg-surface/90 backdrop-blur-md shadow-[0_1px_8px_rgba(22,33,62,0.04)]">
-        <div class="h-20 max-w-7xl mx-auto px-gutter flex items-center justify-between">
-            <div class="flex items-center gap-space-md">
-                <div
-                    class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center overflow-hidden shadow-sm shrink-0">
-                    https://lh3.googleusercontent.com/aida/AEtjO1WOpSd1JJdSXB3W6GkhS5tGLScDmww5wUlCwozqjgBZmuQ3DWJNi5EukPnVS3vx84bczf04sd_31WMU2klpsnfBfVtIHpLaFs-8JF4imqcsZx5O5HMnb3JTaXEKpLhNIS1_yxyVlcMGvVL2LxjJOoGLHSmVBCD2pDwvwQIDhGXn4y5DVLFW9L8Qr9OJPCjAsnwSVRnNmKZTlywBb3gL6vSlOTueX1EFFSCeoPc0GhY
-                </div>
-                <div class="flex flex-col"><span
-                        class="font-headline-sm text-headline-sm text-primary tracking-tight leading-none font-serif">TraceLedger</span><span
-                        class="font-label-sm text-label-sm text-secondary tracking-widest uppercase mt-space-2xs">FORENSIC
-                        AUDIT SUITE</span></div>
-            </div>
-            <nav class="hidden md:flex items-center gap-space-lg"
-                data-active-classes="bg-surface-container-high text-on-surface rounded-lg"><a
-                    class="px-space-md py-space-sm font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors"
-                    data-path="how-it-works" href="#">How it works</a><a
-                    class="px-space-md py-space-sm font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors"
-                    data-path="benchmarks" href="#">Benchmarks</a><a
-                    class="px-space-md py-space-sm font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors"
-                    data-path="provenance-archive" href="#">Provenance Archive</a><a
-                    class="px-space-md py-space-sm font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors"
-                    data-path="dossier-standards" href="#">Dossier Standards</a></nav>
-            <div class="flex items-center gap-space-md"><a
-                    class="px-space-lg py-space-sm rounded-lg bg-primary-container text-surface font-label-md text-label-md hover:bg-primary transition-colors tracking-wide"
-                    data-path="open-case" href="#">Open a case</a>
-                <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span
-                        class="material-symbols-outlined text-on-primary text-[18px]">person</span></div>
-            </div>
-        </div>
-    </header>
-    <main class="w-full pt-20 bg-surface min-h-[calc(100vh-14rem)]">
-        <div class="flex flex-col w-full">
-            <div class="relative w-full bg-surface overflow-hidden py-space-xl lg:py-space-2xl">
-                <!-- Background Architectural Blueprint Watermark & Grid Layer -->
-                <div class="absolute inset-0 pointer-events-none opacity-40">
-                    <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-                        <defs>
-                            <pattern height="48" id="archival-draft-grid" patternunits="userSpaceOnUse" width="48">
-                                <path d="M 48 0 L 0 0 0 48" fill="none" opacity="0.3" stroke="#76767e"
-                                    stroke-dasharray="2 3" stroke-width="0.35"></path>
-                                <circle cx="0" cy="0" fill="#76767e" opacity="0.4" r="1"></circle>
-                            </pattern>
-                        </defs>
-                        <rect fill="url(#archival-draft-grid)" height="100%" width="100%"></rect>
-                    </svg>
-                </div>
-                <!-- Container -->
-                <div class="relative max-w-7xl mx-auto px-gutter flex flex-col gap-space-2xl">
-                    <!-- Top Dossier Meta-Bar & Alignment Stamp -->
-                    <div
-                        class="flex flex-wrap items-center justify-between gap-space-md shadow-[0_1px_0_rgba(118,118,126,0.15)] pb-space-md">
-                        <div class="flex items-center gap-space-sm">
-                            <span
-                                class="inline-flex items-center px-space-xs py-space-2xs rounded bg-surface-container text-on-surface-variant font-code-xs text-code-xs tracking-wider uppercase font-mono">
-                                REG: FORENSIC-884
-                            </span>
-                            <span class="font-code-xs text-code-xs text-secondary font-mono">DEPT. OF ASSET
-                                RECONCILIATION &amp; DISCREPANCY MAPPING</span>
-                        </div>
-                        <div class="flex items-center gap-space-lg text-secondary font-code-xs text-code-xs font-mono">
-                            <div class="flex items-center gap-space-xs">
-                                <span class="w-1.5 h-1.5 rounded-full bg-on-tertiary-container"></span>
-                                <span class="">INDEX STATUS: IMMUTABLE AUDIT TRAIL</span>
-                            </div>
-                            <span class="hidden sm:inline">PRECISION LEVEL: COURT-GRADE</span>
-                        </div>
-                    </div>
-                    <!-- Main Split Hero Grid -->
-                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-space-xl lg:gap-space-2xl items-center">
-                        <!-- Left Column: Authoritative Editorial Typography & CTAs -->
-                        <div class="lg:col-span-5 flex flex-col z-10">
-                            <!-- Eyebrow with forensic seal -->
-                            <div class="flex items-center gap-space-sm mb-space-md">
-                                <div
-                                    class="w-5 h-5 rounded-full bg-surface-container-high flex items-center justify-center text-primary shadow-sm">
-                                    <span class="material-symbols-outlined text-[13px]">verified</span>
-                                </div>
-                                <span
-                                    class="font-label-sm text-label-sm text-secondary tracking-widest uppercase font-semibold">
-                                    ON-CHAIN FORENSICS &amp; RECONCILIATION / DOSSIER Nº 084
-                                </span>
-                            </div>
-                            <!-- Main Serif Headline -->
-                            <h1
-                                class="font-headline-xl text-headline-xl text-primary tracking-tight leading-[1.08] mb-space-md font-serif">
-                                Every conclusion is a path.
-                            </h1>
-                            <!-- Crisp Subhead -->
-                            <p
-                                class="font-body-lg text-body-lg text-secondary max-w-xl mb-space-xl leading-relaxed font-sans">
-                                Show what is proven, what is contradicted, and what is missing. Reconstruct
-                                transactional journeys with absolute daylight clarity, moving beyond obscured ledgers to
-                                transparent court-admissible dossiers.
-                            </p>
-                            <!-- Interaction CTAs -->
-                            <div
-                                class="flex flex-col sm:flex-row items-stretch sm:items-center gap-space-md mb-space-lg">
-                                <button
-                                    class="px-space-lg py-space-sm bg-primary-container hover:bg-primary text-surface font-label-md text-label-md rounded-[6px] shadow-sm hover:shadow transition-all flex items-center justify-center gap-space-xs cursor-pointer font-sans"
-                                    id="btn-load-demo">
-                                    <span class="material-symbols-outlined text-[18px]">play_circle</span>
-                                    <span class="">Load demo case</span>
-                                </button>
-                                <button
-                                    class="px-space-lg py-space-sm bg-surface-container-low hover:bg-surface-container text-primary font-label-md text-label-md rounded-[6px] shadow-[0_1px_3px_rgba(22,33,62,0.06)] hover:shadow transition-all flex items-center justify-center gap-space-xs cursor-pointer font-sans"
-                                    id="btn-hash-search">
-                                    <span class="material-symbols-outlined text-[18px]">key</span>
-                                    <span class="">Paste transaction hash</span>
-                                </button>
-                            </div>
-                            <!-- Quick hash helper string -->
-                            <div
-                                class="flex items-center gap-space-xs text-secondary font-code-xs text-code-xs font-mono">
-                                <span class="text-on-surface-variant font-medium">Quick reference:</span>
-                                <code
-                                    class="px-space-xs py-space-2xs bg-surface-container rounded font-code-xs text-primary cursor-pointer hover:bg-surface-container-high transition-colors font-mono"
-                                    onclick="const el=this; navigator.clipboard?.writeText('0x8f2ca9115b804e19'); el.innerText='copied!'; setTimeout(function(){ el.innerText='0x8f2c...4e19'; }, 1500);"
-                                    title="Click to copy hash">
-              0x8f2c...4e19
-            </code>
-                                <span class="text-secondary">— USDC payout reconciliation</span>
-                            </div>
-                            <!-- Mini Forensic Metric Block -->
-                            <div
-                                class="mt-space-xl pt-space-md shadow-[0_1px_0_rgba(118,118,126,0.15)] grid grid-cols-3 gap-space-md">
-                                <div>
-                                    <span
-                                        class="font-headline-sm text-headline-sm text-primary block leading-none font-serif">100%</span>
-                                    <span
-                                        class="font-label-sm text-label-sm text-secondary mt-space-2xs block uppercase font-sans">Deterministic</span>
-                                </div>
-                                <div>
-                                    <span
-                                        class="font-headline-sm text-headline-sm text-primary block leading-none font-serif">0.00ms</span>
-                                    <span
-                                        class="font-label-sm text-label-sm text-secondary mt-space-2xs block uppercase font-sans">Heuristic
-                                        Guess</span>
-                                </div>
-                                <div>
-                                    <span
-                                        class="font-headline-sm text-headline-sm text-primary block leading-none font-serif">RFC-8271</span>
-                                    <span
-                                        class="font-label-sm text-label-sm text-secondary mt-space-2xs block uppercase font-sans">Audit
-                                        Protocol</span>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Right Column: Drafting Vellum Composition & Forensic Evidence Thread -->
-                        <div
-                            class="lg:col-span-7 relative min-h-[580px] lg:min-h-[640px] flex items-center justify-center p-space-sm sm:p-space-md">
-                            <!-- Layer 4: Foundation Underlay (Grid registration & Dossier Docket Sheet) -->
-                            <div
-                                class="absolute w-[92%] h-[92%] -top-2 left-3 rounded-[6px] bg-surface-container-high/60 backdrop-blur-[2px] shadow-[0_4px_16px_rgba(22,33,62,0.04)] rotate-[-1.8deg] p-space-lg flex flex-col justify-between pointer-events-none">
-                                <div
-                                    class="flex items-center justify-between text-secondary font-code-xs text-code-xs font-mono">
-                                    <span class="flex items-center gap-1 font-semibold text-primary">
-                                        <span class="material-symbols-outlined text-[14px]">grid_4x4</span> REGISTRATION
-                                        MATRIX: 401-AXIS
-                                    </span>
-                                    <span class="">INDEX SHEET REF: TL-NY-2024-09</span>
-                                </div>
-                                <!-- Technical Grid Watermark Line Art -->
-                                <div class="w-full flex-1 my-space-md opacity-25">
-                                    <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-                                        <line stroke="#16213E" stroke-dasharray="4 4" stroke-width="0.5" x1="10%"
-                                            x2="10%" y1="0" y2="100%"></line>
-                                        <line stroke="#16213E" stroke-dasharray="4 4" stroke-width="0.5" x1="50%"
-                                            x2="50%" y1="0" y2="100%"></line>
-                                        <line stroke="#16213E" stroke-dasharray="4 4" stroke-width="0.5" x1="90%"
-                                            x2="90%" y1="0" y2="100%"></line>
-                                        <line stroke="#16213E" stroke-dasharray="4 4" stroke-width="0.5" x1="0"
-                                            x2="100%" y1="25%" y2="25%"></line>
-                                        <line stroke="#16213E" stroke-dasharray="4 4" stroke-width="0.5" x1="0"
-                                            x2="100%" y1="75%" y2="75%"></line>
-                                    </svg>
-                                </div>
-                                <div class="flex justify-between font-code-xs text-code-xs text-secondary font-mono">
-                                    <span class="">LEGAL HOLD DOCKET: ACTIVE</span>
-                                    <span class="">HASH ROOT: c894...b2f1</span>
-                                </div>
-                            </div>
-                            <!-- Layer 3: Deep Layer - On-Chain Settlement Ledger (Tilted slightly positive) -->
-                            <div
-                                class="absolute w-[86%] rounded-[6px] bg-surface-container-lowest/75 backdrop-blur-[3px] shadow-[0_8px_24px_rgba(22,33,62,0.06)] rotate-[1.4deg] p-space-md top-14 right-2 sm:right-6 flex flex-col gap-space-xs transition-transform duration-300 hover:rotate-0">
-                                <div
-                                    class="flex items-center justify-between pb-space-xs shadow-[0_1px_0_rgba(118,118,126,0.1)]">
-                                    <div class="flex items-center gap-space-xs">
-                                        <span class="w-2 h-2 rounded-full bg-secondary"></span>
-                                        <span
-                                            class="font-label-sm text-label-sm text-primary uppercase font-semibold">ETHEREUM
-                                            SETTLEMENT BASE</span>
-                                    </div>
-                                    <span class="font-code-xs text-code-xs text-secondary font-mono">BLOCK
-                                        #19,482,910</span>
-                                </div>
-                                <div
-                                    class="grid grid-cols-2 gap-space-xs font-code-xs text-code-xs text-on-surface-variant my-space-2xs font-mono">
-                                    <div class="">TXID: <span class="text-primary font-medium">0x7a3e...c914</span>
-                                    </div>
-                                    <div class="text-right">GAS USED: <span class="text-primary font-medium">142,829
-                                            GWEI</span></div>
-                                    <div class="">ROUTER: <span class="text-primary">DisbursementVault.sol</span></div>
-                                    <div class="text-right">SETTLED: <span class="text-primary">2024-10-18 14:02:11
-                                            UTC</span></div>
-                                </div>
-                            </div>
-                            <!-- Layer 2: Mid-Depth Layer - Treasury Route & Quorum Signatures -->
-                            <div
-                                class="absolute w-[88%] rounded-[6px] bg-surface-container-lowest/80 backdrop-blur-sm shadow-[0_10px_32px_rgba(22,33,62,0.07)] rotate-[-0.8deg] p-space-md top-44 left-2 sm:left-4 flex flex-col gap-space-xs transition-transform duration-300 hover:rotate-0">
-                                <div
-                                    class="flex items-center justify-between pb-space-xs shadow-[0_1px_0_rgba(118,118,126,0.1)]">
-                                    <div class="flex items-center gap-space-xs">
-                                        <span class="w-2 h-2 rounded-full bg-secondary"></span>
-                                        <span
-                                            class="font-label-sm text-label-sm text-primary uppercase font-semibold">TREASURY
-                                            MULTISIG DISBURSEMENT</span>
-                                    </div>
-                                    <span class="font-code-xs text-code-xs text-secondary font-mono">SIGNATURE QUORUM: 3
-                                        OF 4</span>
-                                </div>
-                                <div
-                                    class="flex items-center justify-between text-code-xs font-code-xs text-on-surface-variant py-space-2xs font-mono">
-                                    <div class="flex items-center gap-space-xs">
-                                        <span
-                                            class="material-symbols-outlined text-[14px] text-on-tertiary-container">done_all</span>
-                                        <span class="">Signer Alpha: <span
-                                                class="text-primary">0x4b1...81a</span></span>
-                                    </div>
-                                    <div class="flex items-center gap-space-xs">
-                                        <span
-                                            class="material-symbols-outlined text-[14px] text-on-tertiary-container">done_all</span>
-                                        <span class="">Signer Beta: <span class="text-primary">0x92f...73c</span></span>
-                                    </div>
-                                    <div class="flex items-center gap-space-xs">
-                                        <span
-                                            class="material-symbols-outlined text-[14px] text-secondary">schedule</span>
-                                        <span class="">Signer Delta: <span
-                                                class="text-secondary italic">Pending</span></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Layer 1: Foreground Top Vellum Card - Vendor Commercial Invoice -->
-                            <div
-                                class="relative w-[90%] rounded-[6px] bg-surface-container-lowest/90 backdrop-blur-md shadow-[0_16px_44px_rgba(22,33,62,0.09)] rotate-[0.4deg] p-space-lg flex flex-col gap-space-md z-20 transition-transform duration-300 hover:rotate-0">
-                                <!-- Invoice Header with Physical Stamp -->
-                                <div class="flex items-start justify-between">
-                                    <div>
-                                        <div class="flex items-center gap-space-xs">
-                                            <span
-                                                class="px-space-xs py-space-2xs bg-surface-container rounded font-label-sm text-label-sm text-primary uppercase font-bold">
-                                                PRIMARY EXHIBIT A-1
-                                            </span>
-                                            <span class="font-code-xs text-code-xs text-secondary font-mono">DOC-ID:
-                                                INV-2024-8849</span>
-                                        </div>
-                                        <h3
-                                            class="font-headline-sm text-headline-sm text-primary mt-space-xs font-serif">
-                                            Meridian Capital Partners
-                                        </h3>
-                                        <span class="font-body-sm text-body-sm text-secondary font-sans">Advisory &amp;
-                                            Liquidity Provision Settlement</span>
-                                    </div>
-                                    <div
-                                        class="px-space-sm py-space-xs rounded bg-surface-container-low text-primary text-center shadow-sm">
-                                        <span
-                                            class="font-code-xs text-code-xs uppercase block text-secondary font-mono">SUBMITTED
-                                            AMOUNT</span>
-                                        <span
-                                            class="font-headline-sm text-headline-sm font-semibold tracking-tight text-primary font-serif">$425,000.00</span>
-                                        <span
-                                            class="font-code-xs text-code-xs block text-on-tertiary-container font-medium font-mono">CURRENCY:
-                                            USDC</span>
-                                    </div>
-                                </div>
-                                <!-- Ledger Table Summary -->
-                                <div
-                                    class="bg-surface-container-low/70 rounded p-space-sm flex flex-col gap-space-2xs text-code-xs font-code-xs font-mono">
-                                    <div class="flex justify-between text-secondary">
-                                        <span class="">DUE DATE: OCT 18, 2024</span>
-                                        <span class="">SETTLEMENT METHOD: ERC-20 MULTISIG</span>
-                                    </div>
-                                    <div class="flex justify-between text-primary font-medium">
-                                        <span class="">COUNTERPARTY INVOICE STATUS</span>
-                                        <span class="text-on-tertiary-container">VERIFIED SIGNATURE ON FILE</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- SVG FORENSIC THREAD: The physical investigatory trace through all levels -->
-                            <svg class="absolute inset-0 w-full h-full pointer-events-none z-30"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <defs>
-                                    <filter height="140%" id="thread-shadow" width="140%" x="-20%" y="-20%">
-                                        <fedropshadow dx="0" dy="2" flood-color="#16213e" flood-opacity="0.15"
-                                            stddeviation="2"></fedropshadow>
-                                    </filter>
-                                </defs>
-                                <!-- Segment 1: Origin to Treasury (Solid Verified Path) -->
-                                <path d="M 120 160 C 140 210, 190 230, 210 270" fill="none" filter="url(#thread-shadow)"
-                                    stroke="#1F7A5C" stroke-width="2.5"></path>
-                                <!-- Segment 2: Treasury to Intermediate Node (Solid Asserted Path) -->
-                                <path d="M 210 270 C 230 310, 270 330, 310 365" fill="none" filter="url(#thread-shadow)"
-                                    stroke="#C99A2E" stroke-dasharray="6 2" stroke-width="2"></path>
-                                <!-- Segment 3: The Broken/Missing Evidentiary Path (Dashed Warm Grey) -->
-                                <path d="M 310 365 C 340 395, 380 415, 415 440" fill="none" stroke="#9A948A"
-                                    stroke-dasharray="5 5" stroke-width="2.5"></path>
-                                <!-- Segment 4: Mismatch to Final Wallet Node (Contradicted Path) -->
-                                <path d="M 415 440 C 445 465, 490 495, 520 520" fill="none" filter="url(#thread-shadow)"
-                                    stroke="#D9482B" stroke-width="2"></path>
-                            </svg>
-                            <!-- INTERACTIVE EVIDENCE NODES (Anchored over the graph visual) -->
-                            <!-- Node 1: Origin Invoice (Verified - Viridian) -->
-                            <div class="absolute z-40 top-36 left-24 sm:left-28 group cursor-pointer"
-                                title="Node 1: Origin Invoice Attestation">
-                                <div class="relative flex items-center justify-center">
-                                    <span
-                                        class="absolute w-7 h-7 rounded-full bg-on-tertiary-container/20 animate-ping"></span>
-                                    <span
-                                        class="w-4 h-4 rounded-full bg-[#1F7A5C] shadow-sm flex items-center justify-center">
-                                        <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
-                                    </span>
-                                </div>
-                                <!-- Node Pin Label -->
-                                <div
-                                    class="absolute -top-7 -left-12 px-space-xs py-space-2xs bg-surface-container-lowest/90 backdrop-blur rounded shadow-sm whitespace-nowrap text-code-xs font-code-xs text-[#1F7A5C] font-semibold border border-[#1F7A5C]/20 font-mono">
-                                    ORIGIN: $425,000.00
-                                </div>
-                            </div>
-                            <!-- Node 2: Multisig Execution (Asserted - Ochre) -->
-                            <div class="absolute z-40 top-64 left-44 sm:left-48 group cursor-pointer"
-                                title="Node 2: Treasury Route">
-                                <div
-                                    class="w-4 h-4 rounded-full bg-[#C99A2E] shadow-sm flex items-center justify-center">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
-                                </div>
-                                <div
-                                    class="absolute -top-7 -left-10 px-space-xs py-space-2xs bg-surface-container-lowest/90 backdrop-blur rounded shadow-sm whitespace-nowrap text-code-xs font-code-xs text-[#C99A2E] font-semibold border border-[#C99A2E]/20 font-mono">
-                                    MULTISIG RELEASE
-                                </div>
-                            </div>
-                            <!-- Callout Badge: Missing Evidence Callout on Segment 2-3 -->
-                            <div
-                                class="absolute z-40 top-[56%] left-[45%] -translate-x-1/2 -translate-y-1/2 p-space-xs sm:p-space-sm bg-surface-container-lowest/95 backdrop-blur-md rounded shadow-md border border-[#9A948A]/40 flex flex-col gap-1 max-w-[210px] pointer-events-auto">
-                                <div class="flex items-center gap-space-2xs text-[#7C766C]">
-                                    <span class="material-symbols-outlined text-[15px]">search_off</span>
-                                    <span
-                                        class="font-label-sm text-label-sm uppercase font-bold text-primary font-sans">MISSING
-                                        EVIDENCE</span>
-                                </div>
-                                <p class="font-code-xs text-code-xs text-secondary leading-tight font-mono">
-                                    Unsigned counterparty attestation missing between Route &amp; Clearinghouse.
-                                </p>
-                            </div>
-                            <!-- Node 3: Contradicted / Mismatch (Vermilion) -->
-                            <div class="absolute z-40 bottom-36 right-44 sm:right-56 group cursor-pointer"
-                                title="Node 3: Contradicted Amount">
-                                <div class="relative flex items-center justify-center">
-                                    <span
-                                        class="w-4 h-4 rounded-full bg-[#D9482B] shadow-sm flex items-center justify-center">
-                                        <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
-                                    </span>
-                                </div>
-                                <!-- Contradiction Badge -->
-                                <div
-                                    class="absolute -bottom-8 -left-20 px-space-xs py-space-2xs bg-surface-container-lowest/95 backdrop-blur rounded shadow-sm whitespace-nowrap text-code-xs font-code-xs text-[#D9482B] font-semibold border border-[#D9482B]/30 font-mono">
-                                    DISCREPANCY: -$25,000.00
-                                </div>
-                            </div>
-                            <!-- Node 4: Destination Wallet (Verified - Viridian) -->
-                            <div class="absolute z-40 bottom-16 right-20 sm:right-28 group cursor-pointer"
-                                title="Node 4: Destination Wallet">
-                                <div
-                                    class="w-4 h-4 rounded-full bg-[#1F7A5C] shadow-sm flex items-center justify-center">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
-                                </div>
-                                <div
-                                    class="absolute -bottom-7 -left-14 px-space-xs py-space-2xs bg-surface-container-lowest/90 backdrop-blur rounded shadow-sm whitespace-nowrap text-code-xs font-code-xs text-[#1F7A5C] font-semibold border border-[#1F7A5C]/20 font-mono">
-                                    DESTINATION: $400,000.00
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Archival Legend of the 4 Evidentiary Edge States -->
-                    <div class="pt-space-xl shadow-[0_-1px_0_rgba(118,118,126,0.15)] flex flex-col gap-space-md">
-                        <div class="flex items-center justify-between">
-                            <span
-                                class="font-label-sm text-label-sm text-secondary uppercase tracking-widest font-semibold font-sans">
-                                FORENSIC EDGE TAXONOMY &amp; VERIFICATION STATES
-                            </span>
-                            <span class="font-code-xs text-code-xs text-secondary hidden sm:inline font-mono">
-                                STANDARD CODESET V2.4
-                            </span>
-                        </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md">
-                            <!-- Legend 1: Proven / Verified -->
-                            <div
-                                class="p-space-md rounded bg-surface-container-low/60 hover:bg-surface-container-low transition-colors flex items-start gap-space-sm shadow-sm">
-                                <div class="mt-1 flex items-center gap-1.5 shrink-0">
-                                    <span class="w-2.5 h-2.5 rounded-full bg-[#1F7A5C]"></span>
-                                    <span class="w-5 h-0.5 bg-[#1F7A5C]"></span>
-                                </div>
-                                <div class="flex flex-col">
-                                    <div class="flex items-center gap-space-2xs">
-                                        <span
-                                            class="font-label-md text-label-md text-primary font-sans font-medium">Proven
-                                            / Verified</span>
-                                        <span
-                                            class="material-symbols-outlined text-[14px] text-[#1F7A5C]">verified</span>
-                                    </div>
-                                    <p class="font-body-sm text-body-sm text-secondary mt-space-2xs font-sans">
-                                        Verified by cryptographic proof, signature quorum, and consensus finality.
-                                    </p>
-                                </div>
-                            </div>
-                            <!-- Legend 2: Contradicted -->
-                            <div
-                                class="p-space-md rounded bg-surface-container-low/60 hover:bg-surface-container-low transition-colors flex items-start gap-space-sm shadow-sm">
-                                <div class="mt-1 flex items-center gap-1.5 shrink-0">
-                                    <span class="w-2.5 h-2.5 rounded-full bg-[#D9482B]"></span>
-                                    <span class="w-5 h-0.5 bg-[#D9482B]"></span>
-                                </div>
-                                <div class="flex flex-col">
-                                    <div class="flex items-center gap-space-2xs">
-                                        <span
-                                            class="font-label-md text-label-md text-primary font-sans font-medium">Contradicted</span>
-                                        <span
-                                            class="material-symbols-outlined text-[14px] text-[#D9482B]">warning</span>
-                                    </div>
-                                    <p class="font-body-sm text-body-sm text-secondary mt-space-2xs font-sans">
-                                        Direct discrepancy detected between stated metadata and ledger execution.
-                                    </p>
-                                </div>
-                            </div>
-                            <!-- Legend 3: Asserted / Candidate -->
-                            <div
-                                class="p-space-md rounded bg-surface-container-low/60 hover:bg-surface-container-low transition-colors flex items-start gap-space-sm shadow-sm">
-                                <div class="mt-1 flex items-center gap-1.5 shrink-0">
-                                    <span class="w-2.5 h-2.5 rounded-full bg-[#C99A2E]"></span>
-                                    <span class="w-5 h-0.5 bg-[#C99A2E] border-t border-dotted border-[#C99A2E]"></span>
-                                </div>
-                                <div class="flex flex-col">
-                                    <div class="flex items-center gap-space-2xs">
-                                        <span
-                                            class="font-label-md text-label-md text-primary font-sans font-medium">Asserted
-                                            / Candidate</span>
-                                        <span
-                                            class="material-symbols-outlined text-[14px] text-[#C99A2E]">pending</span>
-                                    </div>
-                                    <p class="font-body-sm text-body-sm text-secondary mt-space-2xs font-sans">
-                                        Pending dual-custody confirmation or secondary multisig threshold.
-                                    </p>
-                                </div>
-                            </div>
-                            <!-- Legend 4: Missing / Gap -->
-                            <div
-                                class="p-space-md rounded bg-surface-container-low/60 hover:bg-surface-container-low transition-colors flex items-start gap-space-sm shadow-sm">
-                                <div class="mt-1 flex items-center gap-1.5 shrink-0">
-                                    <span class="w-2.5 h-2.5 rounded-full bg-[#9A948A]"></span>
-                                    <span class="w-5 h-0.5 border-t border-dashed border-[#9A948A]"></span>
-                                </div>
-                                <div class="flex flex-col">
-                                    <div class="flex items-center gap-space-2xs">
-                                        <span
-                                            class="font-label-md text-label-md text-primary font-sans font-medium">Missing</span>
-                                        <span
-                                            class="material-symbols-outlined text-[14px] text-[#7C766C]">help_outline</span>
-                                    </div>
-                                    <p class="font-body-sm text-body-sm text-secondary mt-space-2xs font-sans">
-                                        Missing evidence in audit path; critical attestations or hops unlocated.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- ARCHIVAL FORENSIC DAG INSPECTION MODAL -->
-            <div class="fixed inset-0 z-50 bg-[#16213e]/60 backdrop-blur-sm flex items-center justify-center p-space-md opacity-0 pointer-events-none transition-opacity duration-300"
-                id="forensic-loader-modal">
-                <div class="relative w-full max-w-xl rounded-lg bg-surface-container-lowest border border-[#dddad1] shadow-[0_24px_60px_rgba(22,33,62,0.18)] p-space-xl flex flex-col items-center text-center transform scale-95 transition-transform duration-300"
-                    id="forensic-loader-card">
-                    <!-- Close Button -->
-                    <button
-                        class="absolute top-4 right-4 text-secondary hover:text-primary transition-colors p-1 rounded hover:bg-surface-container"
-                        id="forensic-loader-close" title="Dismiss modal">
-                        <span class="material-symbols-outlined text-[20px]">close</span>
-                    </button>
-                    <!-- Archival Inspection Badge -->
-                    <div
-                        class="flex items-center gap-space-xs px-space-sm py-space-2xs rounded bg-surface-container text-on-surface-variant font-code-xs text-code-xs font-mono uppercase tracking-widest mb-space-md">
-                        <span class="w-2 h-2 rounded-full bg-on-tertiary-container animate-ping"></span>
-                        FORENSIC CALIBRATION ENGINE
-                    </div>
-                    <!-- Animation SVG Component -->
-                    <div class="w-[120px] h-[120px] mb-space-lg flex items-center justify-center shrink-0">
-                        <!-- STITCH_SVG_START:ANIMATION_6 class="" -->
-                        <div id="animated-svg-ANIMATION_6" class=""
-                            style="display:block;width:100%;height:100%;min-height:200px;"><svg
-                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120"
-                                fill="none">
-                                <!-- Archival vellum investigation compass / rotating DAG inspection loader -->
-                                <style>
-                                    @keyframes spin-slow {
-                                        0% {
-                                            transform: rotate(0deg);
-                                        }
+        modal.classList.remove('opacity-0', 'pointer-events-none');
+        modal.classList.add('opacity-100');
+        loaderCard.classList.remove('scale-95');
+        loaderCard.classList.add('scale-100');
 
-                                        100% {
-                                            transform: rotate(360deg);
-                                        }
-                                    }
+        stepIndex = 0;
+        updateStep();
 
-                                    @keyframes pulse-node {
+        clearInterval(stepInterval);
+        stepInterval = setInterval(() => {
+          stepIndex++;
+          if (stepIndex < verificationSteps.length) {
+            updateStep();
+          } else {
+            clearInterval(stepInterval);
+            setTimeout(() => {
+              statusText.innerHTML = '<span class="text-[#1F7A5C] font-bold">&check;</span> Dossier Nº 084 Reconstructed Successfully.';
+            }, 600);
+          }
+        }, 1100);
+      }
 
-                                        0%,
-                                        100% {
-                                            opacity: 0.3;
-                                            transform: scale(0.9);
-                                        }
+      function updateStep() {
+        const item = verificationSteps[stepIndex];
+        statusText.innerText = item.text;
+        stepCount.innerText = item.step;
+        progressBar.style.width = item.progress;
+      }
 
-                                        50% {
-                                            opacity: 1;
-                                            transform: scale(1.1);
-                                        }
-                                    }
+      function closeLoader() {
+        clearInterval(stepInterval);
+        modal.classList.add('opacity-0', 'pointer-events-none');
+        modal.classList.remove('opacity-100');
+        loaderCard.classList.add('scale-95');
+        loaderCard.classList.remove('scale-100');
+      }
 
-                                    .rotating-outer {
-                                        transform-origin: 60px 60px;
-                                        animation: spin-slow 12s linear infinite;
-                                    }
-                                </style>
-                                <rect width="120" height="120" rx="10" fill="#f7f3ea" stroke="#dddad1"
-                                    stroke-width="1.5" />
+      if (modalClose) modalClose.addEventListener('click', closeLoader);
+      if (modal) {
+        modal.addEventListener('click', (e) => {
+          if (e.target === modal) closeLoader();
+        });
+      }
 
-                                <!-- Outer calibration ring & ticks -->
-                                <g class="rotating-outer">
-                                    <circle cx="60" cy="60" r="44" stroke="#16213e" stroke-opacity="0.2"
-                                        stroke-width="1" stroke-dasharray="3 3" />
-                                    <circle cx="60" cy="60" r="34" stroke="#16213e" stroke-opacity="0.3"
-                                        stroke-width="1.25" />
-                                    <line x1="60" y1="12" x2="60" y2="18" stroke="#16213e" stroke-width="1.5" />
-                                    <line x1="60" y1="102" x2="60" y2="108" stroke="#16213e" stroke-width="1.5" />
-                                    <line x1="12" y1="60" x2="18" y2="60" stroke="#16213e" stroke-width="1.5" />
-                                    <line x1="102" y1="60" x2="108" y2="60" stroke="#16213e" stroke-width="1.5" />
-                                </g>
-
-                                <!-- Evidence Graph Traversal Nodes in loader -->
-                                <!-- Viridian Path (Verified) -->
-                                <path d="M42 42L60 32L78 46" stroke="#1F7A5C" stroke-width="2.2" stroke-linecap="round"
-                                    stroke-linejoin="round" />
-                                <!-- Vermilion Path (Contradiction) -->
-                                <path d="M78 46L66 74" stroke="#D9482B" stroke-width="2.2" stroke-linecap="round" />
-                                <!-- Missing Evidence Dashed Thread -->
-                                <path d="M66 74L42 80" stroke="#9A948A" stroke-width="2" stroke-dasharray="3 3"
-                                    stroke-linecap="round" />
-                                <!-- Ochre Candidate Thread -->
-                                <path d="M42 80L42 42" stroke="#C99A2E" stroke-width="2" stroke-linecap="round" />
-
-                                <!-- Nodes with tactile stamps -->
-                                <circle cx="42" cy="42" r="5" fill="#fdf9f0" stroke="#1F7A5C" stroke-width="2.5" />
-                                <circle cx="60" cy="32" r="4.5" fill="#1F7A5C" />
-                                <circle cx="78" cy="46" r="5.5" fill="#fdf9f0" stroke="#D9482B" stroke-width="2.5" />
-                                <circle cx="66" cy="74" r="5" fill="#D9482B" />
-                                <circle cx="42" cy="80" r="4.5" fill="#fdf9f0" stroke="#C99A2E" stroke-width="2.5" />
-
-                                <!-- Central Reticle Focal Point -->
-                                <circle cx="60" cy="60" r="2" fill="#16213e" />
-                                <circle cx="60" cy="60" r="8" stroke="#16213e" stroke-opacity="0.35" stroke-width="1" />
-                            </svg></div><!-- STITCH_SVG_END:ANIMATION_6 -->
-                    </div>
-                    <!-- Title -->
-                    <h2
-                        class="font-label-md text-label-md uppercase tracking-wider text-primary font-bold mb-space-xs font-sans">
-                        TRANSACTION TRAVERSAL &amp; VELLUM ALIGNMENT IN PROGRESS
-                    </h2>
-                    <!-- Subtitle / Meta -->
-                    <p class="font-code-xs text-code-xs text-secondary font-mono mb-space-lg">
-                        RECONSTRUCTING CRYPTOGRAPHIC PROOF DAG · CASE DOCKET #084
-                    </p>
-                    <!-- Progress Tracker Box -->
-                    <div
-                        class="w-full bg-surface-container-low rounded-lg p-space-md border border-[#dddad1]/80 text-left flex flex-col gap-space-sm mb-space-md">
-                        <!-- Progress Bar -->
-                        <div class="w-full h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
-                            <div class="h-full bg-primary-container transition-all duration-300 w-1/4"
-                                id="loader-progress-bar"></div>
-                        </div>
-                        <!-- Live Dynamic Node Verification Status -->
-                        <div class="flex items-center justify-between text-code-xs font-code-xs font-mono">
-                            <span class="text-primary font-medium flex items-center gap-1.5" id="loader-status-text">
-                                <span
-                                    class="material-symbols-outlined text-[14px] animate-spin text-on-tertiary-container">progress_activity</span>
-                                Traversing DAG Node 084... Validating PGP signatures...
-                            </span>
-                            <span class="text-secondary font-mono" id="loader-step-count">1/4</span>
-                        </div>
-                        <!-- Hash Stream -->
-                        <div
-                            class="text-code-xs font-code-xs text-secondary font-mono border-t border-[#dddad1]/60 pt-space-xs flex justify-between">
-                            <span>CURRENT HASH: <span class="text-primary"
-                                    id="loader-current-hash">0x8f2c...4e19</span></span>
-                            <span class="text-on-tertiary-container">QUORUM MATCH 100%</span>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-space-md text-secondary font-code-xs text-code-xs font-mono">
-                        <span class="flex items-center gap-1"><span
-                                class="w-1.5 h-1.5 rounded-full bg-on-tertiary-container"></span>RFC-8271
-                            COMPLIANT</span>
-                        <span>·</span>
-                        <span>INDEXING MERKLE RECONCILIATION</span>
-                    </div>
-                </div>
-            </div>
-            <!-- Interactive Client Behavior -->
-            <script>
-                document.addEventListener('DOMContentLoaded', () => {
-                    const demoBtn = document.getElementById('btn-load-demo');
-                    const hashBtn = document.getElementById('btn-hash-search');
-                    const modal = document.getElementById('forensic-loader-modal');
-                    const modalClose = document.getElementById('forensic-loader-close');
-                    const loaderCard = document.getElementById('forensic-loader-card');
-                    const statusText = document.getElementById('loader-status-text');
-                    const stepCount = document.getElementById('loader-step-count');
-                    const progressBar = document.getElementById('loader-progress-bar');
-                    const hashElem = document.getElementById('loader-current-hash');
-
-                    const verificationSteps = [
-                        { text: 'Traversing DAG Node 084... Validating PGP signatures...', progress: '25%', step: '1/4', hash: '0x8f2c...4e19' },
-                        { text: 'Reconciling ERC-20 Multisig quorum with Treasury Ledger...', progress: '50%', step: '2/4', hash: '0x4b1a...81ae' },
-                        { text: 'Calibrating vellum layers & pinpointing -$25,000.00 discrepancy...', progress: '75%', step: '3/4', hash: '0x7a3e...c914' },
-                        { text: 'Finalizing court-grade forensic dossier & Merkle witness tree...', progress: '100%', step: '4/4', hash: '0xc894...b2f1' }
-                    ];
-
-                    let stepIndex = 0;
-                    let stepInterval = null;
-
-                    function openLoader(customHash) {
-                        if (customHash && hashElem) {
-                            hashElem.innerText = customHash.length > 14 ? customHash.substring(0, 6) + '...' + customHash.substring(customHash.length - 4) : customHash;
-                        }
-                        modal.classList.remove('opacity-0', 'pointer-events-none');
-                        modal.classList.add('opacity-100');
-                        loaderCard.classList.remove('scale-95');
-                        loaderCard.classList.add('scale-100');
-
-                        stepIndex = 0;
-                        updateStep();
-
-                        clearInterval(stepInterval);
-                        stepInterval = setInterval(() => {
-                            stepIndex++;
-                            if (stepIndex < verificationSteps.length) {
-                                updateStep();
-                            } else {
-                                clearInterval(stepInterval);
-                                setTimeout(() => {
-                                    statusText.innerHTML = '<span class="material-symbols-outlined text-[14px] text-on-tertiary-container">verified</span> Dossier Nº 084 Reconstructed Successfully.';
-                                }, 600);
-                            }
-                        }, 1100);
-                    }
-
-                    function updateStep() {
-                        const item = verificationSteps[stepIndex];
-                        statusText.innerHTML = `<span class="material-symbols-outlined text-[14px] animate-spin text-on-tertiary-container">progress_activity</span> ${item.text}`;
-                        stepCount.innerText = item.step;
-                        progressBar.style.width = item.progress;
-                    }
-
-                    function closeLoader() {
-                        clearInterval(stepInterval);
-                        modal.classList.add('opacity-0', 'pointer-events-none');
-                        modal.classList.remove('opacity-100');
-                        loaderCard.classList.add('scale-95');
-                        loaderCard.classList.remove('scale-100');
-                    }
-
-                    if (modalClose) {
-                        modalClose.addEventListener('click', closeLoader);
-                    }
-
-                    if (modal) {
-                        modal.addEventListener('click', (e) => {
-                            if (e.target === modal) closeLoader();
-                        });
-                    }
-
-                    if (demoBtn) {
-                        demoBtn.addEventListener('click', () => {
-                            openLoader('0x8f2ca9115b804e19');
-                        });
-                    }
-
-                    if (hashBtn) {
-                        hashBtn.addEventListener('click', () => {
-                            const inputPrompt = prompt('Enter an EVM/UTXO transaction hash or contract address:', '0x8f2ca9115b804e19572ec731b790d402');
-                            if (inputPrompt) {
-                                openLoader(inputPrompt);
-                            }
-                        });
-                    }
-                });
-            </script>
-        </div>
-    </main>
-    <footer class="w-full bg-surface-container-low shadow-[0_-1px_6px_rgba(22,33,62,0.03)]">
-        <div class="max-w-7xl mx-auto px-gutter py-space-2xl">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-space-xl mb-space-2xl">
-                <div>
-                    <div class="flex items-center gap-space-sm mb-space-sm">
-                        <div
-                            class="w-6 h-6 rounded bg-surface-container-high flex items-center justify-center overflow-hidden shrink-0 shadow-sm">
-                            https://lh3.googleusercontent.com/aida/AEtjO1WOpSd1JJdSXB3W6GkhS5tGLScDmww5wUlCwozqjgBZmuQ3DWJNi5EukPnVS3vx84bczf04sd_31WMU2klpsnfBfVtIHpLaFs-8JF4imqcsZx5O5HMnb3JTaXEKpLhNIS1_yxyVlcMGvVL2LxjJOoGLHSmVBCD2pDwvwQIDhGXn4y5DVLFW9L8Qr9OJPCjAsnwSVRnNmKZTlywBb3gL6vSlOTueX1EFFSCeoPc0GhY
-                        </div><span class="font-headline-sm text-headline-sm text-primary font-serif">TraceLedger</span>
-                    </div>
-                    <p class="font-body-sm text-body-sm text-on-surface-variant font-sans">Forensic archival environment
-                        for ledger provenance mapping, asset tracing trees, and evidentiary investigation.</p>
-                </div>
-                <div>
-                    <div
-                        class="font-label-md text-label-md text-primary uppercase tracking-wider mb-space-md font-sans">
-                        Verification Engine</div>
-                    <ul class="space-y-space-sm font-body-sm text-body-sm font-sans">
-                        <li class="text-on-surface-variant">DAG Graph Reconstruction</li>
-                        <li class="text-on-surface-variant">Chain Traversal Inspector</li>
-                        <li class="text-on-surface-variant">Vellum Cryptographic Layers</li>
-                    </ul>
-                </div>
-                <div>
-                    <div
-                        class="font-label-md text-label-md text-primary uppercase tracking-wider mb-space-md font-sans">
-                        Standards &amp; Protocol</div>
-                    <ul class="space-y-space-sm font-body-sm text-body-sm font-sans">
-                        <li class="text-on-surface-variant">Evidentiary Legal Grade</li>
-                        <li class="text-on-surface-variant">Attestation Indexing</li>
-                        <li class="text-on-surface-variant">Archival Corpus Auditing</li>
-                    </ul>
-                </div>
-                <div>
-                    <div
-                        class="font-label-md text-label-md text-primary uppercase tracking-wider mb-space-md font-sans">
-                        System Status</div>
-                    <div
-                        class="inline-flex items-center gap-space-xs px-space-sm py-space-2xs rounded-lg bg-surface-container-high text-on-tertiary-container font-code-xs text-code-xs font-mono">
-                        <span class="w-1.5 h-1.5 rounded-full bg-on-tertiary-container"></span>NODE INTEGRITY VERIFIED
-                    </div>
-                </div>
-            </div>
-            <div
-                class="flex flex-col md:flex-row items-center justify-between pt-space-lg shadow-[0_-1px_0_rgba(226,220,208,0.6)] font-code-xs text-code-xs text-on-surface-variant font-mono">
-                <span class="">© 2025 TRACELEDGER AUDIT CORP. ALL EVIDENCE RESERVED.</span>
-                <div class="flex gap-space-lg mt-space-sm md:mt-0"><span class="">SYS_REF: RFC-8271</span><span
-                        class="">JURISDICTION: FINANCIAL FORENSICS</span></div>
-            </div>
-        </div>
-    </footer>
+      if (demoBtn) demoBtn.addEventListener('click', () => openLoader('0x8f2ca9115b804e19'));
+      if (topOpenBtn) topOpenBtn.addEventListener('click', () => openLoader('0x8f2ca9115b804e19'));
+      if (hashBtn) {
+        hashBtn.addEventListener('click', () => {
+          const inputPrompt = prompt('Enter an EVM transaction hash or contract address:', '0x8f2ca9115b804e19572ec731b790d402');
+          if (inputPrompt) openLoader(inputPrompt);
+        });
+      }
+    });
+  </script>
 </body>
-
 </html>
