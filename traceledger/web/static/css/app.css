@@ -418,15 +418,22 @@ button:focus-visible {
   border: 1px solid transparent;
 }
 
-.btn-primary {
+.btn-primary,
+.nav-links a.btn-primary,
+a.btn-primary,
+button.btn-primary {
   background-color: var(--ink-primary);
-  color: var(--bg-surface);
+  color: #ffffff !important;
   border-color: var(--ink-primary);
 }
 
-.btn-primary:hover {
+.btn-primary:hover,
+.nav-links a.btn-primary:hover,
+a.btn-primary:hover,
+button.btn-primary:hover {
   background-color: var(--ink-title);
-  color: #ffffff;
+  color: #ffffff !important;
+  text-decoration: none;
   box-shadow: var(--shadow-hover);
 }
 
@@ -592,3 +599,582 @@ button:focus-visible {
   }
 }
 
+
+
+/* ==========================================================================
+   Forensic Landing Page & Parallax Drafting Vellum System
+   ========================================================================== */
+
+/* Blueprint Archival Grid Background */
+.blueprint-drafting-bg {
+  position: relative;
+  background-color: var(--bg-surface);
+  background-image: 
+    radial-gradient(var(--line-subtle) 1px, transparent 1px),
+    linear-gradient(to right, rgba(22, 33, 62, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(22, 33, 62, 0.03) 1px, transparent 1px);
+  background-size: 24px 24px, 96px 96px, 96px 96px;
+}
+
+/* Landing Navigation Header */
+.landing-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  width: 100%;
+  background: rgba(253, 249, 240, 0.92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line-subtle);
+  box-shadow: 0 1px 8px rgba(22, 33, 62, 0.04);
+}
+
+.landing-header-inner {
+  height: 4.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+}
+
+.landing-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+}
+
+.landing-brand-mark {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-max);
+  background: var(--bg-surface-low);
+  border: 1px solid var(--line-strong);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-vellum);
+}
+
+.landing-brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.landing-brand-name {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--ink-title);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.landing-brand-sub {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--ink-secondary);
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+.landing-nav {
+  display: none;
+  align-items: center;
+  gap: var(--space-lg);
+}
+
+@media (min-width: 860px) {
+  .landing-nav {
+    display: flex;
+  }
+}
+
+.landing-nav a {
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--ink-secondary);
+  padding: 0.35rem 0.5rem;
+  border-radius: 4px;
+  transition: color 0.2s ease;
+}
+
+.landing-nav a:hover {
+  color: var(--ink-title);
+}
+
+.landing-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.btn-open-case {
+  background: var(--ink-primary);
+  color: #ffffff;
+  padding: 0.55rem 1.15rem;
+  border-radius: var(--radius-max);
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-decoration: none;
+  letter-spacing: 0.01em;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(22, 33, 62, 0.2);
+}
+
+.btn-open-case:hover {
+  background: #010a27;
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(22, 33, 62, 0.25);
+}
+
+.avatar-badge {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--ink-title);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Archival Meta Strip */
+.archival-ribbon {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding-bottom: var(--space-md);
+  border-bottom: 1px solid var(--line-subtle);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--ink-secondary);
+}
+
+.ribbon-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.15rem 0.45rem;
+  border-radius: 3px;
+  background: var(--bg-surface-low);
+  border: 1px solid var(--line-subtle);
+  color: var(--ink-title);
+  font-weight: 600;
+}
+
+.ribbon-status {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--state-verified);
+  display: inline-block;
+}
+
+/* Parallax 3D Vellum Dossier Stage */
+.dossier-stage-container {
+  perspective: 1400px;
+  perspective-origin: 50% 45%;
+  position: relative;
+  min-height: 600px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+}
+
+.dossier-layer {
+  position: absolute;
+  border-radius: var(--radius-max);
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.45s ease;
+  will-change: transform;
+}
+
+/* Layer 4: Foundation Underlay (Permanently in Background) */
+.layer-foundation {
+  width: 95%;
+  height: 94%;
+  top: -8px;
+  left: 10px;
+  background: rgba(247, 243, 234, 0.45);
+  border: 1px dashed var(--line-strong);
+  box-shadow: 0 4px 16px rgba(22, 33, 62, 0.03);
+  transform: translateZ(-100px) rotate(-1.8deg);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  pointer-events: none !important;
+  user-select: none !important;
+  z-index: 1 !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Layer 3: On-Chain Settlement Base */
+.layer-settlement {
+  width: 88%;
+  top: 3.5rem;
+  right: 2%;
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid var(--line-strong);
+  box-shadow: 0 8px 24px rgba(22, 33, 62, 0.06);
+  transform: translateZ(-50px) rotate(1.4deg);
+  padding: 1rem 1.25rem;
+  z-index: 20;
+}
+
+.layer-settlement:hover {
+  transform: translateZ(10px) rotate(0deg) scale(1.01);
+  box-shadow: 0 12px 32px rgba(22, 33, 62, 0.1);
+  z-index: 45;
+}
+
+/* Layer 2: Multisig Disbursement */
+.layer-multisig {
+  width: 90%;
+  top: 10.5rem;
+  left: 2%;
+  background: rgba(255, 255, 255, 0.84);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid var(--line-strong);
+  box-shadow: 0 10px 30px rgba(22, 33, 62, 0.07);
+  transform: translateZ(0px) rotate(-0.8deg);
+  padding: 1rem 1.25rem;
+  z-index: 30;
+}
+
+.layer-multisig:hover {
+  transform: translateZ(20px) rotate(0deg) scale(1.01);
+  box-shadow: 0 14px 36px rgba(22, 33, 62, 0.12);
+  z-index: 45;
+}
+
+/* Layer 1: Foreground Vendor Commercial Invoice */
+.layer-invoice {
+  width: 92%;
+  top: 17.5rem;
+  left: 4%;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--line-strong);
+  box-shadow: 0 16px 44px rgba(22, 33, 62, 0.09);
+  transform: translateZ(50px) rotate(0.4deg);
+  padding: 1.25rem 1.5rem;
+  z-index: 40;
+}
+
+.layer-invoice:hover {
+  transform: translateZ(65px) rotate(0deg) scale(1.01);
+  box-shadow: 0 20px 48px rgba(22, 33, 62, 0.14);
+  z-index: 45;
+}
+
+/* Parallax Float Animations */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes floatLayerSettlement {
+    0% { transform: translateZ(-50px) translateY(0) rotate(1.4deg); }
+    100% { transform: translateZ(-40px) translateY(-8px) rotate(0.8deg); }
+  }
+
+  @keyframes floatLayerMultisig {
+    0% { transform: translateZ(0px) translateY(0) rotate(-0.8deg); }
+    100% { transform: translateZ(10px) translateY(-10px) rotate(-0.2deg); }
+  }
+
+  @keyframes floatLayerInvoice {
+    0% { transform: translateZ(50px) translateY(0) rotate(0.4deg); }
+    100% { transform: translateZ(60px) translateY(-12px) rotate(0.1deg); }
+  }
+
+  .layer-settlement {
+    animation: floatLayerSettlement 7s ease-in-out infinite alternate;
+  }
+
+  .layer-multisig {
+    animation: floatLayerMultisig 8s ease-in-out infinite alternate;
+  }
+
+  .layer-invoice {
+    animation: floatLayerInvoice 9s ease-in-out infinite alternate;
+  }
+}
+
+/* Node Pins on the Dossier Visual */
+.node-pin {
+  position: absolute;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.node-pin-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.node-pin-dot::after {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #ffffff;
+}
+
+.node-pin-label {
+  position: absolute;
+  padding: 0.15rem 0.45rem;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(4px);
+  border-radius: 3px;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  white-space: nowrap;
+  box-shadow: var(--shadow-vellum);
+  border: 1px solid var(--line-subtle);
+}
+
+/* Callout Badge for Missing Evidence */
+.callout-missing-evidence {
+  position: absolute;
+  z-index: 55;
+  top: 54%;
+  left: 48%;
+  transform: translate(-50%, -50%);
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(6px);
+  border: 1px dashed var(--state-missing);
+  border-radius: var(--radius-max);
+  padding: 0.5rem 0.75rem;
+  max-width: 210px;
+  box-shadow: 0 6px 18px rgba(22, 33, 62, 0.08);
+}
+
+/* 4-State Taxonomy Cards */
+.taxonomy-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-md);
+  margin-top: var(--space-md);
+}
+
+.taxonomy-card {
+  background: var(--bg-surface-low);
+  border: 1px solid var(--line-subtle);
+  border-radius: var(--radius-max);
+  padding: 1rem;
+  transition: all 0.2s ease;
+}
+
+.taxonomy-card:hover {
+  background: #ffffff;
+  border-color: var(--line-strong);
+  box-shadow: var(--shadow-vellum);
+  transform: translateY(-2px);
+}
+
+.taxonomy-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.4rem;
+}
+
+.taxonomy-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+}
+
+.taxonomy-line {
+  width: 20px;
+  height: 2px;
+}
+
+.taxonomy-title {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--ink-title);
+}
+
+.taxonomy-desc {
+  font-size: 0.8125rem;
+  color: var(--ink-secondary);
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* 5-Stage Evidentiary Protocol */
+.protocol-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: var(--space-md);
+  margin-top: var(--space-md);
+}
+
+.protocol-step {
+  background: #ffffff;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-max);
+  padding: 1.15rem 1rem;
+  box-shadow: var(--shadow-vellum);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.protocol-badge {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: var(--ink-secondary);
+  text-transform: uppercase;
+  margin-bottom: 0.35rem;
+}
+
+.protocol-heading {
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--ink-title);
+  margin-bottom: 0.5rem;
+  line-height: 1.25;
+}
+
+.protocol-body {
+  font-size: 0.8125rem;
+  color: var(--ink-secondary);
+  line-height: 1.45;
+  margin: 0;
+}
+
+
+/* ==========================================================================
+   Token Contract Address Switch (Zero-JS Radio Selector)
+   ========================================================================== */
+
+.token-switch-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--space-md);
+  margin-top: 0.35rem;
+  margin-bottom: 0.75rem;
+}
+
+.token-switch-option {
+  position: relative;
+  cursor: pointer;
+  display: block;
+}
+
+.token-switch-option input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  margin: 0;
+}
+
+.token-switch-card {
+  background: var(--bg-surface-low);
+  border: 2px solid var(--line-subtle);
+  border-radius: var(--radius-max);
+  padding: 0.85rem 1rem;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  user-select: none;
+}
+
+.token-switch-card:hover {
+  background: #ffffff;
+  border-color: var(--line-strong);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-vellum);
+}
+
+.token-switch-option input[type="radio"]:checked + .token-switch-card {
+  background: #ffffff;
+  border-color: var(--ink-primary);
+  box-shadow: 0 0 0 2px rgba(22, 33, 62, 0.15), var(--shadow-vellum);
+}
+
+.token-switch-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.token-badge {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  letter-spacing: 0.04em;
+}
+
+.badge-usdc {
+  background: #eaf0fc;
+  color: #2775ca;
+  border: 1px solid rgba(39, 117, 202, 0.3);
+}
+
+.badge-usdt {
+  background: #eaf6f1;
+  color: #26a17b;
+  border: 1px solid rgba(38, 161, 123, 0.3);
+}
+
+.token-title {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--ink-title);
+}
+
+.token-check-glyph {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--ink-muted);
+  transition: color 0.2s ease;
+}
+
+.token-switch-option input[type="radio"]:checked + .token-switch-card .token-check-glyph {
+  color: var(--state-verified);
+}
+
+.token-hash {
+  font-size: 0.6875rem;
+  color: var(--ink-secondary);
+  word-break: break-all;
+  line-height: 1.3;
+}

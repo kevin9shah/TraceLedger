@@ -65,11 +65,17 @@ def create_app(db_path: str | Path | None = None) -> Flask:
                                chain_name=cfg.chain_name, chain_id=cfg.chain_id,
                                audit=store.audit_trail()[:8])
 
+    @app.route("/landing")
+    def landing():
+        """Dedicated forensic landing and overview presentation page with pure CSS parallax."""
+        return render_template("landing.html",
+                               chain_name=cfg.chain_name, chain_id=cfg.chain_id)
+
     @app.route("/case/new", methods=["POST"])
     def new_case():
         """Open a case from a pasted transaction hash. This is the live-fire demo path (D17)."""
         tx_hash = (request.form.get("tx_hash") or "").strip()
-        invoice_token = (request.form.get("invoice_token") or "").strip()
+        invoice_token = (request.form.get("invoice_token_custom") or request.form.get("invoice_token") or "").strip()
         amount = (request.form.get("amount") or "").strip()
         destination = (request.form.get("destination") or "").strip()
         approved = [a.strip() for a in (request.form.get("approved") or "").split(",") if a.strip()]
