@@ -45,7 +45,10 @@ STATUS_ORDER = {Status.CONFLICT: 0, Status.MISSING: 1, Status.NEXT_STEP: 2, Stat
 
 
 def create_app(db_path: str | Path | None = None) -> Flask:
-    app = Flask(__name__)
+    web_dir = Path(__file__).resolve().parent
+    app = Flask(__name__,
+                template_folder=str(web_dir / "templates"),
+                static_folder=str(web_dir / "static"))
     try:
         cfg = load_config()
     except ConfigError as exc:  # pragma: no cover - surfaced at startup
@@ -53,6 +56,22 @@ def create_app(db_path: str | Path | None = None) -> Flask:
     app.config["TL_CFG"] = cfg
     store = Store(db_path or cfg.db_path)
     app.config["TL_STORE"] = store
+
+    @app.after_request
+    def add_cors_headers(response):
+        response.headers["Access-Control-Allow-Origin"] = "*"
+        response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
+        response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization, X-Requested-With"
+        return response
+
+    @app.before_request
+    def handle_options():
+        if request.method == "OPTIONS":
+            resp = app.make_default_options_response()
+            resp.headers["Access-Control-Allow-Origin"] = "*"
+            resp.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
+            resp.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization, X-Requested-With"
+            return resp
 
     @app.template_filter("ts")
     def _ts(value: float) -> str:

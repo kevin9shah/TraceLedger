@@ -97,7 +97,23 @@ docs are wrong.
 Never put a private key or seed phrase anywhere in this project. Nothing here signs or sends
 transactions, and `EvmRpc` refuses any RPC method outside a read-only allow-list.
 
+## Deployment
+
+TraceLedger supports both unified monolith and decoupled multi-cloud deployment:
+- **Backend (Render)**: Defined in [
+ender.yaml](render.yaml) & [wsgi.py](wsgi.py). Powered by Gunicorn, read-only Polygon Bor RPC, and append-only SQLite evidence store.
+- **Frontend (Vercel)**: Dedicated client workspace in [rontend/](frontend/) with edge API proxying via [ercel.json](vercel.json).
+- See **[DEPLOYMENT.md](DEPLOYMENT.md)** for the step-by-step setup and environment configuration.
+
 ## Repo map
+| Path | What |
+|---|---|
+| rontend/ | Standalone Vercel frontend (Parallax Tracing Vellum + Case Docket) |
+| 
+ender.yaml | Render Web Service Blueprint spec |
+| ercel.json | Vercel Edge proxy configuration and headers |
+| wsgi.py | Production WSGI entrypoint for Gunicorn |
+| DEPLOYMENT.md | Cloud deployment guide for Render and Vercel |
 | Path | What |
 |---|---|
 | `PROGRESS.md` | Running log: done / failed / next |

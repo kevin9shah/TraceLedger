@@ -9,7 +9,8 @@
 
 <!-- Header Card: Case Title & Overall Determination -->
 <section class="vellum-card-solid">
-  <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: var(--space-md); margin-bottom: 1rem;">
+  <div
+    style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: var(--space-md); margin-bottom: 1rem;">
     <div>
       <span class="text-mono text-small text-muted">{{ case.case_id }}</span>
       <h1 style="font-size: 1.85rem; margin-top: 0.2rem; margin-bottom: 0.35rem;">{{ case.title }}</h1>
@@ -21,26 +22,26 @@
     <!-- Overall Outcome Badge with Mandatory Disclaimer -->
     <div style="text-align: right;">
       {% if conflict_count > 0 %}
-        <div class="badge badge-conflict" style="font-size: 0.95rem; padding: 0.45rem 0.85rem;">
-          ⚠ CONFLICT DETECTED
-        </div>
-        <div class="text-small text-muted" style="margin-top: 0.35rem; max-width: 260px;">
-          Risk indicator, not a verdict about intent.
-        </div>
+      <div class="badge badge-conflict" style="font-size: 0.95rem; padding: 0.45rem 0.85rem;">
+        ⚠ CONFLICT DETECTED
+      </div>
+      <div class="text-small text-muted" style="margin-top: 0.35rem; max-width: 260px;">
+        Risk indicator, not a verdict about intent.
+      </div>
       {% elif missing_count > 0 %}
-        <div class="badge badge-unresolved" style="font-size: 0.95rem; padding: 0.45rem 0.85rem;">
-          ◬ UNRESOLVED
-        </div>
-        <div class="text-small text-muted" style="margin-top: 0.35rem; max-width: 260px;">
-          Insufficient evidence to determine settlement.
-        </div>
+      <div class="badge badge-unresolved" style="font-size: 0.95rem; padding: 0.45rem 0.85rem;">
+        ◬ UNRESOLVED
+      </div>
+      <div class="text-small text-muted" style="margin-top: 0.35rem; max-width: 260px;">
+        Insufficient evidence to determine settlement.
+      </div>
       {% else %}
-        <div class="badge badge-verified" style="font-size: 0.95rem; padding: 0.45rem 0.85rem;">
-          ✓ NO CONFLICT
-        </div>
-        <div class="text-small text-muted" style="margin-top: 0.35rem; max-width: 260px;">
-          All deterministic checks verified against on-chain bytecode.
-        </div>
+      <div class="badge badge-verified" style="font-size: 0.95rem; padding: 0.45rem 0.85rem;">
+        ✓ NO CONFLICT
+      </div>
+      <div class="text-small text-muted" style="margin-top: 0.35rem; max-width: 260px;">
+        All deterministic checks verified against on-chain bytecode.
+      </div>
       {% endif %}
     </div>
   </div>
@@ -76,7 +77,7 @@
   </p>
   <ul class="text-small" style="margin: 0; padding-left: 1.25rem;">
     {% for f in findings if f.status == 'MISSING' or f.status == 'NEXT_STEP' %}
-      <li><strong>{{ f.code }}:</strong> {{ f.summary }}</li>
+    <li><strong>{{ f.code }}:</strong> {{ f.summary }}</li>
     {% endfor %}
   </ul>
 </section>
@@ -92,35 +93,36 @@
     <div class="vellum-card" style="margin-top: var(--space-lg);">
       <h3 style="font-size: 1rem; margin-bottom: 0.5rem;">On-Chain Facts</h3>
       {% if case.tx_hash %}
-        <div style="margin-bottom: 0.75rem;">
-          <div class="text-small text-muted">Transaction Hash</div>
-          <code class="text-mono text-small">{{ case.tx_hash }}</code>
+      <div style="margin-bottom: 0.75rem;">
+        <div class="text-small text-muted">Transaction Hash</div>
+        <code class="text-mono text-small">{{ case.tx_hash }}</code>
+      </div>
+      <div class="grid grid-2col" style="gap: var(--space-xs); margin-bottom: 0.75rem;">
+        <div>
+          <div class="text-small text-muted">Block Number</div>
+          <div class="text-mono text-small">{{ case.payload.facts.block_number or '—' }}</div>
         </div>
-        <div class="grid grid-2col" style="gap: var(--space-xs); margin-bottom: 0.75rem;">
-          <div>
-            <div class="text-small text-muted">Block Number</div>
-            <div class="text-mono text-small">{{ case.payload.facts.block_number or '—' }}</div>
-          </div>
-          <div>
-            <div class="text-small text-muted">Confirmations</div>
-            <div class="text-mono text-small">{{ case.payload.facts.confirmations or '—' }} (min 12)</div>
-          </div>
+        <div>
+          <div class="text-small text-muted">Confirmations</div>
+          <div class="text-mono text-small">{{ case.payload.facts.confirmations or '—' }} (min 12)</div>
         </div>
-        <div style="margin-bottom: 0.75rem;">
-          <div class="text-small text-muted">Token Contract Read</div>
-          <code class="text-mono text-small">{{ case.payload.token.address }}</code>
-          <div class="text-small text-secondary" style="margin-top: 2px;">
-            reports symbol <strong>{{ case.payload.token.symbol }}</strong>, {{ case.payload.token.decimals }} decimals, read from the contract.
-          </div>
+      </div>
+      <div style="margin-bottom: 0.75rem;">
+        <div class="text-small text-muted">Token Contract Read</div>
+        <code class="text-mono text-small">{{ case.payload.token.address }}</code>
+        <div class="text-small text-secondary" style="margin-top: 2px;">
+          reports symbol <strong>{{ case.payload.token.symbol }}</strong>, {{ case.payload.token.decimals }} decimals,
+          read from the contract.
         </div>
+      </div>
       {% else %}
-        <p class="text-small text-muted">No transaction hash linked to this case.</p>
+      <p class="text-small text-muted">No transaction hash linked to this case.</p>
       {% endif %}
 
       {% if case.payload.is_replay %}
-        <div class="badge badge-replay" style="margin-top: 0.5rem;">
-          REPLAY DATA: Replayed from offline benchmark fixture
-        </div>
+      <div class="badge badge-replay" style="margin-top: 0.5rem;">
+        REPLAY DATA: Replayed from offline benchmark fixture
+      </div>
       {% endif %}
     </div>
 
@@ -163,13 +165,13 @@
             <tr id="finding-{{ f.code }}" class="finding-card">
               <td>
                 {% if f.status == 'VERIFIED' %}
-                  <span class="badge badge-verified">✓ VERIFIED</span>
+                <span class="badge badge-verified">✓ VERIFIED</span>
                 {% elif f.status == 'CONFLICT' %}
-                  <span class="badge badge-conflict">⚠ CONFLICT</span>
+                <span class="badge badge-conflict">⚠ CONFLICT</span>
                 {% elif f.status == 'MISSING' %}
-                  <span class="badge badge-missing">◌ MISSING</span>
+                <span class="badge badge-missing">◌ MISSING</span>
                 {% else %}
-                  <span class="badge badge-unresolved">◬ {{ f.status }}</span>
+                <span class="badge badge-unresolved">◬ {{ f.status }}</span>
                 {% endif %}
               </td>
               <td class="text-mono text-small">
@@ -178,13 +180,13 @@
               <td>{{ f.summary }}</td>
               <td>
                 {% if f.evidence_ids %}
-                  {% for ev in f.evidence_ids %}
-                    <a href="#ev-{{ ev }}" class="citation-chip" title="Evidence item {{ ev }}">
-                      #{{ ev[:10] }}…
-                    </a>
-                  {% endfor %}
+                {% for ev in f.evidence_ids %}
+                <a href="#ev-{{ ev }}" class="citation-chip" title="Evidence item {{ ev }}">
+                  #{{ ev[:10] }}…
+                </a>
+                {% endfor %}
                 {% else %}
-                  <span class="text-small text-muted">nothing to cite</span>
+                <span class="text-small text-muted">nothing to cite</span>
                 {% endif %}
               </td>
             </tr>
@@ -203,14 +205,15 @@
         Hypotheses cannot override deterministic findings.
       </p>
 
-      <div style="background: var(--bg-surface-card); padding: 1rem; border-radius: 4px; border: 1px solid var(--line-subtle); margin-bottom: 1rem;">
+      <div
+        style="background: var(--bg-surface-card); padding: 1rem; border-radius: 4px; border: 1px solid var(--line-subtle); margin-bottom: 1rem;">
         <p style="margin: 0; font-size: 0.95rem;">{{ report.summary }}</p>
       </div>
 
       {% if report.llm_error %}
-        <div class="notice-banner unresolved-banner">
-          Narrative layer unavailable, deterministic findings shown. ({{ report.llm_error }})
-        </div>
+      <div class="notice-banner unresolved-banner">
+        Narrative layer unavailable, deterministic findings shown. ({{ report.llm_error }})
+      </div>
       {% endif %}
 
       <!-- Competing Hypotheses -->
@@ -218,9 +221,11 @@
       <h4 style="margin-top: 1.25rem; margin-bottom: 0.5rem;">Competing Explanations</h4>
       <div class="grid" style="gap: var(--space-sm);">
         {% for h in report.hypotheses %}
-        <div style="background: var(--bg-surface-card); border: 1px solid var(--line-subtle); border-radius: 4px; padding: 0.75rem;">
+        <div
+          style="background: var(--bg-surface-card); border: 1px solid var(--line-subtle); border-radius: 4px; padding: 0.75rem;">
           <div style="font-weight: 600; font-size: 0.9rem; margin-bottom: 0.25rem;">{{ h.explanation }}</div>
-          <div class="text-small text-secondary"><strong>Would be confirmed by:</strong> {{ h.would_be_confirmed_by }}</div>
+          <div class="text-small text-secondary"><strong>Would be confirmed by:</strong> {{ h.would_be_confirmed_by }}
+          </div>
           <div class="text-small text-secondary"><strong>Ruled out by:</strong> {{ h.would_be_ruled_out_by }}</div>
         </div>
         {% endfor %}
@@ -232,21 +237,22 @@
       <h4 style="margin-top: 1.25rem; margin-bottom: 0.5rem;">Recommended Next Steps</h4>
       <ul class="text-small" style="margin: 0; padding-left: 1.25rem;">
         {% for s in report.next_steps %}
-          <li>{{ s }}</li>
+        <li>{{ s }}</li>
         {% endfor %}
       </ul>
       {% endif %}
 
       <!-- Validator Rejections (if any) -->
       {% if report.validation and report.validation.violations %}
-      <div style="margin-top: 1.25rem; padding: 0.75rem; background: var(--state-conflict-bg); border: 1px solid var(--state-conflict); border-radius: 4px;">
+      <div
+        style="margin-top: 1.25rem; padding: 0.75rem; background: var(--state-conflict-bg); border: 1px solid var(--state-conflict); border-radius: 4px;">
         <h4 style="color: var(--state-conflict); margin-bottom: 0.25rem;">Rejected by Validator</h4>
         <p class="text-small text-secondary" style="margin-bottom: 0.5rem;">
           The model generated claims contradicted or unsupported by deterministic facts:
         </p>
         <ul class="text-small" style="margin: 0; padding-left: 1.25rem;">
           {% for v in report.validation.violations %}
-            <li><strong>{{ v.code }}:</strong> {{ v.message }}</li>
+          <li><strong>{{ v.code }}:</strong> {{ v.message }}</li>
           {% endfor %}
         </ul>
       </div>

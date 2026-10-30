@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: traceledger-backend
+    runtime: python
+    region: oregon
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn wsgi:app --bind 0.0.0.0:$PORT
+    healthCheckPath: /healthz
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: TL_CHAIN_ID
+        value: "137"
+      - key: TL_RPC_URL
+        value: "https://polygon-bor-rpc.publicnode.com"
+      - key: TL_CHAIN_NAME
+        value: "Polygon PoS"
+      - key: TL_LLM_PROVIDER
+        value: "stub"
+      - key: TL_ENABLE_TIGERGRAPH
+        value: "false"
+

@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Case Dossier â€” TraceLedger Forensic Intelligence</title>
+  <link rel="icon" type="image/svg+xml" href="logo-mark.svg">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=JetBrains+Mono:wght@400..700&family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface": "#fdf9f0",
+            "surface-low": "#f7f3ea",
+            "surface-high": "#ece8df",
+            "surface-card": "#ffffff",
+            "primary": "#010a27",
+            "primary-container": "#16213e",
+            "secondary": "#545f72",
+            "muted": "#76767e",
+            "state-verified": "#1F7A5C",
+            "state-conflict": "#D9482B",
+            "state-candidate": "#C99A2E",
+            "state-missing": "#9A948A"
+          },
+          fontFamily: {
+            sans: ["Instrument Sans", "sans-serif"],
+            serif: ["Newsreader", "serif"],
+            mono: ["JetBrains Mono", "monospace"]
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    .blueprint-bg {
+      background-color: #fdf9f0;
+      background-image: 
+        radial-gradient(rgba(22, 33, 62, 0.12) 1px, transparent 1px),
+        linear-gradient(to right, rgba(22, 33, 62, 0.035) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(22, 33, 62, 0.035) 1px, transparent 1px);
+      background-size: 24px 24px, 96px 96px, 96px 96px;
+      background-attachment: fixed;
+    }
+  </style>
+</head>
+<body class="blueprint-bg text-[#1c1c16] antialiased min-h-screen flex flex-col justify-between">
+
+  <!-- Header -->
+  <header class="bg-[#fdf9f0]/90 backdrop-blur-md border-b border-[#76767e]/20 sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <a href="index.html" class="flex items-center gap-2 text-sm font-semibold text-[#545f72] hover:text-[#010a27]">
+          <span class="material-symbols-outlined text-base">arrow_back</span>
+          <span>Back to Case Docket</span>
+        </a>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-[#1F7A5C]"></span>
+        <span class="text-xs font-mono text-[#545f72]">POLYGON MAINNET (CHAIN 137)</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-6 py-8 flex-1 w-full">
+    <div id="loading-state" class="p-12 text-center">
+      <div class="inline-block w-8 h-8 border-2 border-[#010a27] border-t-transparent rounded-full animate-spin mb-4"></div>
+      <p class="font-mono text-sm text-[#545f72]">Retrieving case findings from Render backend...</p>
+    </div>
+
+    <div id="error-state" class="hidden p-8 bg-[#fdf0ed] border border-[#D9482B]/30 rounded-lg text-center">
+      <h3 class="font-serif text-xl font-bold text-[#D9482B] mb-2">Could Not Load Case</h3>
+      <p id="error-msg" class="text-sm font-mono text-[#545f72] mb-4"></p>
+      <a href="index.html" class="inline-flex px-4 py-2 bg-[#010a27] text-white rounded text-sm font-semibold">Return to Home</a>
+    </div>
+
+    <div id="case-content" class="hidden flex flex-col gap-8">
+      
+      <!-- Meta Docket Header -->
+      <div class="bg-white rounded-lg border border-[#76767e]/20 p-6 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+          <div class="flex items-center gap-3 mb-2">
+            <span id="case-id" class="px-2.5 py-1 rounded bg-[#f1ede5] font-mono text-xs font-bold text-[#010a27] border border-[#76767e]/20"></span>
+            <span id="case-status-badge"></span>
+          </div>
+          <h1 id="case-title" class="font-serif text-2xl sm:text-3xl font-bold text-[#010a27]"></h1>
+          <div class="mt-2 text-xs font-mono text-[#545f72] flex flex-wrap gap-4">
+            <div>TX: <a id="case-tx-link" target="_blank" rel="noreferrer" class="underline hover:text-[#010a27]"></a></div>
+            <div id="case-opened-at"></div>
+          </div>
+        </div>
+
+        <div class="flex flex-col items-end gap-1 text-right">
+          <span class="text-xs font-mono uppercase tracking-wider text-[#76767e]">TOTAL EVIDENCE FINDINGS</span>
+          <div id="case-findings-summary" class="flex items-center gap-2 font-mono text-sm"></div>
+        </div>
+      </div>
+
+      <!-- Findings List -->
+      <div>
+        <h2 class="font-serif text-2xl font-bold text-[#010a27] mb-4">Evidentiary Findings &amp; Discrepancy Map</h2>
+        <div id="findings-list" class="flex flex-col gap-4"></div>
+      </div>
+
+      <!-- Human Review Decision Box -->
+      <div class="bg-white rounded-lg border border-[#76767e]/20 p-6 shadow-sm">
+        <h3 class="font-serif text-xl font-bold text-[#010a27] mb-1">Human-in-the-Loop Review Determination</h3>
+        <p class="text-xs text-[#545f72] mb-4">
+          Determinations are committed to the append-only SQLite audit log. Dictation compatible.
+        </p>
+        
+        <form id="form-review" class="flex flex-col gap-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-semibold text-[#010a27] mb-1">Select Review Action</label>
+              <select id="review-action" required class="w-full px-3 py-2 bg-[#fdf9f0] border border-[#76767e]/30 rounded text-sm font-mono">
+                <option value="ACCEPT_DISCREPANCY">ACCEPT_DISCREPANCY â€” Discrepancy verified and accepted</option>
+                <option value="FLAG_FOR_INVESTIGATION">FLAG_FOR_INVESTIGATION â€” Forward to secondary forensic audit</option>
+                <option value="REVISE_INVOICE">REVISE_INVOICE â€” Counterparty requested to submit revised invoice</option>
+                <option value="REJECT_DISBURSEMENT">REJECT_DISBURSEMENT â€” Transaction rejected; hold funds</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-[#010a27] mb-1">Reviewer Identity</label>
+              <input type="text" id="review-actor" placeholder="Investigator Name / ID" value="Auditor-Lead" class="w-full px-3 py-2 bg-[#fdf9f0] border border-[#76767e]/30 rounded text-sm" />
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-[#010a27] mb-1">Investigative Rationale (Dictation / Typed)</label>
+            <textarea id="review-rationale" rows="3" placeholder="Enter findings rationale for the court-admissible audit trail..." class="w-full px-3 py-2 bg-[#fdf9f0] border border-[#76767e]/30 rounded text-sm"></textarea>
+          </div>
+
+          <button type="submit" id="btn-submit-review" style="color: #ffffff !important;" class="self-start px-6 py-2.5 bg-[#16213e] hover:bg-[#010a27] text-white rounded font-semibold text-xs uppercase tracking-wider">
+            Commit Determination to Audit Trail
+          </button>
+          <div id="review-msg" class="hidden p-2 rounded text-xs font-mono"></div>
+        </form>
+      </div>
+
+      <!-- Audit History -->
+      <div class="bg-white rounded-lg border border-[#76767e]/20 p-6 shadow-sm">
+        <h3 class="font-serif text-xl font-bold text-[#010a27] mb-3">Historical Audit Trail</h3>
+        <div id="audit-trail-list" class="flex flex-col divide-y divide-[#76767e]/15 font-mono text-xs"></div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="bg-[#f7f3ea] border-t border-[#76767e]/20 py-6 text-center text-xs font-mono text-[#545f72]">
+    TraceLedger Forensic Intelligence &bull; Append-Only Audit Integrity &bull; RFC-8271
+  </footer>
+
+  <script>
+    const API_BASE = localStorage.getItem("TL_API_BASE") || "/api";
+    const urlParams = new URLSearchParams(window.location.search);
+    const caseId = urlParams.get("id");
+
+    async function loadCaseDetail() {
+      if (!caseId) {
+        document.getElementById("loading-state").classList.add("hidden");
+        document.getElementById("error-state").classList.remove("hidden");
+        document.getElementById("error-msg").innerText = "No case ID specified in URL.";
+        return;
+      }
+
+      try {
+        const res = await fetch(`${API_BASE}/case/${encodeURIComponent(caseId)}`);
+        if (!res.ok) throw new Error(`Server returned ${res.status}: Case not found`);
+        const data = await res.json();
+
+        document.getElementById("loading-state").classList.add("hidden");
+        document.getElementById("case-content").classList.remove("hidden");
+
+        document.getElementById("case-id").innerText = data.case_id;
+        document.getElementById("case-title").innerText = data.title || "Untitled Case";
+
+        const isConflict = data.counts?.conflict > 0;
+        document.getElementById("case-status-badge").innerHTML = isConflict
+          ? `<span class="px-2.5 py-1 rounded bg-[#fdf0ed] text-xs font-bold text-[#D9482B] border border-[#D9482B]/30">&#9888; CONFLICT DETECTED</span>`
+          : `<span class="px-2.5 py-1 rounded bg-[#eaf5f0] text-xs font-bold text-[#1F7A5C] border border-[#1F7A5C]/30">&check; VERIFIED CONSENSUS</span>`;
+
+        const txHash = data.tx_hash || "";
+        const txElem = document.getElementById("case-tx-link");
+        txElem.innerText = txHash ? `${txHash.substring(0, 14)}...${txHash.substring(txHash.length - 8)}` : "None";
+        txElem.href = `https://polygonscan.com/tx/${txHash}`;
+
+        document.getElementById("case-findings-summary").innerHTML = `
+          <span class="text-[#D9482B]">${data.counts?.conflict || 0} Conflict</span> &bull;
+          <span class="text-[#1F7A5C]">${data.counts?.verified || 0} Verified</span> &bull;
+          <span class="text-[#9A948A]">${data.counts?.missing || 0} Missing</span>
+        `;
+
+        // Render findings
+        const findingsList = document.getElementById("findings-list");
+        findingsList.innerHTML = (data.findings || []).map(f => {
+          let badgeColor = "bg-[#f5f4f2] text-[#545f72] border-[#76767e]/20";
+          if (f.status === "CONFLICT") badgeColor = "bg-[#fdf0ed] text-[#D9482B] border-[#D9482B]/30";
+          if (f.status === "VERIFIED") badgeColor = "bg-[#eaf5f0] text-[#1F7A5C] border-[#1F7A5C]/30";
+          if (f.status === "CANDIDATE") badgeColor = "bg-[#fcf6e8] text-[#C99A2E] border-[#C99A2E]/30";
+
+          return `
+            <div class="bg-white rounded-lg border border-[#76767e]/20 p-5 shadow-sm">
+              <div class="flex items-center justify-between mb-2">
+                <div class="flex items-center gap-2">
+                  <span class="px-2 py-0.5 rounded text-xs font-mono font-bold border ${badgeColor}">${f.status}</span>
+                  <span class="font-mono text-xs text-[#76767e]">${f.code}</span>
+                </div>
+                <span class="text-xs font-mono text-[#545f72]">${f.rule_name || ''}</span>
+              </div>
+              <h4 class="font-serif text-lg font-bold text-[#010a27] mb-1">${f.title || f.code}</h4>
+              <p class="text-sm text-[#545f72] mb-3">${f.message || ''}</p>
+              ${f.observed ? `
+                <div class="p-3 bg-[#f7f3ea] rounded border border-[#76767e]/15 font-mono text-xs text-[#010a27]">
+                  <div class="text-[#76767e] text-[10px] uppercase font-bold mb-1">OBSERVED EVIDENCE</div>
+                  <div>${JSON.stringify(f.observed)}</div>
+                </div>
+              ` : ''}
+            </div>
+          `;
+        }).join("");
+
+        // Render audit trail
+        const auditList = document.getElementById("audit-trail-list");
+        if (!data.audit || data.audit.length === 0) {
+          auditList.innerHTML = `<div class="py-3 text-[#76767e]">No audit events logged yet.</div>`;
+        } else {
+          auditList.innerHTML = data.audit.map(a => `
+            <div class="py-2.5 flex justify-between items-center">
+              <div>
+                <span class="font-bold text-[#010a27]">${a.action || a.event_type}</span> by <span class="text-[#545f72]">${a.actor}</span>
+                ${a.rationale ? `<div class="text-[11px] text-[#76767e] mt-0.5">"${a.rationale}"</div>` : ''}
+              </div>
+              <div class="text-[#76767e] text-[11px]">${new Date(a.timestamp * 1000).toLocaleString()}</div>
+            </div>
+          `).join("");
+        }
+
+      } catch (err) {
+        document.getElementById("loading-state").classList.add("hidden");
+        document.getElementById("error-state").classList.remove("hidden");
+        document.getElementById("error-msg").innerText = err.message;
+      }
+    }
+
+    // Review form handler
+    document.getElementById("form-review").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById("btn-submit-review");
+      const msg = document.getElementById("review-msg");
+      btn.disabled = true;
+
+      const payload = {
+        action: document.getElementById("review-action").value,
+        actor: document.getElementById("review-actor").value,
+        rationale: document.getElementById("review-rationale").value
+      };
+
+      try {
+        const res = await fetch(`${API_BASE}/case/${encodeURIComponent(caseId)}/review`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        if (res.ok) {
+          msg.className = "p-2 rounded text-xs font-mono bg-[#eaf5f0] text-[#1F7A5C] border border-[#1F7A5C]/30 block";
+          msg.innerText = "Determination recorded in audit log. Reloading...";
+          setTimeout(loadCaseDetail, 1000);
+        } else {
+          msg.className = "p-2 rounded text-xs font-mono bg-[#fdf0ed] text-[#D9482B] border border-[#D9482B]/30 block";
+          msg.innerText = "Failed to record determination.";
+        }
+      } catch (err) {
+        msg.className = "p-2 rounded text-xs font-mono bg-[#fdf0ed] text-[#D9482B] border border-[#D9482B]/30 block";
+        msg.innerText = "Network error communicating with Render API.";
+      } finally {
+        btn.disabled = false;
+      }
+    });
+
+    document.addEventListener("DOMContentLoaded", loadCaseDetail);
+  </script>
+</body>
+</html>
