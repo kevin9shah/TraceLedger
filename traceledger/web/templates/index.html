@@ -1,77 +1,267 @@
 {% extends "base.html" %}
+
 {% block content %}
-<section>
+<!-- Hero Section with Pure CSS Parallax Vellum Layers -->
+<section class="parallax-viewport" style="margin-bottom: var(--space-2xl);">
+  <div class="vellum-card parallax-layer-front" style="padding: 2.5rem 2rem; position: relative; overflow: hidden;">
+    <div style="max-width: 760px;">
+      <span class="badge badge-replay" style="margin-bottom: 0.75rem;">DAYLIGHT FORENSIC SUITE • POLYGON MAINNET (CHAIN 137)</span>
+      <h1 style="font-size: 2.75rem; margin-bottom: 0.5rem; letter-spacing: -0.02em;">Every conclusion is a path.</h1>
+      <p style="font-size: 1.15rem; color: var(--ink-secondary); margin-bottom: 1.75rem;">
+        Show what is proven, what is contradicted, and what is missing.
+        TraceLedger isolates stablecoin settlement exceptions by cross-examining raw on-chain events against business records.
+      </p>
+
+      <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center; margin-bottom: 1.5rem;">
+        <!-- Real Form Submission for Loading Demo Case -->
+        <form method="post" action="{{ url_for('new_case') }}" style="margin: 0; padding: 0;">
+          <input type="hidden" name="tx_hash" value="0x3e1b6243f0f74ef16ab02a6f62a92b30763ee8556d684cf908459d33cb63fd4a">
+          <input type="hidden" name="invoice_token" value="0x3c499c542cef5e3811e1192ce70d8cc03d5c3359">
+          <input type="hidden" name="amount" value="0.10">
+          <input type="hidden" name="destination" value="0xdad4d0ee4260c1a9a25bb61099c9e518b5033e8e">
+          <input type="hidden" name="title" value="Demo: Invoiced USDC vs Sent USDT0 (Real Mainnet Transfer)">
+          <input type="hidden" name="counterparty" value="Meridian Freight Corp">
+          <input type="hidden" name="memo" value="Demo walkthrough: invoice names native USDC; mainnet delivered Tether (USDT0).">
+          <button type="submit" class="btn btn-primary" title="Load live mainnet verification demo">
+            ▶ Load demo case
+          </button>
+        </form>
+
+        <a href="#ingest-form" class="btn btn-secondary">
+          ⌨ Paste a transaction hash
+        </a>
+
+        <a href="#results" class="btn btn-secondary" style="border-style: dashed;">
+          📊 Real Benchmark Results
+        </a>
+      </div>
+
+      <!-- Quick Reference Hash helper (plain copy guidance, zero script) -->
+      <div class="text-small text-secondary" style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+        <span>Real Polygon transfer for quick testing:</span>
+        <code class="text-mono" style="background: var(--bg-surface-low); padding: 2px 6px; border-radius: 4px; border: 1px solid var(--line-subtle);">
+          0x3e1b6243f0f74ef16ab02a6f62a92b30763ee8556d684cf908459d33cb63fd4a
+        </code>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Legend of the 4 Edge States -->
+<section class="vellum-card-solid" style="margin-bottom: var(--space-xl);">
+  <h3>Evidence Thread States</h3>
+  <p class="text-small text-secondary">
+    TraceLedger models settlement as an unbroken causal thread. Every state pairs a visible glyph, color, and label:
+  </p>
+  <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--space-md);">
+    <div style="display:flex; align-items:center; gap:0.6rem; padding:0.5rem; border:1px solid var(--state-verified); background:var(--state-verified-bg); border-radius:4px;">
+      <span style="font-weight:700; color:var(--state-verified);">✓</span>
+      <div>
+        <strong style="color:var(--state-verified); font-size:0.85rem;">Verified Fact</strong>
+        <div class="text-small text-secondary">Proved by deterministic chain bytecode</div>
+      </div>
+    </div>
+    <div style="display:flex; align-items:center; gap:0.6rem; padding:0.5rem; border:1px solid var(--state-conflict); background:var(--state-conflict-bg); border-radius:4px;">
+      <span style="font-weight:700; color:var(--state-conflict);">⚠</span>
+      <div>
+        <strong style="color:var(--state-conflict); font-size:0.85rem;">Conflict</strong>
+        <div class="text-small text-secondary">Direct contradiction in records vs chain</div>
+      </div>
+    </div>
+    <div style="display:flex; align-items:center; gap:0.6rem; padding:0.5rem; border:1px solid var(--state-candidate); background:var(--state-candidate-bg); border-radius:4px;">
+      <span style="font-weight:700; color:var(--state-candidate);">◬</span>
+      <div>
+        <strong style="color:var(--state-candidate); font-size:0.85rem;">Candidate / Asserted</strong>
+        <div class="text-small text-secondary">Unproven hypothesis awaiting evidence</div>
+      </div>
+    </div>
+    <div style="display:flex; align-items:center; gap:0.6rem; padding:0.5rem; border:1px dashed var(--state-missing); background:var(--state-missing-bg); border-radius:4px;">
+      <span style="font-weight:700; color:var(--state-missing);">◌</span>
+      <div>
+        <strong style="color:var(--state-missing); font-size:0.85rem;">Missing Evidence</strong>
+        <div class="text-small text-secondary">Dashed segment; check cannot execute</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- How It Works Section -->
+<section class="vellum-card" style="margin-bottom: var(--space-xl);">
+  <h2>How It Works: 5-Step Evidence Protocol</h2>
+  <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-md); margin-top: 1rem;">
+    <div class="stat-box">
+      <div class="stat-lbl">Stage 1</div>
+      <div style="font-weight:600; font-size:0.95rem; margin:0.25rem 0;">Deterministic Proof</div>
+      <p class="text-small text-secondary" style="margin:0;">Exact integer base-unit math. Zero float drift. Contract metadata verified on-chain.</p>
+    </div>
+    <div class="stat-box">
+      <div class="stat-lbl">Stage 2</div>
+      <div style="font-weight:600; font-size:0.95rem; margin:0.25rem 0;">Evidence Linking</div>
+      <p class="text-small text-secondary" style="margin:0;">Inspects multi-transfer event logs, receipt status, and destination whitelist matches.</p>
+    </div>
+    <div class="stat-box">
+      <div class="stat-lbl">Stage 3</div>
+      <div style="font-weight:600; font-size:0.95rem; margin:0.25rem 0;">Root Cause Clusters</div>
+      <p class="text-small text-secondary" style="margin:0;">Graph & SQL traversals group multiple payment exceptions to shared import batch errors.</p>
+    </div>
+    <div class="stat-box">
+      <div class="stat-lbl">Stage 4</div>
+      <div style="font-weight:600; font-size:0.95rem; margin:0.25rem 0;">Constrained Brief</div>
+      <p class="text-small text-secondary" style="margin:0;">LLM generates hypotheses strictly checked by an independent validator before display.</p>
+    </div>
+    <div class="stat-box">
+      <div class="stat-lbl">Stage 5</div>
+      <div style="font-weight:600; font-size:0.95rem; margin:0.25rem 0;">Human Audit Sign-Off</div>
+      <p class="text-small text-secondary" style="margin:0;">Human records decision with rationale into an append-only SQLite log (not tamper-proof).</p>
+    </div>
+  </div>
+</section>
+
+<!-- Case Ingestion Form (Zero-JS for Wispr Flow dictation compatibility) -->
+<section id="ingest-form" class="vellum-card-solid" style="margin-bottom: var(--space-xl);">
   <h2>Open a case from a transaction hash</h2>
-  <p class="muted small">Reads the transaction from {{ chain_name }} (chain {{ chain_id }}) and
-     verifies it against the invoice you describe. Nothing is signed or sent.</p>
+  <p class="text-secondary text-small">
+    Reads the transaction from {{ chain_name }} (Chain ID: {{ chain_id }}) and deterministically compares it against the invoice parameters.
+    No private keys used; read-only node calls only.
+  </p>
+
   <form method="post" action="{{ url_for('new_case') }}">
-    <label for="tx_hash">Transaction hash</label>
+    <label for="tx_hash">Polygon Transaction Hash (Required)</label>
     <input type="text" id="tx_hash" name="tx_hash" required placeholder="0x…" autocomplete="off">
 
-    <label for="invoice_token">Token contract the invoice is denominated in</label>
-    <input type="text" id="invoice_token" name="invoice_token" required placeholder="0x…"
-           autocomplete="off">
-    <p class="muted small">The contract address, never a ticker. Two different contracts on this
-       chain both report the symbol &ldquo;USDC&rdquo;.</p>
+    <label for="invoice_token">Invoiced Token Contract Address (Required)</label>
+    <input type="text" id="invoice_token" name="invoice_token" required placeholder="0x…" autocomplete="off">
+    <p class="text-small text-muted" style="margin-top: 0.25rem;">
+      Must be the contract address (e.g. <code>0x3c499c542cef5e3811e1192ce70d8cc03d5c3359</code> for native USDC, or <code>0xc2132d05d31c914a87c6611c10748aeb04b58e8f</code> for Tether). Matching on tickers is unsafe on Polygon because Tether reports 'USDT0' and two live contracts both report 'USDC'.
+    </p>
 
-    <label for="amount">Invoiced amount</label>
-    <input type="text" id="amount" name="amount" required placeholder="1.00" autocomplete="off">
+    <div class="grid grid-2col" style="gap: var(--space-md);">
+      <div>
+        <label for="amount">Invoiced Amount (Required)</label>
+        <input type="text" id="amount" name="amount" required placeholder="e.g. 0.10" autocomplete="off">
+      </div>
+      <div>
+        <label for="destination">Expected Destination Address (Optional)</label>
+        <input type="text" id="destination" name="destination" placeholder="0x…" autocomplete="off">
+      </div>
+    </div>
 
-    <label for="destination">Expected destination (optional)</label>
-    <input type="text" id="destination" name="destination" placeholder="0x…" autocomplete="off">
+    <div class="grid grid-2col" style="gap: var(--space-md);">
+      <div>
+        <label for="approved">Approved Whitelist Addresses (Optional, comma-separated)</label>
+        <input type="text" id="approved" name="approved" placeholder="0x…, 0x…" autocomplete="off">
+      </div>
+      <div>
+        <label for="counterparty">Counterparty Name (Optional)</label>
+        <input type="text" id="counterparty" name="counterparty" placeholder="e.g. Acme Logistics" autocomplete="off">
+      </div>
+    </div>
 
-    <label for="approved">Approved addresses, comma separated (optional)</label>
-    <input type="text" id="approved" name="approved" placeholder="0x…, 0x…" autocomplete="off">
+    <label for="title">Case Title (Optional)</label>
+    <input type="text" id="title" name="title" placeholder="e.g. October Vendor Settlement" autocomplete="off">
 
-    <label for="counterparty">Counterparty (optional)</label>
-    <input type="text" id="counterparty" name="counterparty" autocomplete="off">
+    <label for="memo">Invoice Memo / Reference Note (Optional)</label>
+    <textarea id="memo" name="memo" placeholder="Free text from the business record. Treated as untrusted data, never instructions."></textarea>
 
-    <label for="memo">Invoice memo (optional)</label>
-    <textarea id="memo" name="memo" style="min-height:80px"
-      placeholder="Free text from the uploaded record. Treated as data, never as instructions."></textarea>
-
-    <label for="title">Case title</label>
-    <input type="text" id="title" name="title" placeholder="Supplier says they paid"
-           autocomplete="off">
-    <button type="submit">Verify and open case</button>
+    <button type="submit" class="btn btn-primary" style="margin-top: 1rem;">
+      Verify and Open Case
+    </button>
   </form>
 </section>
 
-<section>
-  <h2>Cases</h2>
+<!-- Active Cases Section (Conflicts First) -->
+<section id="cases" class="vellum-card" style="margin-bottom: var(--space-xl);">
+  <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; margin-bottom: 0.75rem;">
+    <h2>Investigation Cases</h2>
+    <span class="text-small text-muted">{{ cases | length }} case(s) on file</span>
+  </div>
+
   {% if cases %}
-  <table>
-    <tr><th>Case</th><th>Title</th><th>State</th><th>Transaction</th><th>Opened</th></tr>
-    {% for c in cases %}
-    <tr>
-      <td><a href="{{ url_for('case_detail', case_id=c.case_id) }}" class="mono">{{ c.case_id }}</a></td>
-      <td>{{ c.title }}</td>
-      <td class="small">{{ c.state }}</td>
-      <td class="mono small">{{ (c.tx_hash or '—')[:18] }}{% if c.tx_hash %}…{% endif %}</td>
-      <td class="small muted">{{ c.created_at | ts }}</td>
-    </tr>
-    {% endfor %}
-  </table>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Case ID</th>
+          <th>Title</th>
+          <th>State</th>
+          <th>Transaction Hash</th>
+          <th>Opened At</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for c in cases %}
+        <tr>
+          <td>
+            <a href="{{ url_for('case_detail', case_id=c.case_id) }}" class="text-mono font-bold">
+              {{ c.case_id }}
+            </a>
+          </td>
+          <td>{{ c.title }}</td>
+          <td>
+            {% if c.state == 'conflict' or 'conflict' in c.state|lower %}
+              <span class="badge badge-conflict">⚠ CONFLICT</span>
+            {% elif c.state == 'unresolved' or 'unresolved' in c.state|lower %}
+              <span class="badge badge-unresolved">◬ UNRESOLVED</span>
+            {% else %}
+              <span class="badge badge-verified">✓ {{ c.state | upper }}</span>
+            {% endif %}
+          </td>
+          <td class="text-mono text-small">
+            {% if c.tx_hash %}
+              {{ c.tx_hash[:10] }}…{{ c.tx_hash[-6:] }}
+            {% else %}
+              <span class="text-muted">—</span>
+            {% endif %}
+          </td>
+          <td class="text-small text-muted">{{ c.created_at | ts }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
   {% else %}
-  <p class="muted">No cases yet. Open one above.</p>
+  <p class="text-muted" style="padding: 1rem 0;">No active cases in store. Load a demo case or open one using the ingest form above.</p>
   {% endif %}
 </section>
 
+<!-- Recent Audit Activity -->
 {% if audit %}
-<section>
-  <h2>Recent decisions</h2>
-  <table>
-    <tr><th>When</th><th>Case</th><th>Action</th><th>Reviewer</th><th>Rationale</th></tr>
-    {% for a in audit %}
-    <tr>
-      <td class="small muted">{{ a.at | ts }}</td>
-      <td class="mono small"><a href="{{ url_for('case_detail', case_id=a.case_id) }}">{{ a.case_id }}</a></td>
-      <td class="small"><strong>{{ a.action }}</strong></td>
-      <td class="small">{{ a.actor }}</td>
-      <td class="small">{{ a.rationale }}</td>
-    </tr>
-    {% endfor %}
-  </table>
+<section class="vellum-card" style="margin-bottom: var(--space-xl);">
+  <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; margin-bottom: 0.75rem;">
+    <h3>Recent Decisions Log</h3>
+    <a href="{{ url_for('audit') }}" class="text-small">View Full Audit Trail &rarr;</a>
+  </div>
+  <p class="text-small text-muted">
+    Append-only log stored in SQLite. Decisions are permanent entries; not tamper-proof.
+  </p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Timestamp</th>
+          <th>Case ID</th>
+          <th>Decision</th>
+          <th>Reviewer</th>
+          <th>Rationale</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for a in audit %}
+        <tr>
+          <td class="text-small text-muted">{{ a.at | ts }}</td>
+          <td><a href="{{ url_for('case_detail', case_id=a.case_id) }}" class="text-mono">{{ a.case_id }}</a></td>
+          <td><strong>{{ a.action | replace('_', ' ') | upper }}</strong></td>
+          <td>{{ a.actor }}</td>
+          <td class="text-small">{{ a.rationale }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 </section>
 {% endif %}
+
+<!-- Real Run Benchmark & Graph Comparison Panel (DATA INTEGRITY COMPLIANT) -->
+{% include "partials/act6_panel.html" %}
+
 {% endblock %}

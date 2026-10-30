@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta content="web_standard" name="shell-type" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&amp;family=JetBrains+Mono:wght@400;500&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <style>
+        @layer base {
+
+            html,
+            body {
+                margin: 0;
+                padding: 0;
+            }
+
+            body {
+                overscroll-behavior: none;
+            }
+
+            main>:first-child {
+                margin-top: 0 !important;
+            }
+
+            main>:last-child {
+                margin-bottom: 0 !important;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script
+        id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "on-tertiary-container": "#439878", "primary-fixed": "#dae1ff", "secondary-container": "#d5e0f7", "inverse-on-surface": "#f4f0e7", "on-secondary": "#ffffff", "error": "#ba1a1a", "surface-bright": "#fdf9f0", "surface-container-lowest": "#ffffff", "error-container": "#ffdad6", "on-secondary-container": "#586377", "on-tertiary-fixed": "#002115", "secondary": "#545f72", "on-secondary-fixed": "#111c2c", "surface-container": "#f1ede5", "surface-container-highest": "#e6e2d9", "tertiary-container": "#00281b", "surface": "#fdf9f0", "secondary-fixed-dim": "#bcc7dd", "surface-container-low": "#f7f3ea", "surface-variant": "#e6e2d9", "surface-tint": "#535d7e", "on-surface-variant": "#45464d", "on-primary-fixed-variant": "#3b4665", "on-primary-container": "#7e89ab", "on-error": "#ffffff", "on-primary-fixed": "#0f1a37", "secondary-fixed": "#d8e3fa", "on-tertiary-fixed-variant": "#00513a", "inverse-surface": "#31302b", "primary": "#010a27", "outline": "#76767e", "inverse-primary": "#bbc5eb", "tertiary": "#000f08", "tertiary-fixed-dim": "#82d7b3", "on-tertiary": "#ffffff", "surface-container-high": "#ece8df", "on-primary": "#ffffff", "surface-dim": "#dddad1", "primary-fixed-dim": "#bbc5eb", "on-surface": "#1c1c16", "on-background": "#1c1c16", "background": "#fdf9f0", "on-secondary-fixed-variant": "#3c475a", "on-error-container": "#93000a", "outline-variant": "#c6c6ce", "tertiary-fixed": "#9ef4cf", "primary-container": "#16213e" }, "borderRadius": { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" }, "spacing": { "space-xs": "0.25rem", "space-sm": "0.5rem", "gutter": "1.25rem", "space-2xl": "3rem", "space-2xs": "0.125rem", "space-md": "0.75rem", "space-lg": "1.25rem", "gutter-mobile": "0.75rem", "margin-mobile": "1rem", "space-xl": "2rem", "margin": "2rem" }, "fontFamily": { "headline-xl-mobile": ["Newsreader"], "code-xs": ["JetBrains Mono"], "headline-xl": ["Newsreader"], "code-sm": ["JetBrains Mono"], "headline-lg": ["Newsreader"], "label-sm": ["Inter"], "body-sm": ["Inter"], "body-md": ["Inter"], "body-lg": ["Inter"], "label-md": ["Inter"], "headline-sm": ["Newsreader"], "headline-md": ["Newsreader"] }, "fontSize": { "headline-xl-mobile": ["2rem", { "lineHeight": "2.5rem", "letterSpacing": "-0.015em", "fontWeight": "400" }], "code-xs": ["0.6875rem", { "lineHeight": "0.875rem", "letterSpacing": "-0.01em", "fontWeight": "400" }], "headline-xl": ["2.75rem", { "lineHeight": "3.25rem", "letterSpacing": "-0.02em", "fontWeight": "400" }], "code-sm": ["0.8125rem", { "lineHeight": "1.125rem", "letterSpacing": "-0.02em", "fontWeight": "400" }], "headline-lg": ["2rem", { "lineHeight": "2.5rem", "letterSpacing": "-0.01em", "fontWeight": "500" }], "label-sm": ["0.6875rem", { "lineHeight": "0.875rem", "letterSpacing": "0.04em", "fontWeight": "600" }], "body-sm": ["0.8125rem", { "lineHeight": "1.25rem", "fontWeight": "400" }], "body-md": ["0.9375rem", { "lineHeight": "1.5rem", "fontWeight": "400" }], "body-lg": ["1.125rem", { "lineHeight": "1.75rem", "fontWeight": "400" }], "label-md": ["0.8125rem", { "lineHeight": "1rem", "letterSpacing": "0.02em", "fontWeight": "600" }], "headline-sm": ["1.25rem", { "lineHeight": "1.75rem", "fontWeight": "600" }], "headline-md": ["1.5rem", { "lineHeight": "2rem", "letterSpacing": "-0.01em", "fontWeight": "500" }] } } } }</script>
+</head>
+
+<body class="bg-surface font-body-md text-on-surface antialiased">
+    <header class="fixed top-0 w-full z-50 bg-surface/90 backdrop-blur-md shadow-[0_1px_8px_rgba(22,33,62,0.04)]">
+        <div class="h-20 max-w-7xl mx-auto px-gutter flex items-center justify-between">
+            <div class="flex items-center gap-space-md">
+                <div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center text-primary">
+                    <span class="material-symbols-outlined text-[20px]">account_tree</span></div>
+                <div class="flex flex-col"><span
+                        class="font-headline-sm text-headline-sm text-primary tracking-tight leading-none">TraceLedger</span><span
+                        class="font-label-sm text-label-sm text-secondary tracking-widest uppercase mt-space-2xs">FORENSIC
+                        AUDIT SUITE</span></div>
+            </div>
+            <nav class="hidden md:flex items-center gap-space-lg"
+                data-active-classes="bg-surface-container-high text-on-surface rounded-lg"><a
+                    class="px-space-md py-space-sm font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors"
+                    data-path="how-it-works" href="#">How it works</a><a
+                    class="px-space-md py-space-sm font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors"
+                    data-path="benchmarks" href="#">Benchmarks</a><a
+                    class="px-space-md py-space-sm font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors"
+                    data-path="provenance-archive" href="#">Provenance Archive</a><a
+                    class="px-space-md py-space-sm font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors"
+                    data-path="dossier-standards" href="#">Dossier Standards</a></nav>
+            <div class="flex items-center gap-space-md"><a
+                    class="px-space-lg py-space-sm rounded-lg bg-primary-container text-surface font-label-md text-label-md hover:bg-primary transition-colors tracking-wide"
+                    data-path="open-case" href="#">Open a case</a>
+                <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span
+                        class="material-symbols-outlined text-on-primary text-[18px]">person</span></div>
+            </div>
+        </div>
+    </header>
+    <main class="w-full pt-20 bg-surface min-h-[calc(100vh-14rem)]">
+        <div class="flex flex-col w-full">
+            <!-- Case Docket & Master Status Header -->
+            <section
+                class="w-full bg-surface-container-low/70 border-b border-outline-variant/40 px-gutter py-space-md">
+                <div class="max-w-7xl mx-auto flex flex-col lg:flex-row lg:items-center justify-between gap-space-md">
+                    <!-- Docket Title & Core Metadata -->
+                    <div class="flex flex-col gap-space-2xs min-w-0">
+                        <div class="flex items-center gap-space-sm flex-wrap">
+                            <span
+                                class="font-code-xs text-code-xs tracking-wider uppercase px-space-xs py-0.5 rounded bg-surface-container-high text-secondary">
+                                DOCKET NO. 091-EVID
+                            </span>
+                            <span class="font-code-xs text-code-xs text-secondary">|</span>
+                            <span class="font-code-xs text-code-xs text-secondary font-medium tracking-wide">
+                                ARCADIA DEPOSIT CLEARING (AMBIGUOUS ROUTING)
+                            </span>
+                            <span class="font-code-xs text-code-xs text-on-tertiary-container flex items-center gap-1">
+                                <span class="w-1.5 h-1.5 rounded-full bg-on-tertiary-container inline-block"></span>
+                                RFC-8271 COMPLIANT
+                            </span>
+                        </div>
+                        <h1 class="font-headline-md text-headline-md text-primary tracking-tight font-normal">
+                            Dossier Exhibit 091: Asset Tracing &amp; Custodial Chain Audit
+                        </h1>
+                        <div class="flex items-center gap-space-md text-body-sm text-secondary flex-wrap font-body-sm">
+                            <span>Opened: <strong class="font-normal text-on-surface">Nov 04, 2024</strong></span>
+                            <span class="text-outline-variant">•</span>
+                            <span>Ledger: <strong
+                                    class="font-normal text-on-surface font-code-xs">ETH-MAINNET</strong></span>
+                            <span class="text-outline-variant">•</span>
+                            <span>Lead Investigator: <strong class="font-normal text-on-surface">M. Chen,
+                                    CFE</strong></span>
+                            <span class="text-outline-variant">•</span>
+                            <span>Standard: <strong class="font-normal text-on-surface">Civil Preponderance of
+                                    Attestation</strong></span>
+                        </div>
+                    </div>
+                    <!-- Dignified Neutral Outcome Stamp & Viewport Controls -->
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center gap-space-md lg:self-center">
+                        <!-- Court-Admissible Inconclusive Finding Badge -->
+                        <div
+                            class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg bg-surface-container border border-outline-variant/60 shadow-sm">
+                            <div
+                                class="w-8 h-8 rounded bg-surface-container-highest flex items-center justify-center text-primary-container">
+                                <span class="material-symbols-outlined text-[19px]">balance</span>
+                            </div>
+                            <div class="flex flex-col">
+                                <div class="flex items-center gap-space-xs">
+                                    <span
+                                        class="font-label-md text-label-md tracking-wider uppercase text-primary font-semibold">
+                                        UNRESOLVED / INSUFFICIENT ATTESTATION
+                                    </span>
+                                    <span class="material-symbols-outlined text-[14px] text-secondary"
+                                        title="Finding reached in accordance with evidentiary standards without prejudice">info</span>
+                                </div>
+                                <span class="font-code-xs text-code-xs text-secondary leading-tight">
+                                    Statutory threshold unmet; hiatus prevents determinative finding without prejudice.
+                                </span>
+                            </div>
+                        </div>
+                        <!-- Viewport & Docket Utilities -->
+                        <div class="flex items-center gap-space-xs self-stretch sm:self-auto justify-end">
+                            <button
+                                class="p-2 rounded hover:bg-surface-container-high text-secondary hover:text-primary transition-colors"
+                                title="Zoom to 100%" type="button">
+                                <span class="material-symbols-outlined text-[18px]">zoom_in</span>
+                            </button>
+                            <button
+                                class="p-2 rounded hover:bg-surface-container-high text-secondary hover:text-primary transition-colors"
+                                title="Reset Viewport" type="button">
+                                <span class="material-symbols-outlined text-[18px]">center_focus_strong</span>
+                            </button>
+                            <button
+                                class="p-2 rounded bg-surface-container-high text-primary hover:bg-surface-variant transition-colors"
+                                title="Vellum Optical Filter: High Contrast" type="button">
+                                <span class="material-symbols-outlined text-[18px]">layers</span>
+                            </button>
+                            <button
+                                class="px-space-md py-1.5 rounded bg-primary-container text-surface-container-lowest font-label-sm text-label-sm flex items-center gap-space-xs hover:bg-primary transition-colors shadow-sm"
+                                type="button">
+                                <span class="material-symbols-outlined text-[16px]">picture_as_pdf</span>
+                                <span>EXPORT DOCKET</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Main Investigation Canvas: Left DAG Graph (60%) + Right Forensic Dossier Panel (40%) -->
+            <div
+                class="w-full max-w-7xl mx-auto px-gutter py-space-lg grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
+                <!-- LEFT COLUMN: DAG Provenance Drafting Surface (Col 1-7) -->
+                <div class="lg:col-span-7 flex flex-col gap-space-md">
+                    <!-- Graph Canvas Container -->
+                    <div
+                        class="relative w-full rounded-lg bg-surface-container-lowest/80 border border-outline-variant/60 shadow-sm overflow-hidden min-h-[780px] flex flex-col justify-between">
+                        <!-- Drafting Watermark Background Layer -->
+                        <div
+                            class="absolute inset-0 pointer-events-none opacity-40 select-none flex items-center justify-center">
+                            <div class="w-full h-full flex flex-col justify-around py-space-xl">
+                                <div class="w-full border-b border-dashed border-outline-variant/40"></div>
+                                <div class="w-full border-b border-dashed border-outline-variant/40"></div>
+                                <div class="w-full border-b border-dashed border-outline-variant/40"></div>
+                                <div class="w-full border-b border-dashed border-outline-variant/40"></div>
+                            </div>
+                            <div
+                                class="absolute text-outline-variant/30 font-headline-xl text-headline-xl tracking-[0.25em] rotate-[-24deg] uppercase font-light pointer-events-none select-none">
+                                TRACELEDGER ARCHIVE
+                            </div>
+                        </div>
+                        <!-- Top Drafting Coordinate Bar -->
+                        <div
+                            class="relative z-10 px-space-md py-space-sm bg-surface-container-low/90 backdrop-blur border-b border-outline-variant/40 flex items-center justify-between text-secondary font-code-xs text-code-xs">
+                            <div class="flex items-center gap-space-md flex-wrap">
+                                <span>REG: <strong class="text-primary font-normal">TL-NY-2024-11</strong></span>
+                                <span>GRID: <strong class="text-primary font-normal">DAG-AXIS-091</strong></span>
+                                <span>NODES: <strong class="text-primary font-normal">6 EVALUATED</strong></span>
+                            </div>
+                            <div class="flex items-center gap-space-sm">
+                                <span
+                                    class="px-1.5 py-0.5 rounded bg-surface-container text-on-surface-variant font-code-xs">
+                                    SCALE: 1.00x VELLUM
+                                </span>
+                                <span class="text-secondary font-code-xs tracking-wider">40.7128° N, 74.0060° W</span>
+                            </div>
+                        </div>
+                        <!-- DAG Tree Canvas Area -->
+                        <div class="relative z-10 p-space-lg flex-1 flex flex-col justify-between gap-space-lg">
+                            <!-- Node 1: INVOICE (Verified) -->
+                            <div class="flex items-center justify-start w-full">
+                                <div
+                                    class="w-full max-w-sm rounded-lg bg-surface/95 border border-outline-variant/80 p-space-md shadow-sm hover:border-primary transition-all">
+                                    <div class="flex items-center justify-between mb-space-xs">
+                                        <div class="flex items-center gap-space-xs">
+                                            <span class="w-2 h-2 rounded-full bg-on-tertiary-container"></span>
+                                            <span
+                                                class="font-label-sm text-label-sm uppercase tracking-wider text-primary font-semibold">1.
+                                                INVOICE ORIGIN</span>
+                                        </div>
+                                        <span
+                                            class="font-code-xs text-code-xs px-1.5 py-0.5 rounded bg-surface-container-high text-on-tertiary-container font-medium border border-on-tertiary-container/30">
+                                            VERIFIED [INV-9102]
+                                        </span>
+                                    </div>
+                                    <div class="flex items-baseline justify-between mt-1">
+                                        <span class="font-headline-sm text-headline-sm text-primary">$780,000.00
+                                            USDC</span>
+                                        <span class="font-code-xs text-code-xs text-secondary">Arcadia Liquidity
+                                            Corp</span>
+                                    </div>
+                                    <div
+                                        class="mt-space-xs pt-space-xs border-t border-dashed border-outline-variant/50 flex justify-between font-code-xs text-code-xs text-on-surface-variant">
+                                        <span>SHA256: 0x81b...d94</span>
+                                        <span class="text-secondary">Signed via HSM / PGP 4096</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Vertical Connector Line (Solid Viridian - Established link) -->
+                            <div class="flex items-center ml-12 -my-2">
+                                <div class="w-0.5 h-7 bg-on-tertiary-container/80"></div>
+                                <span
+                                    class="ml-space-sm font-code-xs text-[10px] uppercase tracking-wider text-on-tertiary-container bg-surface-container-low px-1 rounded">
+                                    Cryptographic Match (100%)
+                                </span>
+                            </div>
+                            <!-- Node 2: PAYMENT REQUISITION (Verified) -->
+                            <div class="flex items-center justify-start w-full">
+                                <div
+                                    class="w-full max-w-sm rounded-lg bg-surface/95 border border-outline-variant/80 p-space-md shadow-sm hover:border-primary transition-all">
+                                    <div class="flex items-center justify-between mb-space-xs">
+                                        <div class="flex items-center gap-space-xs">
+                                            <span class="w-2 h-2 rounded-full bg-on-tertiary-container"></span>
+                                            <span
+                                                class="font-label-sm text-label-sm uppercase tracking-wider text-primary font-semibold">2.
+                                                PAYMENT REQUISITION</span>
+                                        </div>
+                                        <span
+                                            class="font-code-xs text-code-xs px-1.5 py-0.5 rounded bg-surface-container-high text-on-tertiary-container font-medium border border-on-tertiary-container/30">
+                                            VERIFIED [TREAS-04]
+                                        </span>
+                                    </div>
+                                    <div class="flex items-baseline justify-between mt-1">
+                                        <span class="font-body-md text-body-md text-primary font-medium">ERP
+                                            #REQ-10482</span>
+                                        <span class="font-code-xs text-code-xs text-secondary">Auth: 2024-11-04 13:58
+                                            UTC</span>
+                                    </div>
+                                    <div
+                                        class="mt-space-xs pt-space-xs border-t border-dashed border-outline-variant/50 flex justify-between font-code-xs text-code-xs text-on-surface-variant">
+                                        <span>Treasury Ledger Match</span>
+                                        <span class="text-secondary">Ledger Balance: Reserved</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Vertical Connector Line (Amber/Ochre - Initiated) -->
+                            <div class="flex items-center ml-12 -my-2">
+                                <div class="w-0.5 h-7 bg-[#C99A2E]/80"></div>
+                                <span
+                                    class="ml-space-sm font-code-xs text-[10px] uppercase tracking-wider text-[#C99A2E] bg-surface-container-low px-1 rounded">
+                                    Signer Threshold Quorum (3/4)
+                                </span>
+                            </div>
+                            <!-- Node 3: MULTISIG SUBMISSION (Candidate / Initiated) -->
+                            <div class="flex items-center justify-start w-full">
+                                <div
+                                    class="w-full max-w-sm rounded-lg bg-surface/95 border border-[#C99A2E]/60 p-space-md shadow-sm">
+                                    <div class="flex items-center justify-between mb-space-xs">
+                                        <div class="flex items-center gap-space-xs">
+                                            <span class="w-2 h-2 rounded-full bg-[#C99A2E]"></span>
+                                            <span
+                                                class="font-label-sm text-label-sm uppercase tracking-wider text-primary font-semibold">3.
+                                                MULTISIG SUBMISSION</span>
+                                        </div>
+                                        <span
+                                            class="font-code-xs text-code-xs px-1.5 py-0.5 rounded bg-surface-container text-[#C99A2E] font-medium border border-[#C99A2E]/30">
+                                            CANDIDATE [SIG-03]
+                                        </span>
+                                    </div>
+                                    <div class="flex items-baseline justify-between mt-1">
+                                        <span class="font-body-md text-body-md text-primary font-medium">Gnosis Safe
+                                            0x71...310</span>
+                                        <span class="font-code-xs text-code-xs text-secondary">3/4 Signers
+                                            Appended</span>
+                                    </div>
+                                    <div
+                                        class="mt-space-xs pt-space-xs border-t border-dashed border-outline-variant/50 flex justify-between font-code-xs text-code-xs text-on-surface-variant">
+                                        <span>Signer Gamma: Voice/No Log</span>
+                                        <span class="text-secondary">Target: 0x4f...88a</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- PROMINENT EVIDENTIARY HIATUS CALLOUT / UNBRIDGED GAP -->
+                            <div class="relative my-space-xs w-full">
+                                <!-- Dashed linking borders simulating missing interval -->
+                                <div
+                                    class="border-2 border-dashed border-[#9A948A] rounded-lg p-space-md bg-surface-container-high/40 relative overflow-hidden">
+                                    <!-- Subtle Amber/Slate Accent Stripe -->
+                                    <div class="absolute top-0 left-0 w-1.5 h-full bg-[#9A948A]"></div>
+                                    <div
+                                        class="flex flex-col sm:flex-row sm:items-start justify-between gap-space-md pl-space-xs">
+                                        <div class="flex flex-col gap-1 max-w-lg">
+                                            <div class="flex items-center gap-space-sm">
+                                                <span
+                                                    class="w-2.5 h-2.5 rounded-full border border-[#9A948A] flex items-center justify-center">
+                                                    <span class="w-1 h-1 rounded-full bg-[#9A948A]"></span>
+                                                </span>
+                                                <span
+                                                    class="font-label-sm text-label-sm uppercase tracking-widest text-primary font-bold">
+                                                    EVIDENTIARY HIATUS / UNBRIDGED INTERVAL #GAP-03
+                                                </span>
+                                                <span
+                                                    class="font-code-xs text-code-xs px-2 py-0.5 rounded bg-surface-container text-secondary border border-outline-variant">
+                                                    HIATUS IDENTIFIED
+                                                </span>
+                                            </div>
+                                            <h3
+                                                class="font-headline-sm text-headline-sm text-primary font-normal mt-0.5">
+                                                Missing Intermediary Routing Attestation
+                                            </h3>
+                                            <p
+                                                class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+                                                Expected relay step: <strong class="font-normal text-primary">Off-chain
+                                                    Custody Settlement Authorization → Relayer Batch Vault
+                                                    0x4f...88a</strong>.
+                                                Absence of signed transit receipt or cryptographically counter-signed
+                                                routing waiver creates an irreconcilable evidentiary vacuum between
+                                                Treasury Intent and Relayer Execution.
+                                            </p>
+                                        </div>
+                                        <!-- Forensic Action Button inside Gap -->
+                                        <div class="flex sm:flex-col items-end gap-space-xs shrink-0 mt-2 sm:mt-0">
+                                            <span
+                                                class="font-code-xs text-code-xs text-secondary uppercase tracking-wider">EVIDENTIARY
+                                                STATUS</span>
+                                            <span
+                                                class="font-code-xs text-code-xs px-2 py-1 rounded bg-surface-container-lowest text-secondary border border-dashed border-[#9A948A]">
+                                                NON-ATTESTED
+                                            </span>
+                                            <a class="font-label-sm text-label-sm text-primary-container hover:text-primary underline mt-1"
+                                                href="#settle-criteria">
+                                                Review Settle Requirements ↓
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <!-- Diagnostic Metadata Bar for the Gap -->
+                                    <div
+                                        class="mt-space-md pt-space-xs border-t border-dashed border-[#9A948A]/50 flex flex-wrap items-center justify-between text-secondary font-code-xs text-code-xs gap-2">
+                                        <span>MISSING REF: <span class="text-primary">RELAY-BATCH-TX-NULL</span></span>
+                                        <span>DELTA TIMEFRAME: <span class="text-primary">14:02:11 UTC — 14:18:40 UTC
+                                                (16m 29s)</span></span>
+                                        <span>CHAIN BREACH: <span class="text-primary">LEVEL 2 CUSTODIAL
+                                                HIATUS</span></span>
+                                    </div>
+                                </div>
+                                <!-- Dashed vertical indicator line below hiatus -->
+                                <div class="flex items-center ml-12 -my-1">
+                                    <div class="w-0.5 h-6 border-l-2 border-dashed border-[#9A948A]"></div>
+                                    <span
+                                        class="ml-space-sm font-code-xs text-[10px] uppercase tracking-wider text-secondary bg-surface-container px-1 rounded">
+                                        Unbridged Attestation Traversal
+                                    </span>
+                                </div>
+                            </div>
+                            <!-- Node 4: FINAL ON-CHAIN DISBURSEMENT (Isolated Verified Fact) -->
+                            <div class="flex items-center justify-end w-full">
+                                <div
+                                    class="w-full max-w-sm rounded-lg bg-surface/95 border border-outline-variant/80 p-space-md shadow-sm hover:border-primary transition-all">
+                                    <div class="flex items-center justify-between mb-space-xs">
+                                        <div class="flex items-center gap-space-xs">
+                                            <span class="w-2 h-2 rounded-full bg-on-tertiary-container"></span>
+                                            <span
+                                                class="font-label-sm text-label-sm uppercase tracking-wider text-primary font-semibold">4.
+                                                ON-CHAIN DISBURSEMENT</span>
+                                        </div>
+                                        <span
+                                            class="font-code-xs text-code-xs px-1.5 py-0.5 rounded bg-surface-container-high text-on-tertiary-container font-medium border border-on-tertiary-container/30">
+                                            FACT ESTABLISHED [BLK-19510]
+                                        </span>
+                                    </div>
+                                    <div class="flex items-baseline justify-between mt-1">
+                                        <span class="font-headline-sm text-headline-sm text-primary">$780,000.00
+                                            USDC</span>
+                                        <span class="font-code-xs text-code-xs text-secondary font-medium">Tx:
+                                            0x3d...b89</span>
+                                    </div>
+                                    <div
+                                        class="mt-space-xs pt-space-xs border-t border-dashed border-outline-variant/50 flex justify-between font-code-xs text-code-xs text-on-surface-variant">
+                                        <span>Block #19,510,842 (Mainnet)</span>
+                                        <span class="text-secondary">Recipient: 0x4f...88a</span>
+                                    </div>
+                                    <div class="mt-1 text-[11px] font-body-sm text-secondary italic">
+                                        *Execution verified, but provenance unlinked to Requisition due to Hiatus
+                                        #GAP-03.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- DAG Canvas Bottom Archival Legend -->
+                        <div
+                            class="relative z-10 px-space-md py-space-sm bg-surface-container-low border-t border-outline-variant/40 flex items-center justify-between flex-wrap gap-space-sm text-secondary font-code-xs text-code-xs">
+                            <div class="flex items-center gap-space-lg flex-wrap">
+                                <div class="flex items-center gap-1.5">
+                                    <span class="w-2 h-2 rounded-full bg-on-tertiary-container"></span>
+                                    <span>VERIFIED FACT (Solid viridian)</span>
+                                </div>
+                                <div class="flex items-center gap-1.5">
+                                    <span class="w-2 h-2 rounded-full bg-[#C99A2E]"></span>
+                                    <span>ASSERTED / CANDIDATE (Ochre)</span>
+                                </div>
+                                <div class="flex items-center gap-1.5">
+                                    <span class="w-3 h-0 border-b-2 border-dashed border-[#9A948A]"></span>
+                                    <span>EVIDENTIARY HIATUS (Dashed stone)</span>
+                                </div>
+                            </div>
+                            <div class="text-on-surface-variant">
+                                ISO/IEC 27037:2012 DIGITAL FORENSICS
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- RIGHT COLUMN: Forensic Report Panel & Settle Criteria (Col 8-12) -->
+                <div class="lg:col-span-5 flex flex-col gap-space-md">
+                    <!-- Forensic Report Panel Card -->
+                    <div
+                        class="rounded-lg bg-surface-container-lowest border border-outline-variant/60 shadow-sm p-space-lg flex flex-col gap-space-lg">
+                        <!-- Panel Header -->
+                        <div class="flex flex-col gap-space-xs pb-space-md border-b border-outline-variant/40">
+                            <div class="flex items-center justify-between">
+                                <span
+                                    class="font-code-xs text-code-xs uppercase tracking-widest text-secondary font-semibold">
+                                    EVIDENTIARY SUMMARY EXHIBIT
+                                </span>
+                                <span class="font-code-xs text-code-xs text-secondary font-medium">
+                                    STAMP: 2024-11-04T19:12:08Z
+                                </span>
+                            </div>
+                            <h2 class="font-headline-sm text-headline-sm text-primary tracking-tight font-medium">
+                                Audit Stage: Statutory Evaluation Complete
+                            </h2>
+                            <p class="font-body-sm text-body-sm text-secondary">
+                                Deterministic finding cannot be sustained under Civil Preponderance standard without
+                                supplementary primary records.
+                            </p>
+                        </div>
+                        <!-- Section 1: ESTABLISHED RECORD (VERIFIED FACTS) -->
+                        <div class="flex flex-col gap-space-sm">
+                            <div class="flex items-center justify-between">
+                                <h3
+                                    class="font-label-md text-label-md text-primary uppercase tracking-wider font-semibold">
+                                    1. Established Record (Verified Facts)
+                                </h3>
+                                <span class="font-code-xs text-code-xs text-on-tertiary-container font-medium">3 MUTUAL
+                                    CORROBORATIONS</span>
+                            </div>
+                            <div class="space-y-space-xs">
+                                <div
+                                    class="p-space-sm rounded bg-surface-container-low border border-outline-variant/40 flex items-start justify-between gap-space-sm">
+                                    <div class="flex flex-col">
+                                        <span class="font-body-sm text-body-sm text-primary">Original commercial invoice
+                                            signature verified</span>
+                                        <span class="font-code-xs text-code-xs text-secondary">Arcadia Liquidity — PGP
+                                            4096 key fingerprint match</span>
+                                    </div>
+                                    <span
+                                        class="font-code-xs text-code-xs px-1.5 py-0.5 rounded bg-surface-container text-primary shrink-0 border border-outline-variant">
+                                        [INV-9102]
+                                    </span>
+                                </div>
+                                <div
+                                    class="p-space-sm rounded bg-surface-container-low border border-outline-variant/40 flex items-start justify-between gap-space-sm">
+                                    <div class="flex flex-col">
+                                        <span class="font-body-sm text-body-sm text-primary">Disbursement executed on
+                                            Ethereum Block #19,510,842</span>
+                                        <span class="font-code-xs text-code-xs text-secondary">Final state: 780,000.00
+                                            USDC in custody of 0x4f...88a</span>
+                                    </div>
+                                    <span
+                                        class="font-code-xs text-code-xs px-1.5 py-0.5 rounded bg-surface-container text-primary shrink-0 border border-outline-variant">
+                                        [BLK-19510]
+                                    </span>
+                                </div>
+                                <div
+                                    class="p-space-sm rounded bg-surface-container-low border border-outline-variant/40 flex items-start justify-between gap-space-sm">
+                                    <div class="flex flex-col">
+                                        <span class="font-body-sm text-body-sm text-primary">ERP Treasury requisition
+                                            timestamp validated</span>
+                                        <span class="font-code-xs text-code-xs text-secondary">Matched against internal
+                                            GL audit journal snapshot</span>
+                                    </div>
+                                    <span
+                                        class="font-code-xs text-code-xs px-1.5 py-0.5 rounded bg-surface-container text-primary shrink-0 border border-outline-variant">
+                                        [TREAS-04]
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Section 2: UNLOCATED DOCUMENTATION (THE HIATUS) -->
+                        <div class="flex flex-col gap-space-sm">
+                            <div class="flex items-center justify-between">
+                                <h3
+                                    class="font-label-md text-label-md text-primary uppercase tracking-wider font-semibold">
+                                    2. Unlocated Documentation (Evidentiary Gaps)
+                                </h3>
+                                <span class="font-code-xs text-code-xs text-secondary font-medium">2 MISSING
+                                    ARTIFACTS</span>
+                            </div>
+                            <div class="space-y-space-xs">
+                                <div
+                                    class="p-space-sm rounded bg-surface-container-high/60 border border-dashed border-[#9A948A] flex items-start justify-between gap-space-sm">
+                                    <div class="flex flex-col">
+                                        <span class="font-body-sm text-body-sm text-primary font-medium">Intermediary
+                                            clearinghouse batch ticket unrecovered</span>
+                                        <span class="font-code-xs text-code-xs text-secondary">No cryptographic
+                                            transmission slip linking Requisition to Vault 0x4f</span>
+                                    </div>
+                                    <span
+                                        class="font-code-xs text-code-xs px-1.5 py-0.5 rounded bg-surface-container text-secondary shrink-0 border border-dashed border-[#9A948A]">
+                                        [MISS-RELAY]
+                                    </span>
+                                </div>
+                                <div
+                                    class="p-space-sm rounded bg-surface-container-high/60 border border-dashed border-[#9A948A] flex items-start justify-between gap-space-sm">
+                                    <div class="flex flex-col">
+                                        <span class="font-body-sm text-body-sm text-primary font-medium">Signatory Gamma
+                                            verbal authorization unlogged</span>
+                                        <span class="font-code-xs text-code-xs text-secondary">Telephonic assent not
+                                            converted to encrypted counter-attestation</span>
+                                    </div>
+                                    <span
+                                        class="font-code-xs text-code-xs px-1.5 py-0.5 rounded bg-surface-container text-secondary shrink-0 border border-dashed border-[#9A948A]">
+                                        [MISS-VOICE]
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Section 3: EVIDENCE THAT WOULD SETTLE THIS (CONSTRUCTIVE PATHWAY) -->
+                        <div class="rounded-lg bg-surface-container-low border border-outline-variant p-space-md flex flex-col gap-space-md shadow-sm"
+                            id="settle-criteria">
+                            <div class="flex items-start justify-between gap-space-sm">
+                                <div class="flex items-center gap-space-xs">
+                                    <span class="material-symbols-outlined text-[20px] text-primary">fact_check</span>
+                                    <h3
+                                        class="font-headline-sm text-headline-sm text-primary tracking-tight font-medium">
+                                        Evidence That Would Settle This
+                                    </h3>
+                                </div>
+                                <span
+                                    class="font-code-xs text-code-xs px-2 py-0.5 rounded bg-surface-container-highest text-primary font-semibold">
+                                    CLOSURE PATHWAY
+                                </span>
+                            </div>
+                            <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+                                Per Section 4.2 of the Forensic Standards Protocol, receipt of any single corroborating
+                                item below will permit re-adjudication and elevation to a determinative finding:
+                            </p>
+                            <div class="space-y-space-sm">
+                                <!-- Item A -->
+                                <div class="flex items-start gap-space-sm">
+                                    <span
+                                        class="font-code-xs text-code-xs font-bold text-primary px-1.5 py-0.5 rounded bg-surface-container-high mt-0.5">A</span>
+                                    <div class="flex flex-col">
+                                        <span class="font-body-sm text-body-sm text-primary font-medium">Counterparty
+                                            Signed Route Directive</span>
+                                        <span class="font-code-xs text-code-xs text-secondary">
+                                            A verified PGP or HSM-signed routing memo from Arcadia Treasury explicitly
+                                            authorizing transit to vault 0x4f...88a.
+                                        </span>
+                                    </div>
+                                </div>
+                                <!-- Item B -->
+                                <div class="flex items-start gap-space-sm">
+                                    <span
+                                        class="font-code-xs text-code-xs font-bold text-primary px-1.5 py-0.5 rounded bg-surface-container-high mt-0.5">B</span>
+                                    <div class="flex flex-col">
+                                        <span class="font-body-sm text-body-sm text-primary font-medium">Clearinghouse
+                                            Relayer Batch Manifest</span>
+                                        <span class="font-code-xs text-code-xs text-secondary">
+                                            Cryptographic proof of batch inclusion from Fireblocks or Anchorage API
+                                            matching settlement timestamp ±180 seconds.
+                                        </span>
+                                    </div>
+                                </div>
+                                <!-- Item C -->
+                                <div class="flex items-start gap-space-sm">
+                                    <span
+                                        class="font-code-xs text-code-xs font-bold text-primary px-1.5 py-0.5 rounded bg-surface-container-high mt-0.5">C</span>
+                                    <div class="flex flex-col">
+                                        <span class="font-body-sm text-body-sm text-primary font-medium">Dual-Control
+                                            Keycard Biometric Audit Trail</span>
+                                        <span class="font-code-xs text-code-xs text-secondary">
+                                            Hardware access log verifying Signer Gamma physical presence during the
+                                            14:02 UTC authorization window.
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Constructive Action Link -->
+                            <div
+                                class="pt-space-xs border-t border-outline-variant/60 flex items-center justify-between">
+                                <button
+                                    class="font-label-md text-label-md text-primary-container hover:text-primary font-semibold flex items-center gap-1.5 transition-colors"
+                                    type="button">
+                                    <span class="material-symbols-outlined text-[16px]">outgoing_mail</span>
+                                    <span>Generate Formal Evidence Subpoena Package</span>
+                                </button>
+                                <span class="font-code-xs text-code-xs text-secondary">FORM TL-SUB-091</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Bottom Forensic Adjudication & Auditor Action Bar -->
+            <section
+                class="w-full bg-surface-container-low border-t border-outline-variant/60 px-gutter py-space-lg mt-space-md">
+                <div class="max-w-7xl mx-auto flex flex-col gap-space-md">
+                    <!-- Pre-filled Legally-sound Determination Text Area -->
+                    <div class="flex flex-col gap-space-2xs">
+                        <div class="flex items-center justify-between">
+                            <label
+                                class="font-label-md text-label-md text-primary uppercase tracking-wider font-semibold flex items-center gap-space-xs"
+                                for="auditor-determination">
+                                <span>Auditor Evidentiary Determination (Civil Forensic Standard)</span>
+                                <span class="font-code-xs text-code-xs text-secondary font-normal lowercase">(immutable
+                                    on docket entry)</span>
+                            </label>
+                            <span class="font-code-xs text-code-xs text-secondary">RFC-8271 SEC 9.4 LANGUAGE</span>
+                        </div>
+                        <div
+                            class="relative w-full rounded-lg bg-surface border border-outline-variant/80 p-space-md shadow-inner">
+                            <textarea
+                                class="w-full bg-transparent font-headline-sm text-body-md text-primary leading-relaxed resize-none focus:outline-none cursor-default font-normal"
+                                id="auditor-determination" readonly=""
+                                rows="3">The evidentiary corpus establishes prima facie payment intent and subsequent on-chain execution; however, the chain of custody exhibits an unbridged hiatus at the intermediary routing stage. In accordance with RFC-8271 and evidentiary standards, this matter is designated UNRESOLVED pending submission of itemized clearinghouse routing attestations. No fraudulent intent or structural contradiction is declared at this juncture.</textarea>
+                            <div
+                                class="flex items-center justify-between mt-space-xs pt-space-xs border-t border-dashed border-outline-variant/40 text-secondary font-code-xs text-code-xs">
+                                <span>ATTESTING INVESTIGATOR: M. CHEN (ID: 0492-FED)</span>
+                                <span>FINDING CLASSIFICATION: ADMISSIBLE INCONCLUSIVE (RULE 702 COMPLIANT)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Action Buttons Bar: Dignified Inconclusive Closure -->
+                    <div
+                        class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-space-md pt-space-xs">
+                        <div class="flex items-center gap-space-sm text-secondary font-code-xs text-code-xs">
+                            <span class="material-symbols-outlined text-[18px]">verified_user</span>
+                            <span>Archival Record will be sealed in the institutional corpus with full provenance
+                                graph.</span>
+                        </div>
+                        <div class="flex flex-wrap items-center gap-space-sm">
+                            <!-- Button 1: Request Specific Evidence -->
+                            <button
+                                class="px-space-md py-space-sm rounded-lg bg-surface-container-high text-primary font-label-md text-label-md hover:bg-surface-variant transition-colors border border-outline-variant/60 flex items-center gap-1.5"
+                                type="button">
+                                <span class="material-symbols-outlined text-[16px]">contact_support</span>
+                                <span>Request Specific Evidence</span>
+                            </button>
+                            <!-- Button 2: Extend Audit Hold -->
+                            <button
+                                class="px-space-md py-space-sm rounded-lg bg-surface-container-high text-primary font-label-md text-label-md hover:bg-surface-variant transition-colors border border-outline-variant/60 flex items-center gap-1.5"
+                                type="button">
+                                <span class="material-symbols-outlined text-[16px]">schedule</span>
+                                <span>Extend Audit Hold (30d)</span>
+                            </button>
+                            <!-- Button 3: Flag Re-review -->
+                            <button
+                                class="px-space-md py-space-sm rounded-lg bg-surface-container-high text-primary font-label-md text-label-md hover:bg-surface-variant transition-colors border border-outline-variant/60 flex items-center gap-1.5"
+                                type="button">
+                                <span class="material-symbols-outlined text-[16px]">sync_saved_locally</span>
+                                <span>Flag Re-review on Ingestion</span>
+                            </button>
+                            <!-- Primary Emphasized Action: Close as Unresolved -->
+                            <button
+                                class="px-space-lg py-space-sm rounded-lg bg-primary-container text-surface-container-lowest font-label-md text-label-md hover:bg-primary transition-colors shadow flex items-center gap-space-xs"
+                                type="button">
+                                <span class="material-symbols-outlined text-[18px]">assignment_turned_in</span>
+                                <span>Close as Unresolved (Admissible Inconclusive)</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+    <footer class="w-full bg-surface-container-low shadow-[0_-1px_6px_rgba(22,33,62,0.03)]">
+        <div class="max-w-7xl mx-auto px-gutter py-space-2xl">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-space-xl mb-space-2xl">
+                <div>
+                    <div class="flex items-center gap-space-sm mb-space-sm">
+                        <div
+                            class="w-6 h-6 rounded bg-surface-container-high flex items-center justify-center text-primary">
+                            <span class="material-symbols-outlined text-[16px]">account_tree</span></div><span
+                            class="font-headline-sm text-headline-sm text-primary">TraceLedger</span>
+                    </div>
+                    <p class="font-body-sm text-body-sm text-on-surface-variant">Forensic archival environment for
+                        ledger provenance mapping, asset tracing trees, and evidentiary investigation.</p>
+                </div>
+                <div>
+                    <div class="font-label-md text-label-md text-primary uppercase tracking-wider mb-space-md">
+                        Verification Engine</div>
+                    <ul class="space-y-space-sm font-body-sm text-body-sm">
+                        <li class="text-on-surface-variant">DAG Graph Reconstruction</li>
+                        <li class="text-on-surface-variant">Chain Traversal Inspector</li>
+                        <li class="text-on-surface-variant">Vellum Cryptographic Layers</li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="font-label-md text-label-md text-primary uppercase tracking-wider mb-space-md">Standards
+                        &amp; Protocol</div>
+                    <ul class="space-y-space-sm font-body-sm text-body-sm">
+                        <li class="text-on-surface-variant">Evidentiary Legal Grade</li>
+                        <li class="text-on-surface-variant">Attestation Indexing</li>
+                        <li class="text-on-surface-variant">Archival Corpus Auditing</li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="font-label-md text-label-md text-primary uppercase tracking-wider mb-space-md">System
+                        Status</div>
+                    <div
+                        class="inline-flex items-center gap-space-xs px-space-sm py-space-2xs rounded-lg bg-surface-container-high text-on-tertiary-container font-code-xs text-code-xs">
+                        <span class="w-1.5 h-1.5 rounded-full bg-on-tertiary-container"></span>NODE INTEGRITY VERIFIED
+                    </div>
+                </div>
+            </div>
+            <div
+                class="flex flex-col md:flex-row items-center justify-between pt-space-lg shadow-[0_-1px_0_rgba(226,220,208,0.6)] font-code-xs text-code-xs text-on-surface-variant">
+                <span class="">© 2025 TRACELEDGER AUDIT CORP. ALL EVIDENCE RESERVED.</span>
+                <div class="flex gap-space-lg mt-space-sm md:mt-0"><span class="">SYS_REF: RFC-8271</span><span
+                        class="">JURISDICTION: FINANCIAL FORENSICS</span></div>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>

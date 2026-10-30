@@ -1,0 +1,22 @@
+<section id="results" class="vellum-card-solid">
+  <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.75rem;">
+    <h2>Results from a real run</h2>
+    <span class="badge badge-replay">Output of scripts/demo.py, Act 6. Captured 2026-10-30.</span>
+  </div>
+
+  <div class="notice-banner" style="margin-bottom: 1rem;">
+    <strong>Benchmark Limitation Notice:</strong> Preliminary, 25 synthetic cases. Not evidence of production performance.
+    TraceLedger's 100% score is recorded as circular because cases and verification checks share an author.
+    What is informative is the comparison of failure modes (specifically false-resolution rate).
+    Graph vs SQL: SQL returns the identical result and is 2792x faster at this scale; the graph is not claimed to be faster.
+  </div>
+
+  <div class="readonly-act6-panel">
+    <pre>{% include "partials/act6_output.txt" ignore missing %}{% if not captured_act6 %}
+<!-- If the captured file is ever missing -->
+Results unavailable. Could not load static/data/act6_output.txt.{% endif %}</pre>
+  </div>
+  <p class="text-small text-muted" style="margin-top: 0.75rem; margin-bottom: 0;">
+    Note: Replace captured panel with live endpoint is recorded in project backlog (Backend gap).
+  </p>
+</section>

@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}Review Case {{ case.case_id }} — TraceLedger{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: var(--space-md);">
+  <a href="{{ url_for('case_detail', case_id=case.case_id) }}" class="text-small">&larr; Return to Case Detail</a>
+</div>
+
+{% include "partials/review_form.html" %}
+{% endblock %}
+

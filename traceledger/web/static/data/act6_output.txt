@@ -1,0 +1,53 @@
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+TraceLedger — what the evidence proves, what it doesn't, and what to do next
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  chain: polygon-pos (137)   rpc: https://polygon-bor-rpc.publicnode.com
+  chain reads below are LIVE. Benchmark and graph figures are RECORDED and labelled.
+  Business records are synthetic. Transaction hashes are real.
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+ACT 6 — MANY EXCEPTIONS, ONE CAUSE.  (RECORDED run, not a live query.)
+────────────────────────────────────────────────────────────────────────────────────────────────────
+
+    18 invoices are flagged across the case load.
+    One graph traversal groups them by where their records came from:
+
+      IMP-TOKEN-MAP-01     5 invoices   C04-1,C05-1,C06-1,C07-1,C25-1
+      IMP-VENDOR-03        3 invoices   C12-1,C13-1,C14-1
+      IMP-REIMPORT-02      3 invoices   C16-DUP,C17-1,C18-1
+
+    11 of 18 exceptions collapse into 3 causes: a bad token-mapping import,
+    a vendor-master update that changed destinations, and a month-end job that ran
+    twice. That is three things to fix, not eighteen investigations.
+
+  And the honest part, which we put on the slide ourselves:
+      SQL returns the IDENTICAL result in 0.1 ms; the graph took 280.0 ms.
+      SQL is 2792x faster at this scale. We do not claim the
+      graph is faster, nor that it finds anything SQL misses on this question.
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+THE NUMBERS.  (RECORDED benchmark run, 25 synthetic cases.)
+────────────────────────────────────────────────────────────────────────────────────────────────────
+
+    model: gpt-4o-mini   cases: 25
+
+    metric                                       rules_only       plain_llm     traceledger
+    outcome accuracy                            68% (17/25)     64% (16/25)    100% (25/25)
+    named the right issue                        41% (7/17)     71% (12/17)    100% (17/17)
+    said 'fine' when it wasn't                   32% (8/25)      24% (6/25)       0% (0/25)
+    abstained when it should                       0% (0/4)        0% (0/4)      100% (4/4)
+
+  Two things we say out loud before anyone asks:
+      1. Our 100% is circular — we wrote the cases and the system. It means the
+         benchmark has stopped discriminating, not that the system is perfect.
+      2. The plain LLM BEATS the rules baseline at naming the right issue,
+         71% to 41%. Claiming LLMs are simply worse at this would be false.
+
+    The figure that matters: 'said fine when it wasn't'. That is the error that
+    closes an unpaid invoice.
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+Preliminary results on 25 synthetic cases. Not evidence of production performance.
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  RPC calls made during this walkthrough: 0

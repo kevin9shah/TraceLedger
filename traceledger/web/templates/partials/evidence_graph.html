@@ -1,0 +1,109 @@
+{# Server-side inline SVG evidence thread rendered from case facts and findings #}
+<div class="vellum-card" style="padding: 1.25rem 1rem;">
+  <h3 style="margin-bottom: 0.25rem;">Chain of Evidence</h3>
+  <p class="text-small text-muted" style="margin-bottom: 1rem;">
+    Forensic link path from invoice to on-chain settlement.
+  </p>
+
+  <svg viewBox="0 0 280 430" class="evidence-chain-svg" xmlns="http://www.w3.org/2000/svg" aria-label="Evidence chain graph">
+    <defs>
+      <filter id="vellum-shadow" x="-10%" y="-10%" width="120%" height="120%">
+        <feDropShadow dx="0" dy="1" stdDeviation="1.5" flood-color="#16213e" flood-opacity="0.08"/>
+      </filter>
+    </defs>
+
+    {# Compute state flags based on findings #}
+    {% set has_asset_conflict = false %}
+    {% set has_dest_conflict = false %}
+    {% set has_revert = false %}
+    {% set has_missing_dest = false %}
+    {% set has_missing_evidence = false %}
+    {% for f in findings %}
+      {% if f.code == 'payment.asset' and f.status == 'CONFLICT' %}{% set has_asset_conflict = true %}{% endif %}
+      {% if f.code == 'payment.destination' and f.status == 'CONFLICT' %}{% set has_dest_conflict = true %}{% endif %}
+      {% if f.code == 'tx.status' and f.status == 'CONFLICT' %}{% set has_revert = true %}{% endif %}
+      {% if f.code == 'payment.destination' and f.status == 'MISSING' %}{% set has_missing_dest = true %}{% endif %}
+      {% if f.status == 'MISSING' %}{% set has_missing_evidence = true %}{% endif %}
+    {% endfor %}
+
+    <!-- Connecting Edges (Threads) -->
+    <!-- Edge 1: Invoice -> Payment Request -->
+    <line x1="140" y1="52" x2="140" y2="120"
+          stroke="{% if case.payload.payment_request %}#1F7A5C{% else %}#9A948A{% endif %}"
+          stroke-width="2.5"
+          {% if not case.payload.payment_request %}stroke-dasharray="4 4"{% endif %}/>
+
+    <!-- Edge 2: Payment Request -> Approved Address -->
+    <line x1="140" y1="145" x2="140" y2="215"
+          stroke="{% if has_dest_conflict %}#D9482B{% elif case.payload.approved %}#1F7A5C{% else %}#9A948A{% endif %}"
+          stroke-width="2.5"
+          {% if not case.payload.approved %}stroke-dasharray="4 4"{% endif %}/>
+
+    <!-- Edge 3: Approved Address -> On-Chain Transaction -->
+    <line x1="140" y1="240" x2="140" y2="310"
+          stroke="{% if has_asset_conflict or has_revert or has_dest_conflict %}#D9482B{% elif has_missing_dest %}#9A948A{% else %}#1F7A5C{% endif %}"
+          stroke-width="2.5"
+          {% if has_missing_dest or has_missing_evidence %}stroke-dasharray="4 4"{% endif %}/>
+
+    <!-- Edge 4: On-Chain Transaction -> Ledger Settlement -->
+    <line x1="140" y1="335" x2="140" y2="395"
+          stroke="{% if has_asset_conflict or has_revert %}#D9482B{% elif has_missing_evidence %}#9A948A{% else %}#1F7A5C{% endif %}"
+          stroke-width="2.5"
+          {% if has_missing_evidence %}stroke-dasharray="4 4"{% endif %}/>
+
+    <!-- Node 1: Invoice -->
+    <g transform="translate(140, 40)" filter="url(#vellum-shadow)">
+      <circle cx="0" cy="0" r="16" class="chain-node verified"/>
+      <text x="0" y="4" font-family="'Instrument Sans', sans-serif" font-size="11" font-weight="700" fill="#1F7A5C" text-anchor="middle">1</text>
+      <rect x="-80" y="-30" width="160" height="20" rx="3" fill="#ffffff" stroke="rgba(22,33,62,0.15)" stroke-width="1"/>
+      <text x="0" y="-16" font-family="'Instrument Sans', sans-serif" font-size="9.5" font-weight="600" fill="#16213E" text-anchor="middle">
+        Invoice: {{ case.payload.invoice.invoice_id or 'INV-1' }}
+      </text>
+    </g>
+
+    <!-- Node 2: Payment Request -->
+    <g transform="translate(140, 132)" filter="url(#vellum-shadow)">
+      <circle cx="0" cy="0" r="15" class="chain-node {% if case.payload.payment_request %}verified{% else %}missing{% endif %}"/>
+      <text x="0" y="4" font-family="'Instrument Sans', sans-serif" font-size="11" font-weight="700" fill="{% if case.payload.payment_request %}#1F7A5C{% else %}#9A948A{% endif %}" text-anchor="middle">2</text>
+      <rect x="-85" y="16" width="170" height="18" rx="3" fill="#ffffff" stroke="rgba(22,33,62,0.15)" stroke-width="1"/>
+      <text x="0" y="29" font-family="'Instrument Sans', sans-serif" font-size="9" fill="#545F72" text-anchor="middle">
+        {% if case.payload.payment_request %}Dest Request Specified{% else %}Payment Request Missing{% endif %}
+      </text>
+    </g>
+
+    <!-- Node 3: Approved Address -->
+    <g transform="translate(140, 227)" filter="url(#vellum-shadow)">
+      <circle cx="0" cy="0" r="15" class="chain-node {% if has_dest_conflict %}conflict{% elif case.payload.approved %}verified{% else %}missing{% endif %}"/>
+      <text x="0" y="4" font-family="'Instrument Sans', sans-serif" font-size="11" font-weight="700" fill="{% if has_dest_conflict %}#D9482B{% elif case.payload.approved %}#1F7A5C{% else %}#9A948A{% endif %}" text-anchor="middle">3</text>
+      <rect x="-85" y="16" width="170" height="18" rx="3" fill="#ffffff" stroke="rgba(22,33,62,0.15)" stroke-width="1"/>
+      <text x="0" y="29" font-family="'Instrument Sans', sans-serif" font-size="9" fill="#545F72" text-anchor="middle">
+        {% if has_dest_conflict %}Unapproved Dest Match{% elif case.payload.approved %}Approved List Match{% else %}No Approved Whitelist{% endif %}
+      </text>
+    </g>
+
+    <!-- Node 4: On-Chain Transaction -->
+    <g transform="translate(140, 322)" filter="url(#vellum-shadow)">
+      <circle cx="0" cy="0" r="16" class="chain-node {% if has_asset_conflict or has_revert %}conflict{% elif has_missing_dest %}missing{% else %}verified{% endif %}"/>
+      <text x="0" y="4" font-family="'Instrument Sans', sans-serif" font-size="11" font-weight="700" fill="{% if has_asset_conflict or has_revert %}#D9482B{% elif has_missing_dest %}#9A948A{% else %}#1F7A5C{% endif %}" text-anchor="middle">4</text>
+      <rect x="-95" y="17" width="190" height="18" rx="3" fill="#ffffff" stroke="rgba(22,33,62,0.15)" stroke-width="1"/>
+      <text x="0" y="30" font-family="'JetBrains Mono', monospace" font-size="8.5" fill="#16213E" text-anchor="middle">
+        {% if case.tx_hash %}{{ case.tx_hash[:10] }}…{{ case.tx_hash[-6:] }}{% else %}No Tx Evidence{% endif %}
+      </text>
+    </g>
+
+    <!-- Node 5: Ledger Post -->
+    <g transform="translate(140, 405)" filter="url(#vellum-shadow)">
+      <circle cx="0" cy="0" r="14" class="chain-node {% if has_asset_conflict or has_revert %}conflict{% elif has_missing_evidence %}missing{% else %}verified{% endif %}"/>
+      <text x="0" y="4" font-family="'Instrument Sans', sans-serif" font-size="10" font-weight="700" fill="{% if has_asset_conflict or has_revert %}#D9482B{% elif has_missing_evidence %}#9A948A{% else %}#1F7A5C{% endif %}" text-anchor="middle">5</text>
+    </g>
+  </svg>
+
+  <div style="border-top: 1px solid var(--line-subtle); padding-top: 0.75rem; margin-top: 0.5rem;">
+    <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--ink-muted);">
+      <span><span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#1F7A5C; margin-right:4px;"></span>Verified</span>
+      <span><span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#D9482B; margin-right:4px;"></span>Conflict</span>
+      <span><span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#9A948A; margin-right:4px;"></span>Missing</span>
+    </div>
+  </div>
+</div>
+

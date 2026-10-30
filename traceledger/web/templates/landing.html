@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}TraceLedger — Stablecoin Forensic Audit Suite{% endblock %}
+
+{% block content %}
+<section class="parallax-viewport" style="margin-bottom: var(--space-2xl);">
+  <div class="vellum-card parallax-layer-front" style="padding: 2.5rem 2rem;">
+    <div style="max-width: 760px;">
+      <span class="badge badge-replay" style="margin-bottom: 0.75rem;">DAYLIGHT FORENSIC SUITE • POLYGON MAINNET (CHAIN 137)</span>
+      <h1 style="font-size: 2.75rem; margin-bottom: 0.5rem; letter-spacing: -0.02em;">Every conclusion is a path.</h1>
+      <p style="font-size: 1.15rem; color: var(--ink-secondary); margin-bottom: 1.75rem;">
+        Show what is proven, what is contradicted, and what is missing.
+        TraceLedger isolates stablecoin settlement exceptions by cross-examining raw on-chain events against business records.
+      </p>
+
+      <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center; margin-bottom: 1.5rem;">
+        <form method="post" action="{{ url_for('new_case') }}" style="margin: 0; padding: 0;">
+          <input type="hidden" name="tx_hash" value="0x3e1b6243f0f74ef16ab02a6f62a92b30763ee8556d684cf908459d33cb63fd4a">
+          <input type="hidden" name="invoice_token" value="0x3c499c542cef5e3811e1192ce70d8cc03d5c3359">
+          <input type="hidden" name="amount" value="0.10">
+          <input type="hidden" name="destination" value="0xdad4d0ee4260c1a9a25bb61099c9e518b5033e8e">
+          <input type="hidden" name="title" value="Demo: Invoiced USDC vs Sent USDT0 (Real Mainnet Transfer)">
+          <input type="hidden" name="counterparty" value="Meridian Freight Corp">
+          <input type="hidden" name="memo" value="Demo walkthrough: invoice names native USDC; mainnet delivered Tether (USDT0).">
+          <button type="submit" class="btn btn-primary" title="Load live mainnet verification demo">
+            ▶ Load demo case
+          </button>
+        </form>
+
+        <a href="{{ url_for('index') }}#ingest-form" class="btn btn-secondary">
+          ⌨ Paste a transaction hash
+        </a>
+
+        <a href="{{ url_for('index') }}#results" class="btn btn-secondary" style="border-style: dashed;">
+          📊 Real Benchmark Results
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+

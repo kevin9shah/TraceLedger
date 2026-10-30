@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Audit Trail — TraceLedger{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: var(--space-md);">
+  <a href="{{ url_for('index') }}" class="text-small">&larr; Back to Case Overview</a>
+</div>
+
+<section class="vellum-card-solid">
+  <h1>Forensic Audit Trail</h1>
+  <p class="text-secondary" style="margin-bottom: 1.5rem;">
+    Permanent append-only record of every reviewer determination.
+    Stored in a SQLite database file; not tamper-proof. No update or delete operations are permitted in code.
+  </p>
+
+  {% if audit %}
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Timestamp</th>
+          <th>Case ID</th>
+          <th>Action</th>
+          <th>Reviewer</th>
+          <th>Rationale</th>
+          <th>Entry Ref</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for a in audit %}
+        <tr>
+          <td class="text-small text-muted">{{ a.at | ts }}</td>
+          <td>
+            <a href="{{ url_for('case_detail', case_id=a.case_id) }}" class="text-mono font-bold">
+              {{ a.case_id }}
+            </a>
+          </td>
+          <td><strong>{{ a.action | replace('_', ' ') | upper }}</strong></td>
+          <td>{{ a.actor }}</td>
+          <td class="text-small">{{ a.rationale }}</td>
+          <td class="text-mono text-small text-muted">{{ a.entry_id }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="text-muted">No audit trail entries recorded yet.</p>
+  {% endif %}
+</section>
+{% endblock %}

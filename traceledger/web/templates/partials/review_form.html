@@ -1,0 +1,37 @@
+{# Review Panel — Strict Zero-JS Form for Wispr Flow dictation compatibility #}
+<section class="vellum-card-solid">
+  <h3>Record a Reviewer Decision</h3>
+  <p class="text-small text-secondary" style="margin-bottom: 1rem;">
+    A rationale is mandatory. Dictation and standard keyboard entry are both supported.
+    This form contains zero client-side scripts to avoid intercepting clipboard events.
+  </p>
+
+  <form method="post" action="{{ url_for('review', case_id=case.case_id) }}">
+    <label for="actor">Reviewer Identity</label>
+    <input type="text" id="actor" name="actor" placeholder="Reviewer name or operations ID" autocomplete="off">
+
+    <label for="action">Action Decision</label>
+    <select id="action" name="action" required>
+      <option value="" disabled selected>Select an action…</option>
+      {% for a in actions %}
+        <option value="{{ a }}">
+          {% if a == 'confirm' %}Confirm settlement
+          {% elif a == 'reject' %}Reject settlement
+          {% elif a == 'request_evidence' %}Request missing evidence
+          {% elif a == 'unresolved' %}Leave unresolved (insufficient proof)
+          {% else %}{{ a.replace('_', ' ') }}
+          {% endif %}
+        </option>
+      {% endfor %}
+    </select>
+
+    <label for="rationale">Reviewer Rationale (Required)</label>
+    <textarea id="rationale" name="rationale" required
+              placeholder="State the evidence-based reason for this determination. Dictate or type."></textarea>
+
+    <button type="submit" class="btn btn-primary" style="margin-top: 1rem;">
+      Record Decision in Audit Trail
+    </button>
+  </form>
+</section>
+

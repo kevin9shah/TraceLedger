@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}Case Records — TraceLedger{% endblock %}
+
+{% block content %}
+<section class="vellum-card-solid">
+  <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; margin-bottom: 0.75rem;">
+    <h1>Investigation Cases</h1>
+    <span class="text-small text-muted">{{ cases | length }} case(s) on file</span>
+  </div>
+
+  {% if cases %}
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Case ID</th>
+          <th>Title</th>
+          <th>State</th>
+          <th>Transaction Hash</th>
+          <th>Opened At</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for c in cases %}
+        <tr>
+          <td>
+            <a href="{{ url_for('case_detail', case_id=c.case_id) }}" class="text-mono font-bold">
+              {{ c.case_id }}
+            </a>
+          </td>
+          <td>{{ c.title }}</td>
+          <td>
+            {% if c.state == 'conflict' or 'conflict' in c.state|lower %}
+              <span class="badge badge-conflict">⚠ CONFLICT</span>
+            {% elif c.state == 'unresolved' or 'unresolved' in c.state|lower %}
+              <span class="badge badge-unresolved">◬ UNRESOLVED</span>
+            {% else %}
+              <span class="badge badge-verified">✓ {{ c.state | upper }}</span>
+            {% endif %}
+          </td>
+          <td class="text-mono text-small">
+            {% if c.tx_hash %}
+              {{ c.tx_hash[:10] }}…{{ c.tx_hash[-6:] }}
+            {% else %}
+              <span class="text-muted">—</span>
+            {% endif %}
+          </td>
+          <td class="text-small text-muted">{{ c.created_at | ts }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="text-muted">No cases on file yet.</p>
+  {% endif %}
+</section>
+{% endblock %}
+

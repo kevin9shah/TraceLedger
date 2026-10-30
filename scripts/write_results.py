@@ -200,7 +200,7 @@ def main() -> int:
     A("- **Variable-length path queries** on the graph, the only remaining graph advantage.")
     A("- **Realism of the business records**, which no domain expert has reviewed (P15).")
     A("")
-    (ROOT / "BENCHMARK_RESULTS.md").write_text("\n".join(L) + "\n")
+    (ROOT / "BENCHMARK_RESULTS.md").write_text("\n".join(L) + "\n", encoding="utf-8")
     print(f"wrote BENCHMARK_RESULTS.md ({len(L)} lines)")
     return 0
 

@@ -1,69 +1,56 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{% block title %}TraceLedger{% endblock %}</title>
-<style>
-  :root {
-    --bg:#faf9f7; --panel:#fff; --ink:#1b1b1f; --muted:#5d5f6b; --line:#dedce0;
-    --ok:#2f6f4f; --conflict:#9c2b2b; --missing:#8a5a00; --next:#2f5c8f; --accent:#2f6f4f;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      --bg:#16171a; --panel:#1f2125; --ink:#ecebe8; --muted:#a2a4ae; --line:#35373d;
-      --ok:#7fc0a0; --conflict:#e08585; --missing:#d9a84a; --next:#8ab4e8; --accent:#7fc0a0;
-    }
-  }
-  *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--ink);
-       font:16px/1.55 ui-sans-serif,-apple-system,"Segoe UI",system-ui,sans-serif;padding:0 16px 64px}
-  header{max-width:980px;margin:0 auto;padding:22px 0 10px;display:flex;gap:18px;align-items:baseline;
-         flex-wrap:wrap;border-bottom:1px solid var(--line)}
-  header h1{font-size:1.15rem;margin:0;letter-spacing:-.01em}
-  header nav{margin-left:auto;display:flex;gap:16px;font-size:.92rem}
-  a{color:var(--accent)}
-  main{max-width:980px;margin:0 auto;padding-top:22px}
-  section{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px 20px;margin-bottom:18px}
-  h2{font-size:1.02rem;margin:0 0 12px}
-  .muted{color:var(--muted)}
-  .small{font-size:.86rem}
-  table{width:100%;border-collapse:collapse;font-size:.92rem}
-  th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
-  th{font-size:.78rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
-  code,.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;word-break:break-all}
-  .tag{display:inline-block;padding:2px 8px;border-radius:999px;font-size:.72rem;font-weight:650;
-       letter-spacing:.03em;border:1px solid currentColor}
-  .VERIFIED{color:var(--ok)} .CONFLICT{color:var(--conflict)}
-  .MISSING{color:var(--missing)} .NEXT_STEP{color:var(--next)} .HYPOTHESIS{color:var(--muted)}
-  label{display:block;font-weight:600;margin:14px 0 5px;font-size:.93rem}
-  input[type=text],textarea,select{width:100%;font:inherit;line-height:1.6;color:var(--ink);
-       background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:11px 13px}
-  textarea{min-height:140px;resize:vertical}
-  input:focus-visible,textarea:focus-visible,select:focus-visible,button:focus-visible{
-       outline:3px solid var(--accent);outline-offset:2px;border-color:var(--accent)}
-  button{font:inherit;font-weight:600;padding:10px 18px;border-radius:8px;border:1px solid var(--accent);
-       background:var(--accent);color:var(--bg);cursor:pointer;margin-top:14px}
-  .banner{border:1px solid var(--line);border-left:3px solid var(--missing);border-radius:6px;
-       padding:10px 14px;margin:0 0 16px;font-size:.88rem;color:var(--muted);background:var(--bg)}
-  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:4px 0 0}
-  .stat{border:1px solid var(--line);border-radius:8px;padding:11px 13px;background:var(--bg)}
-  .stat .n{font-size:1.45rem;font-weight:650;font-variant-numeric:tabular-nums}
-  .stat .k{font-size:.74rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
-  ul{margin:6px 0;padding-left:20px}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}TraceLedger — Stablecoin Forensic Audit Suite{% endblock %}</title>
+  <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='brand/logo-mark.svg') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
 </head>
 <body>
-<header>
-  <h1>TraceLedger</h1>
-  <span class="muted small">read-only &middot; never moves funds</span>
-  <nav><a href="{{ url_for('index') }}">Cases</a><a href="{{ url_for('audit') }}">Audit log</a></nav>
-</header>
-<main>
-  <p class="banner">Business records here are synthetic and labelled as such. Chain facts are read
-     from a live node. Preliminary tool &mdash; findings are evidence for a human decision, not a
-     verdict.</p>
-  {% block content %}{% endblock %}
-</main>
+  <div class="page-canvas">
+    <header class="site-header">
+      <div class="container header-inner">
+        <a href="{{ url_for('index') }}" class="brand-lockup" aria-label="TraceLedger Home">
+          <img src="{{ url_for('static', filename='brand/logo-mark.svg') }}" width="28" height="28" alt="TraceLedger Thread Logo">
+          <span style="font-family: var(--font-serif); font-size: 1.35rem; font-weight: 700; color: var(--ink-title); letter-spacing: -0.02em;">TraceLedger</span>
+          <span class="badge" style="background:#eaf5f0; color:#1F7A5C; border:1px solid #1F7A5C; margin-left: 4px;">READ-ONLY &middot; NEVER MOVES FUNDS</span>
+        </a>
+
+        <nav>
+          <ul class="nav-links">
+            <li><a href="{{ url_for('index') }}">Cases</a></li>
+            <li><a href="{{ url_for('index') }}#ingest-form">Ingest Form</a></li>
+            <li><a href="{{ url_for('audit') }}">Audit Trail</a></li>
+            <li><a href="{{ url_for('index') }}#results">Real Benchmark</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container" style="padding-top: var(--space-lg); padding-bottom: var(--space-2xl);">
+      <p class="notice-banner">Business records here are synthetic and labelled as such. Chain facts are read from a live node. Preliminary tool &mdash; findings are evidence for a human decision, not a verdict.</p>
+      {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+      <div class="container" style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: var(--space-md);">
+        <div>
+          <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.25rem;">
+            <img src="{{ url_for('static', filename='brand/logo-mark.svg') }}" width="18" height="18" alt="">
+            <strong style="color:var(--ink-title); font-family:var(--font-serif);">TraceLedger Forensic Intelligence</strong>
+          </div>
+          <p class="text-small text-muted" style="margin: 0; max-width: 540px;">
+            Read-only architecture: never moves funds and never edits ledgers.
+            Audit records are append-only and stored in a SQLite file; not tamper-proof.
+          </p>
+        </div>
+        <div class="text-small text-muted">
+          <div>Chain ID: 137 (Polygon PoS)</div>
+          <div>Jurisdiction: Forensic Reconciliation</div>
+        </div>
+      </div>
+    </footer>
+  </div>
 </body>
 </html>

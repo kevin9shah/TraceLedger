@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 36" width="180" height="36" fill="none">
+  <!-- TraceLedger Thread T Mark -->
+  <g transform="translate(2, 2)">
+    <!-- Crossbar -->
+    <line x1="4" y1="6" x2="26" y2="6" stroke="#16213E" stroke-width="2.5" stroke-linecap="round"/>
+    <circle cx="4" cy="6" r="2.2" fill="#16213E"/>
+    <circle cx="26" cy="6" r="2.2" fill="#16213E"/>
+    <!-- Top Node -->
+    <circle cx="15" cy="6" r="2.5" fill="#16213E"/>
+    <!-- Top solid segment -->
+    <line x1="15" y1="6" x2="15" y2="14" stroke="#16213E" stroke-width="2.5" stroke-linecap="round"/>
+    <!-- Middle Node -->
+    <circle cx="15" cy="14" r="2.2" fill="#16213E"/>
+    <!-- Middle dashed segment -->
+    <line x1="15" y1="14" x2="15" y2="22" stroke="#9A948A" stroke-width="2.2" stroke-dasharray="2 2" stroke-linecap="round"/>
+    <!-- Lower Node -->
+    <circle cx="15" cy="22" r="2.2" fill="#16213E"/>
+    <!-- Lower solid segment -->
+    <line x1="15" y1="22" x2="15" y2="28" stroke="#16213E" stroke-width="2.5" stroke-linecap="round"/>
+    <!-- Terminal Node -->
+    <circle cx="15" cy="28" r="2.5" fill="#16213E"/>
+  </g>
+  <!-- Wordmark -->
+  <text x="38" y="24" font-family="'Fraunces', 'Newsreader', Georgia, serif" font-size="20" font-weight="600" fill="#16213E" letter-spacing="-0.02em">TraceLedger</text>
+</svg>
+

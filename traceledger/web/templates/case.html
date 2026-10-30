@@ -1,122 +1,302 @@
 {% extends "base.html" %}
-{% block title %}{{ case.case_id }} — TraceLedger{% endblock %}
+
+{% block title %}Case {{ case.case_id }} — TraceLedger Forensic Intelligence{% endblock %}
+
 {% block content %}
-<section>
-  <h2>{{ case.title }}</h2>
-  <p class="muted small mono">{{ case.case_id }} &middot; state: {{ case.state }}</p>
-  <div class="grid">
-    <div class="stat"><div class="n CONFLICT">{{ conflict_count }}</div><div class="k">Conflicts</div></div>
-    <div class="stat"><div class="n MISSING">{{ missing_count }}</div><div class="k">Missing evidence</div></div>
-    <div class="stat"><div class="n">{{ findings | length }}</div><div class="k">Findings</div></div>
-    <div class="stat"><div class="n">{{ audit | length }}</div><div class="k">Decisions</div></div>
+<div style="margin-bottom: var(--space-md);">
+  <a href="{{ url_for('index') }}" class="text-small">&larr; Back to Case Overview</a>
+</div>
+
+<!-- Header Card: Case Title & Overall Determination -->
+<section class="vellum-card-solid">
+  <div
+    style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: var(--space-md); margin-bottom: 1rem;">
+    <div>
+      <span class="text-mono text-small text-muted">{{ case.case_id }}</span>
+      <h1 style="font-size: 1.85rem; margin-top: 0.2rem; margin-bottom: 0.35rem;">{{ case.title }}</h1>
+      <p class="text-small text-secondary" style="margin-bottom: 0;">
+        Recorded: {{ case.created_at | ts }} &middot; State: <strong>{{ case.state }}</strong>
+      </p>
+    </div>
+
+    <!-- Overall Outcome Badge with Mandatory Disclaimer -->
+    <div style="text-align: right;">
+      {% if conflict_count > 0 %}
+      <div class="badge badge-conflict" style="font-size: 0.95rem; padding: 0.45rem 0.85rem;">
+        ⚠ CONFLICT DETECTED
+      </div>
+      <div class="text-small text-muted" style="margin-top: 0.35rem; max-width: 260px;">
+        Risk indicator, not a verdict about intent.
+      </div>
+      {% elif missing_count > 0 %}
+      <div class="badge badge-unresolved" style="font-size: 0.95rem; padding: 0.45rem 0.85rem;">
+        ◬ UNRESOLVED
+      </div>
+      <div class="text-small text-muted" style="margin-top: 0.35rem; max-width: 260px;">
+        Insufficient evidence to determine settlement.
+      </div>
+      {% else %}
+      <div class="badge badge-verified" style="font-size: 0.95rem; padding: 0.45rem 0.85rem;">
+        ✓ NO CONFLICT
+      </div>
+      <div class="text-small text-muted" style="margin-top: 0.35rem; max-width: 260px;">
+        All deterministic checks verified against on-chain bytecode.
+      </div>
+      {% endif %}
+    </div>
   </div>
-  {% if case.tx_hash %}
-  <p class="small muted" style="margin-top:14px">Transaction
-     <code>{{ case.tx_hash }}</code>
-     &middot; block {{ case.payload.facts.block_number }}
-     &middot; {{ case.payload.facts.confirmations }} confirmations
-     &middot; chain {{ case.payload.facts.chain_id }}</p>
-  <p class="small muted">Invoiced token <code>{{ case.payload.token.address }}</code>
-     &mdash; reports symbol <strong>{{ case.payload.token.symbol }}</strong>,
-     {{ case.payload.token.decimals }} decimals, read from the contract.</p>
-  {% endif %}
+
+  <!-- Stat summary counters -->
+  <div class="grid grid-stats">
+    <div class="stat-box">
+      <div class="stat-val" style="color: var(--state-conflict);">{{ conflict_count }}</div>
+      <div class="stat-lbl">Conflicts</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-val" style="color: var(--state-missing);">{{ missing_count }}</div>
+      <div class="stat-lbl">Missing Evidence</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-val">{{ findings | length }}</div>
+      <div class="stat-lbl">Total Checks</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-val">{{ audit | length }}</div>
+      <div class="stat-lbl">Decisions</div>
+    </div>
+  </div>
 </section>
 
-<section>
-  <h2>Findings</h2>
-  <p class="muted small">Established by code, with no language model involved. Conflicts first.
-     Every VERIFIED and CONFLICT line cites the evidence it rests on.</p>
-  <table>
-    <tr><th>Status</th><th>Check</th><th>Statement</th><th>Evidence</th></tr>
-    {% for f in findings %}
-    <tr>
-      <td><span class="tag {{ f.status }}">{{ f.status }}</span></td>
-      <td class="mono small">{{ f.code }}</td>
-      <td>{{ f.summary }}</td>
-      <td class="mono small">
-        {% if f.evidence_ids %}{% for e in f.evidence_ids %}{{ e[:22] }}{% if e|length > 22 %}…{% endif %}<br>{% endfor %}
-        {% else %}<span class="muted">nothing to cite</span>{% endif %}
-      </td>
-    </tr>
+<!-- UNRESOLVED SPECIFIC VARIANT: Evidence that would settle this -->
+{% if missing_count > 0 and conflict_count == 0 %}
+<section class="notice-banner unresolved-banner" style="margin-bottom: var(--space-lg);">
+  <h3 style="color: var(--ink-title); margin-bottom: 0.25rem;">Evidence that would settle this case</h3>
+  <p class="text-small" style="margin-bottom: 0.5rem;">
+    This case is in an <strong>UNRESOLVED</strong> state because essential verification elements are absent.
+    In TraceLedger, insufficient evidence is a respectable outcome — not a failure.
+  </p>
+  <ul class="text-small" style="margin: 0; padding-left: 1.25rem;">
+    {% for f in findings if f.status == 'MISSING' or f.status == 'NEXT_STEP' %}
+    <li><strong>{{ f.code }}:</strong> {{ f.summary }}</li>
     {% endfor %}
-  </table>
-</section>
-
-{% if report %}
-<section>
-  <h2>Investigation</h2>
-  <p class="muted small">Drafted by a language model, then checked against the findings above.
-     Anything it could not support was downgraded or rejected.</p>
-  <p>{{ report.summary }}</p>
-  {% if report.validation and report.validation.lines %}
-  <table>
-    <tr><th>Status</th><th>Rests on</th><th>Statement</th></tr>
-    {% for l in report.validation.lines %}
-    <tr><td><span class="tag {{ l.status }}">{{ l.status }}</span></td>
-        <td class="mono small">{{ l.finding_code or '—' }}</td>
-        <td>{{ l.text }}</td></tr>
-    {% endfor %}
-  </table>
-  {% endif %}
-  {% if report.hypotheses %}
-  <h2 style="margin-top:18px">Competing explanations</h2>
-  <ul>{% for h in report.hypotheses %}
-    <li>{{ h.explanation }}
-      <div class="small muted">Confirmed by: {{ h.would_be_confirmed_by }}</div>
-      <div class="small muted">Ruled out by: {{ h.would_be_ruled_out_by }}</div></li>
-  {% endfor %}</ul>
-  {% endif %}
-  {% if report.next_steps %}
-  <h2 style="margin-top:18px">Next steps</h2>
-  <ul>{% for s in report.next_steps %}<li>{{ s }}</li>{% endfor %}</ul>
-  {% endif %}
-  {% if report.validation and report.validation.violations %}
-  <h2 style="margin-top:18px">Rejected by the validator</h2>
-  <ul class="small">{% for v in report.validation.violations %}
-    <li><strong>{{ v.severity }}</strong> <code>{{ v.code }}</code> &mdash; {{ v.message }}</li>
-  {% endfor %}</ul>
-  {% endif %}
+  </ul>
 </section>
 {% endif %}
 
-<!-- No JavaScript on this form, deliberately. Dictation tools insert text by synthesising a
-     paste, so any handler that intercepts paste or rewrites field values would break them
-     silently while typing still worked (RISKS.md S15). -->
-<section>
-  <h2>Record a decision</h2>
-  <p class="muted small">A rationale is required. You can dictate it &mdash; this form has no
-     keystroke handlers and never rewrites or clears what you enter.</p>
-  <form method="post" action="{{ url_for('review', case_id=case.case_id) }}">
-    <label for="actor">Reviewer</label>
-    <input type="text" id="actor" name="actor" placeholder="your name" autocomplete="off">
+<!-- Main Grid: Left Evidence Column & Right Analysis Column -->
+<div class="grid grid-main-side">
+  <!-- Left Column: Evidence Chain & Provenance Facts -->
+  <div>
+    {% include "partials/evidence_graph.html" %}
 
-    <label for="action">Decision</label>
-    <select id="action" name="action" required>
-      {% for a in actions %}<option value="{{ a }}">{{ a.replace('_', ' ') }}</option>{% endfor %}
-    </select>
+    <!-- Provenance Facts Card -->
+    <div class="vellum-card" style="margin-top: var(--space-lg);">
+      <h3 style="font-size: 1rem; margin-bottom: 0.5rem;">On-Chain Facts</h3>
+      {% if case.tx_hash %}
+      <div style="margin-bottom: 0.75rem;">
+        <div class="text-small text-muted">Transaction Hash</div>
+        <code class="text-mono text-small">{{ case.tx_hash }}</code>
+      </div>
+      <div class="grid grid-2col" style="gap: var(--space-xs); margin-bottom: 0.75rem;">
+        <div>
+          <div class="text-small text-muted">Block Number</div>
+          <div class="text-mono text-small">{{ case.payload.facts.block_number or '—' }}</div>
+        </div>
+        <div>
+          <div class="text-small text-muted">Confirmations</div>
+          <div class="text-mono text-small">{{ case.payload.facts.confirmations or '—' }} (min 12)</div>
+        </div>
+      </div>
+      <div style="margin-bottom: 0.75rem;">
+        <div class="text-small text-muted">Token Contract Read</div>
+        <code class="text-mono text-small">{{ case.payload.token.address }}</code>
+        <div class="text-small text-secondary" style="margin-top: 2px;">
+          reports symbol <strong>{{ case.payload.token.symbol }}</strong>, {{ case.payload.token.decimals }} decimals,
+          read from the contract.
+        </div>
+      </div>
+      {% else %}
+      <p class="text-small text-muted">No transaction hash linked to this case.</p>
+      {% endif %}
 
-    <label for="rationale">Rationale</label>
-    <textarea id="rationale" name="rationale" required
-      placeholder="Why are you deciding this? Dictate or type."></textarea>
-    <button type="submit">Record decision</button>
-  </form>
-</section>
+      {% if case.payload.is_replay %}
+      <div class="badge badge-replay" style="margin-top: 0.5rem;">
+        REPLAY DATA: Replayed from offline benchmark fixture
+      </div>
+      {% endif %}
+    </div>
 
-{% if audit %}
-<section>
-  <h2>Decision history</h2>
-  <p class="muted small">Append-only: a later decision is a new entry, never an edit. Stored in a
-     SQLite file &mdash; not tamper-proof, and not described as such.</p>
-  <table>
-    <tr><th>When</th><th>Action</th><th>Reviewer</th><th>Rationale</th><th>Entry</th></tr>
-    {% for a in audit %}
-    <tr><td class="small muted">{{ a.at | ts }}</td>
-        <td class="small"><strong>{{ a.action }}</strong></td>
-        <td class="small">{{ a.actor }}</td>
-        <td class="small">{{ a.rationale }}</td>
-        <td class="mono small muted">{{ a.entry_id }}</td></tr>
-    {% endfor %}
-  </table>
-</section>
-{% endif %}
+    <!-- Untrusted Input Memo Box (Strictly escaped and quarantined) -->
+    {% if case.payload.invoice and case.payload.invoice.memo %}
+    <div class="untrusted-input-box">
+      <span class="label">Untrusted Input &mdash; Invoice Memo</span>
+      <div style="word-break: break-all;">
+        &ldquo;{{ case.payload.invoice.memo | e }}&rdquo;
+      </div>
+      <div class="text-small text-muted" style="margin-top: 0.35rem; font-family: var(--font-sans);">
+        Quarantined as raw text data; instructions inside memos are never executed.
+      </div>
+    </div>
+    {% endif %}
+  </div>
+
+  <!-- Right Column: Findings, LLM Narrative & Review History -->
+  <div>
+    <!-- Deterministic Findings Table (Conflicts Ordered First) -->
+    <section class="vellum-card-solid">
+      <h2>Deterministic Findings</h2>
+      <p class="text-small text-secondary" style="margin-bottom: 1rem;">
+        Established directly from chain receipts and contract storage. No language model was involved in these lines.
+        Every verified and conflict finding cites the evidence it rests on.
+      </p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Status</th>
+              <th>Finding Code</th>
+              <th>Statement</th>
+              <th>Cited Evidence</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for f in findings %}
+            <tr id="finding-{{ f.code }}" class="finding-card">
+              <td>
+                {% if f.status == 'VERIFIED' %}
+                <span class="badge badge-verified">✓ VERIFIED</span>
+                {% elif f.status == 'CONFLICT' %}
+                <span class="badge badge-conflict">⚠ CONFLICT</span>
+                {% elif f.status == 'MISSING' %}
+                <span class="badge badge-missing">◌ MISSING</span>
+                {% else %}
+                <span class="badge badge-unresolved">◬ {{ f.status }}</span>
+                {% endif %}
+              </td>
+              <td class="text-mono text-small">
+                <strong>{{ f.code }}</strong>
+              </td>
+              <td>{{ f.summary }}</td>
+              <td>
+                {% if f.evidence_ids %}
+                {% for ev in f.evidence_ids %}
+                <a href="#ev-{{ ev }}" class="citation-chip" title="Evidence item {{ ev }}">
+                  #{{ ev[:10] }}…
+                </a>
+                {% endfor %}
+                {% else %}
+                <span class="text-small text-muted">nothing to cite</span>
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Narrative Investigation Layer (Constrained & Validated) -->
+    {% if report %}
+    <section class="vellum-card">
+      <h3>Investigative Dossier</h3>
+      <p class="text-small text-secondary" style="margin-bottom: 0.75rem;">
+        Drafted by language model ({{ report.model or 'gpt-4o-mini' }}), gated through an independent validator.
+        Hypotheses cannot override deterministic findings.
+      </p>
+
+      <div
+        style="background: var(--bg-surface-card); padding: 1rem; border-radius: 4px; border: 1px solid var(--line-subtle); margin-bottom: 1rem;">
+        <p style="margin: 0; font-size: 0.95rem;">{{ report.summary }}</p>
+      </div>
+
+      {% if report.llm_error %}
+      <div class="notice-banner unresolved-banner">
+        Narrative layer unavailable, deterministic findings shown. ({{ report.llm_error }})
+      </div>
+      {% endif %}
+
+      <!-- Competing Hypotheses -->
+      {% if report.hypotheses %}
+      <h4 style="margin-top: 1.25rem; margin-bottom: 0.5rem;">Competing Explanations</h4>
+      <div class="grid" style="gap: var(--space-sm);">
+        {% for h in report.hypotheses %}
+        <div
+          style="background: var(--bg-surface-card); border: 1px solid var(--line-subtle); border-radius: 4px; padding: 0.75rem;">
+          <div style="font-weight: 600; font-size: 0.9rem; margin-bottom: 0.25rem;">{{ h.explanation }}</div>
+          <div class="text-small text-secondary"><strong>Would be confirmed by:</strong> {{ h.would_be_confirmed_by }}
+          </div>
+          <div class="text-small text-secondary"><strong>Ruled out by:</strong> {{ h.would_be_ruled_out_by }}</div>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      <!-- Next Steps -->
+      {% if report.next_steps %}
+      <h4 style="margin-top: 1.25rem; margin-bottom: 0.5rem;">Recommended Next Steps</h4>
+      <ul class="text-small" style="margin: 0; padding-left: 1.25rem;">
+        {% for s in report.next_steps %}
+        <li>{{ s }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+
+      <!-- Validator Rejections (if any) -->
+      {% if report.validation and report.validation.violations %}
+      <div
+        style="margin-top: 1.25rem; padding: 0.75rem; background: var(--state-conflict-bg); border: 1px solid var(--state-conflict); border-radius: 4px;">
+        <h4 style="color: var(--state-conflict); margin-bottom: 0.25rem;">Rejected by Validator</h4>
+        <p class="text-small text-secondary" style="margin-bottom: 0.5rem;">
+          The model generated claims contradicted or unsupported by deterministic facts:
+        </p>
+        <ul class="text-small" style="margin: 0; padding-left: 1.25rem;">
+          {% for v in report.validation.violations %}
+          <li><strong>{{ v.code }}:</strong> {{ v.message }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+    </section>
+    {% endif %}
+
+    <!-- Reviewer Decision Form (Strict Zero-JS) -->
+    {% include "partials/review_form.html" %}
+
+    <!-- Append-Only Audit History -->
+    {% if audit %}
+    <section class="vellum-card" style="margin-top: var(--space-lg);">
+      <h3>Decision History for Case {{ case.case_id }}</h3>
+      <p class="text-small text-muted" style="margin-bottom: 0.75rem;">
+        Append-only: a later decision is a new entry, never an edit. Stored in a SQLite file; not tamper-proof.
+      </p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Timestamp</th>
+              <th>Action</th>
+              <th>Reviewer</th>
+              <th>Rationale</th>
+              <th>Entry ID</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for a in audit %}
+            <tr>
+              <td class="text-small text-muted">{{ a.at | ts }}</td>
+              <td><strong>{{ a.action | replace('_', ' ') | upper }}</strong></td>
+              <td>{{ a.actor }}</td>
+              <td class="text-small">{{ a.rationale }}</td>
+              <td class="text-mono text-small text-muted">{{ a.entry_id }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+    {% endif %}
+  </div>
+</div>
 {% endblock %}
